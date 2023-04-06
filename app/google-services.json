@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "163557208878",
+    "project_id": "animalie-2da26",
+    "storage_bucket": "animalie-2da26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163557208878:android:e01b2c0d40d1621d1400bf",
+        "android_client_info": {
+          "package_name": "com.panji.animalie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163557208878-5u6ibi9le7lpefu20pvbc05no9e7sfu0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFSf_m8U5wgmlXRpIVhA5NXs_BEUTCBj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163557208878-5u6ibi9le7lpefu20pvbc05no9e7sfu0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
