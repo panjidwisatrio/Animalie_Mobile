@@ -1,11 +1,12 @@
-package com.panji.animalie
+package com.panji.animalie.ui.homepage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.panji.animalie.R
 
-class MainActivity : AppCompatActivity() {
+class HomePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.home_page)
     }
 }
