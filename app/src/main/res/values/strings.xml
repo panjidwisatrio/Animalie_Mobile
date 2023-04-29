@@ -14,4 +14,52 @@
     <string name="navbar_create">Create</string>
     <string name="navbar_chat">Chat</string>
     <string name="navbar_profile">Profile</string>
+
+    <string name="search_hint">Cari disini..</string>
+    <string name="tab_latest">Terbaru</string>
+    <string name="tab_popular">Popular</string>
+    <string name="tab_unanswered">Belum Terjawab</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="counter">8</string>
+
+    <string name="fullname">Full Name</string>
+    <string name="username">\@username</string>
+    <string name="post_title">Post Title</string>
+    <string name="post_content">This is the post content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum tellus et ex tristique, non suscipit urna gravida. Sed nec interdum elit. Vestibulum sit amet felis ac tortor viverra ultrices. Pellentesque eget nibh ipsum.</string>
+
+    <string name="profile_description">profile</string>
+    <string name="notification_description">notification</string>
+    <string name="like_description">like</string>
+    <string name="comment_description">comment</string>
+    <string name="share_description">share</string>
+    <string name="more_description">more</string>
+    <string name="bookmark_description">bookmark</string>
+
+    <string name="edit_bio">Ubah data diri</string>
+    <string name="edit_password">Ubah katasandi</string>
+    <string name="edit_fullname">Nama Lengkap</string>
+    <string name="edit_username">Username</string>
+    <string name="edit_workplace">Tempat bekerja</string>
+    <string name="edit_profession">Pekerjaan</string>
+    <string name="edit_email">Email</string>
+    <string name="save">Simpan</string>
+    <string name="change_password">Ubah kata sandi</string>
+    <string name="current_password">Kata sandi saat ini</string>
+    <string name="new_password">Kata sandi baru</string>
+    <string name="confirm_password">Konfirmasi kata sandi</string>
+    <string name="delete_account">Hapus akun</string>
+
+    <string name="myprofile">My Profile</string>
+    <string name="othprofile">Other Profile</string>
+
+    <string name="profession_workplace">Manager Peternakan di Perusahaan</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="certificate">Certificate</string>
+    <string name="see_all">See all</string>
+
+    <string name="certificate_title">Certificate Title</string>
+    <string name="certificate_publisher">Certificate Publisher</string>
+    <string name="certificate_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</string>
+
 </resources>

@@ -6,14 +6,18 @@
         android:title="@string/navbar_home" />
     <item
         android:id="@+id/interest_group"
+        android:icon="@drawable/ic_category"
         android:title="@string/navbar_interest" />
     <item
         android:id="@+id/create_post"
+        android:icon="@drawable/ic_add_circle"
         android:title="@string/navbar_create" />
     <item
         android:id="@+id/chat"
+        android:icon="@drawable/ic_chat"
         android:title="@string/navbar_chat" />
     <item
         android:id="@+id/profile"
+        android:icon="@drawable/ic_account_circle"
         android:title="@string/navbar_profile" />
 </menu>

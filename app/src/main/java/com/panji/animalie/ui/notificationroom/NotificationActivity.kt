@@ -2,6 +2,7 @@ package com.panji.animalie.ui.notificationroom
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.panji.animalie.R
 
 class NotificationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
