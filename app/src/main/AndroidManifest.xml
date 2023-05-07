@@ -35,18 +35,18 @@
         <activity
             android:name=".ui.interestgroup.InterestGroupActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.editprofile.EditProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.createpost.CreatePostActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ui.editprofile.EditProfileActivity"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".ui.createpost.CreatePostActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".ui.chat.ChatActivity"
             android:exported="false"
             android:label="@string/title_activity_chat" />
         <activity
-            android:name=".ui.myprofile.MyProfileActivity"
+            android:name=".ui.homepage.HomePage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,5 +55,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

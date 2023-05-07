@@ -25,8 +25,10 @@
 
     <string name="fullname">Full Name</string>
     <string name="username">\@username</string>
+    <string name="date">2 min ago</string>
     <string name="post_title">Post Title</string>
     <string name="post_content">This is the post content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum tellus et ex tristique, non suscipit urna gravida. Sed nec interdum elit. Vestibulum sit amet felis ac tortor viverra ultrices. Pellentesque eget nibh ipsum.</string>
+
 
     <string name="profile_description">profile</string>
     <string name="notification_description">notification</string>
@@ -61,5 +63,15 @@
     <string name="certificate_title">Certificate Title</string>
     <string name="certificate_publisher">Certificate Publisher</string>
     <string name="certificate_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</string>
+
+    <string name="create_post">Create Post</string>
+    <string name="post">Post</string>
+    <string name="title">Judul</string>
+    <string name="category">Kategori</string>
+    <string name="tag">Tag</string>
+    <string name="content">Tulis disini..</string>
+
+
+
 
 </resources>

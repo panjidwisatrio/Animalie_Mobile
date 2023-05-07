@@ -52,16 +52,23 @@
             </LinearLayout>
         </LinearLayout>
 
-
-        <ImageButton
-            android:id="@+id/more_button"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@color/transparent"
-            android:contentDescription="@string/more_description"
-            android:padding="12dp"
-            android:src="@drawable/ic_more" />
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:text="@string/date" />
+
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/more_button"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_alignParentRight="true"-->
+        <!--            android:background="@color/transparent"-->
+        <!--            android:contentDescription="@string/more_description"-->
+        <!--            android:padding="12dp"-->
+        <!--            android:src="@drawable/ic_more" />-->
     </RelativeLayout>
 
     <!-- Post Content -->
@@ -87,23 +94,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-        <ImageButton
-            android:id="@+id/bookmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:background="@color/transparent"
-            android:contentDescription="@string/bookmark_description"
-            android:padding="12dp"
-            android:src="@drawable/ic_bookmark" />
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/bookmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:contentDescription="@string/bookmark_description"
+                android:padding="12dp"
+                android:src="@drawable/ic_bookmark" />
 
             <ImageButton
                 android:id="@+id/share_button"
@@ -113,6 +117,14 @@
                 android:contentDescription="@string/share_description"
                 android:padding="12dp"
                 android:src="@drawable/ic_share" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/like_layout"

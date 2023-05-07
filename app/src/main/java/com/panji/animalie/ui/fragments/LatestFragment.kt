@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.panji.animalie.R
 import com.panji.animalie.databinding.FragmentLatestBinding
 import com.panji.animalie.model.Post
 import com.panji.animalie.ui.adapter.PostAdapter
@@ -14,29 +14,30 @@ import com.panji.animalie.ui.adapter.PostAdapter
 class LatestFragment : Fragment() {
 
     private lateinit var binding: FragmentLatestBinding
-    private lateinit var adapter: PostAdapter
-    private lateinit var recyclerView: RecyclerView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentLatestBinding.inflate(layoutInflater)
-
-        //get and send post data to ui
-//        with(binding.latestRecycler) {
-//            adapter = PostAdapter(getData())
-//            setHasFixedSize(true)
-//        }
-    }
+    private lateinit var myAdapter: PostAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_latest, container, false)
+        binding = FragmentLatestBinding.inflate(layoutInflater, container, false)
+
+        return binding.root
     }
 
-    private fun getData(): List<Post> {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        //call or use method, button, etc in here
+
+        myAdapter = PostAdapter(getLatestData())
+        with(binding.recyclerView) {
+            adapter = myAdapter
+            setHasFixedSize(true)
+        }
+    }
+
+    private fun getLatestData(): List<Post> {
         return listOf(
             Post(
                 1,

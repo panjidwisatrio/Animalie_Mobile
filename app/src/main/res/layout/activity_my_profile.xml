@@ -8,32 +8,22 @@
     tools:context=".ui.myprofile.MyProfileActivity">
 
     <!--    TOOLBAR-->
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/profile_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorOnPrimary"
+        android:layout_height="wrap_content"
         android:elevation="4dp">
 
-        <TextView
-            android:id="@+id/profile_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/myprofile"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/profile"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="8dp"
+            app:title="@string/myprofile"
+            app:titleCentered="true" />
 
-        <ImageButton
-            android:id="@+id/menu_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:background="@drawable/selector_button"
-            android:contentDescription="@string/notification_description"
-            android:padding="14dp"
-            android:src="@drawable/ic_menu" />
-    </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <!--    PROFILE BIO-->
     <LinearLayout
@@ -96,96 +86,106 @@
 
     </LinearLayout>
 
-    <!--    CERTIFICATE-->
-    <LinearLayout
-        android:id="@+id/certificate_layout"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/biodata_layout"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp">
+        android:layout_below="@id/biodata_layout">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/certificate_textview"
-                android:layout_width="0dp"
+            <!--    CERTIFICATE-->
+            <LinearLayout
+                android:id="@+id/certificate_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="@string/certificate"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_below="@id/biodata_layout"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
 
-            <ImageButton
-                android:id="@+id/add_certificate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:contentDescription="@string/bookmark_description"
-                android:padding="12dp"
-                android:src="@drawable/ic_add" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/add_edit_certificate"
-                android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/certificate_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/certificate"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/add_certificate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:contentDescription="@string/bookmark_description"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_add" />
+
+                    <ImageButton
+                        android:id="@+id/add_edit_certificate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:contentDescription="@string/bookmark_description"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_edit" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/certificate">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/see_all"
+                    android:textAlignment="textEnd"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!--    TAB LAYOUT-->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:contentDescription="@string/bookmark_description"
-                android:padding="12dp"
-                android:src="@drawable/ic_edit" />
+                android:background="?attr/colorOnPrimary"
+                android:elevation="4dp"
+                app:tabGravity="fill"
+                app:tabMode="fixed" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
+    </ScrollView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/certificate">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
-            android:text="@string/see_all"
-            android:textAlignment="textEnd"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <!--    TAB LAYOUT-->
-    <com.google.android.material.tabs.TabLayout
-        android:layout_below="@+id/certificate_layout"
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorOnPrimary"
-        android:elevation="4dp"
-        app:tabGravity="fill"
-        app:tabMode="fixed" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tab_layout" />
 
     <!--    BOTTOM NAVIGATION-->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <include
         android:id="@+id/bottom_navigation"
+        layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:elevation="4dp"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation_menu" />
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
