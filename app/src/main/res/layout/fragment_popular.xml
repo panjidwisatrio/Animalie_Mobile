@@ -2,11 +2,11 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:context=".ui.fragments.PopularFragment"
     tools:listitem="@layout/post">
-
 
 </androidx.recyclerview.widget.RecyclerView>
