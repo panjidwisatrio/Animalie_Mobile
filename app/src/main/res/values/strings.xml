@@ -15,6 +15,16 @@
     <string name="navbar_chat">Chat</string>
     <string name="navbar_profile">Profile</string>
 
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
     <string name="search_hint">Cari disini..</string>
     <string name="tab_latest">Terbaru</string>
     <string name="tab_popular">Popular</string>
@@ -28,7 +38,6 @@
     <string name="date">2 min ago</string>
     <string name="post_title">Post Title</string>
     <string name="post_content">This is the post content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum tellus et ex tristique, non suscipit urna gravida. Sed nec interdum elit. Vestibulum sit amet felis ac tortor viverra ultrices. Pellentesque eget nibh ipsum.</string>
-
 
     <string name="profile_description">profile</string>
     <string name="notification_description">notification</string>
@@ -70,8 +79,5 @@
     <string name="category">Kategori</string>
     <string name="tag">Tag</string>
     <string name="content">Tulis disini..</string>
-
-
-
 
 </resources>
