@@ -1,9 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.roomchat.RoomChatActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_light_surface"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/toolbar"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="5"
+                android:background="?attr/actionModeCloseDrawable"
+                android:backgroundTint="@color/md_theme_dark_scrim" />
+
+            <TextView
+                android:id="@+id/Nama_chat"
+                android:layout_width="350dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:foregroundGravity="center_horizontal"
+                android:gravity="center|center_vertical"
+                android:text="Dr Suturdin"
+                android:textColor="@color/md_theme_dark_scrim"
+                android:textSize="24sp"
+                android:textStyle="normal|bold" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/linear01"
+        android:orientation="vertical"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/linear01"
+        android:layout_alignParentBottom="true"
+        android:background="#EFF0F1"
+        android:orientation="horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="2"
+            android:padding="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
+                android:orientation="ve"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/messageBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/manrope"
+                        android:foregroundGravity="right"
+                        android:gravity="start|end"
+                        android:hint="Ketik pesan anda disini... "
+                        android:padding="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="1dp"
+                        android:textColorHint="#9EA3A9"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="97dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/seed"
+                android:fontFamily="@font/manrope"
+                android:foregroundGravity="fill"
+                android:gravity="center"
+                android:hint="Send"
+                android:paddingLeft="10dp"
+                android:textAlignment="center"
+                android:textColorHint="@color/md_theme_light_background"
+                android:textSize="15sp"
+                android:textStyle="normal|bold"
+                android:translationX="346dp"
+                android:visibility="visible" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

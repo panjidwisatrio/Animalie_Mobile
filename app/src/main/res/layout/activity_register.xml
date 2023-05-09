@@ -6,4 +6,167 @@
     android:layout_height="match_parent"
     tools:context=".ui.register.RegisterActivity">
 
+    <ImageView
+        android:id="@+id/LogoAnimalie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:contentDescription="Logo_Animalie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_animalie_foreground" />
+
+    <TextView
+        android:id="@+id/app_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:fontFamily="@font/marcellus"
+        android:text="@string/app_name"
+        android:textColor="@color/seed"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/LogoAnimalie"
+        app:layout_constraintStart_toStartOf="@+id/LogoAnimalie"
+        app:layout_constraintTop_toTopOf="@+id/LogoAnimalie" />
+
+    <EditText
+        android:id="@+id/Nama_form"
+        android:layout_width="350dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/edit_text_background"
+        android:ems="10"
+        android:fontFamily="@font/manrope"
+        android:hint="Nama"
+        android:inputType="textPersonName"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/seed"
+        android:textColorHint="@color/seed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_Name" />
+
+    <EditText
+        android:id="@+id/Username_form"
+        android:layout_width="350dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text_background"
+        android:ems="10"
+        android:fontFamily="@font/manrope"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/seed"
+        android:textColorHint="@color/seed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Nama_form" />
+
+    <EditText
+        android:id="@+id/Email_form"
+        android:layout_width="350dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text_background"
+        android:ems="10"
+        android:fontFamily="@font/manrope"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/seed"
+        android:textColorHint="@color/seed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Username_form" />
+
+    <EditText
+        android:id="@+id/NewPassword_form"
+        android:layout_width="350dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text_background"
+        android:ems="10"
+        android:fontFamily="@font/manrope"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/seed"
+        android:textColorHint="@color/seed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Email_form" />
+
+    <EditText
+        android:id="@+id/Confirm_Password_form"
+        android:layout_width="350dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text_background"
+        android:ems="10"
+        android:fontFamily="@font/manrope"
+        android:hint="Konfirmasi Password"
+        android:inputType="textPassword"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/seed"
+        android:textColorHint="@color/seed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NewPassword_form" />
+
+    <Button
+        android:id="@+id/DaftarButton"
+        android:layout_width="350dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/manrope"
+        android:text="Daftar"
+        android:textSize="18sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Confirm_Password_form" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DaftarButton">
+
+        <TextView
+            android:id="@+id/Alreadyhaveaccounttxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:fontFamily="@font/manrope"
+            android:text="Sudah punya akun? " />
+
+        <TextView
+            android:id="@+id/LoginLinkPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:fontFamily="@font/manrope"
+            android:linksClickable="true"
+            android:text="Login"
+            android:textColor="@color/seed"
+            android:textColorLink="@color/seed"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
