@@ -28,7 +28,7 @@
 
             <ImageView
                 android:id="@+id/back_button"
-                android:layout_width="30dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="5"
@@ -77,7 +77,7 @@
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
@@ -92,35 +92,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:baselineAligned="false"
-                android:orientation="ve"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical"
                 android:padding="8dp">
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/messageBox"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/messageBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:fontFamily="@font/manrope"
-                        android:foregroundGravity="right"
-                        android:gravity="start|end"
-                        android:hint="Ketik pesan anda disini... "
-                        android:padding="5dp"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="1dp"
-                        android:textColorHint="#9EA3A9"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/manrope_regular"
+                    android:foregroundGravity="right"
+                    android:gravity="start|end"
+                    android:hint="@string/ketik_pesan_anda_disini"
+                    android:padding="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="1dp"
+                    android:textColorHint="#9EA3A9"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
@@ -130,11 +122,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:background="@color/seed"
-                android:fontFamily="@font/manrope"
+                android:fontFamily="@font/manrope_regular"
                 android:foregroundGravity="fill"
                 android:gravity="center"
-                android:hint="Send"
-                android:paddingLeft="10dp"
+                android:hint="@string/send"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textAlignment="center"
                 android:textColorHint="@color/md_theme_light_background"
                 android:textSize="15sp"

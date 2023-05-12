@@ -1,12 +1,34 @@
 package com.panji.animalie.model
 
+import com.squareup.moshi.Json
+
+data class PostReady(
+    val data: List<Post>
+)
+
 data class Post(
+    @field:Json(name = "id")
     val id: Int,
-    val userId: Int,
-    val categoryId: Int,
+    @field:Json(name = "title")
     val title: String,
+    @field:Json(name = "slug")
     val slug: String,
+    @field:Json(name = "content")
     val content: String,
+    @field:Json(name = "views")
+    val views: Int,
+    @field:Json(name = "userId")
+    val userId: Int,
+    @field:Json(name = "categoryId")
+    val categoryId: Int,
+    @field:Json(name = "created_at")
     val created_at: String,
-    val updated_at: String
+    @field:Json(name = "updated_at")
+    val updated_at: String,
+    @field:Json(name = "user")
+    val User: User,
+    @field:Json(name = "category")
+    val Category: Category,
+    @field:Json(name = "comments")
+    val Comments: List<Comment>
 )

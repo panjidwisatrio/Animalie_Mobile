@@ -2,13 +2,10 @@ package com.panji.animalie.ui.homepage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.databinding.HomePageBinding
-import com.panji.animalie.model.Post
-import com.panji.animalie.ui.adapter.FragmentAdapter
-import com.panji.animalie.ui.adapter.PagerAdapter
-import com.panji.animalie.ui.fragments.LatestFragment
-import com.panji.animalie.ui.fragments.PopularFragment
-import com.panji.animalie.ui.fragments.UnansweredFragment
+import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.util.Constanta.TAB_TITLES
 
 class HomePage : AppCompatActivity() {
 
@@ -18,37 +15,18 @@ class HomePage : AppCompatActivity() {
         binding = HomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //attach the viewPager adapter
-        val viewPager = binding.viewPager
-        val pagerAdapter = PagerAdapter(supportFragmentManager)
-        viewPager.adapter = pagerAdapter
-
-        val tabLayout = binding.tabLayout
-
-        //add tab items and connect it to fragment
-        val fragmentAdapter = FragmentAdapter(supportFragmentManager)
-
-        fragmentAdapter.addFragment(LatestFragment(), "Latest")
-        fragmentAdapter.addFragment(PopularFragment(), "Popular")
-        fragmentAdapter.addFragment(UnansweredFragment(), "Unanswered")
-
-        viewPager.adapter = fragmentAdapter
-        tabLayout.setupWithViewPager(viewPager)
+        setTabLayout()
     }
 
-    private fun getData(): List<Post> {
-        return listOf(
-            Post(
-                1,
-                1,
-                1,
-                "This Post Title",
-                "this-post-title",
-                "Lorem ipsum are Post content, dolor sit amet, consectetur adipiscing elit. Donec vestibulum tellus et ex tristique, non suscipit urna gravida. Sed nec interdum elit. Vestibulum sit amet felis ac tortor viverra ultrices. Pellentesque eget nibh ipsum",
-                "01-01-2023",
-                "01-01-2023"
-            )
-        )
-    }
+    private fun setTabLayout() {
+        val pageAdapter = SectionTabAdapter(this, "homepage")
 
+        binding.apply {
+            viewPager.adapter = pageAdapter
+
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES[position])
+            }.attach()
+        }
+    }
 }

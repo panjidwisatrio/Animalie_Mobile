@@ -23,7 +23,8 @@
                 android:id="@+id/profile_photo"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@mipmap/profile_photo_round" />
+                android:src="@mipmap/profile_photo_round"
+                android:contentDescription="@string/profile_description" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -53,6 +54,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -85,6 +87,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:maxLines="4"
+        android:ellipsize="end"
         android:text="@string/post_content"
         android:textSize="14sp" />
 

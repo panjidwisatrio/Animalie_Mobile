@@ -2,9 +2,10 @@ package com.panji.animalie.ui.myprofile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.databinding.ActivityMyProfileBinding
-import com.panji.animalie.ui.adapter.FragmentAdapter
-import com.panji.animalie.ui.fragments.*
+import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.util.Constanta.TAB_TITLES_PROFILE
 
 class MyProfileActivity : AppCompatActivity() {
 
@@ -14,16 +15,18 @@ class MyProfileActivity : AppCompatActivity() {
         binding = ActivityMyProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewPager = binding.viewPager
-        val tabLayout = binding.tabLayout
+        setTabLayout()
+    }
 
-        val fragmentAdapter = FragmentAdapter(supportFragmentManager)
+    private fun setTabLayout() {
+        val pageAdapter = SectionTabAdapter(this, "profile")
 
-        fragmentAdapter.addFragment(MyPostFragment(), "My Post")
-        fragmentAdapter.addFragment(DiscussionFragment(), "Discussion")
-        fragmentAdapter.addFragment(SavedPostFragment(), "Saved Post")
+        binding.apply {
+            viewPager.adapter = pageAdapter
 
-        viewPager.adapter = fragmentAdapter
-        tabLayout.setupWithViewPager(viewPager)
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES_PROFILE[position])
+            }.attach()
+        }
     }
 }

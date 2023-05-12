@@ -24,9 +24,11 @@
         app:tabIndicator="?attr/colorPrimary"
         app:tabSelectedTextColor="?attr/colorPrimary"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabTextColor="?attr/colorOnSurfaceVariant" />
+        app:tabTextColor="?attr/colorOnSurfaceVariant"
+        app:tabRippleColor="@null"
+        app:tabMode="fixed"/>
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

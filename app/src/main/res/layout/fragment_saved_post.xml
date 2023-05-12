@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".ui.fragments.SavedPostFragment"
+    tools:context=".ui.fragments.savedpost.SavedPostFragment"
     tools:listitem="@layout/post">
 
 

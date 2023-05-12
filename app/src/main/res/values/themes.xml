@@ -40,4 +40,15 @@
     <style name="CustomTextFieldStyle" parent="Widget.Material3.TextInputLayout.FilledBox">
         <item name="boxStrokeWidth">0dp</item>
     </style>
+
+    <!-- Splash Screen -->
+    <style name="SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:colorPrimary">?attr/colorPrimary</item>
+        <item name="android:colorPrimaryDark">?attr/colorPrimaryContainer</item>
+        <item name="android:colorAccent">?attr/colorPrimaryContainer</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryContainer</item>
+        <item name="android:navigationBarColor">?attr/colorPrimaryContainer</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
 </resources>

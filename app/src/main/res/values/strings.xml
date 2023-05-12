@@ -34,7 +34,7 @@
     <string name="counter">8</string>
 
     <string name="fullname">Full Name</string>
-    <string name="username">\@username</string>
+    <string name="username">username</string>
     <string name="date">2 min ago</string>
     <string name="post_title">Post Title</string>
     <string name="post_content">This is the post content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum tellus et ex tristique, non suscipit urna gravida. Sed nec interdum elit. Vestibulum sit amet felis ac tortor viverra ultrices. Pellentesque eget nibh ipsum.</string>
@@ -79,5 +79,29 @@
     <string name="category">Kategori</string>
     <string name="tag">Tag</string>
     <string name="content">Tulis disini..</string>
+    <string name="send">Send</string>
+    <string name="ketik_pesan_anda_disini">Ketik pesan anda disini…</string>
+    <string name="logo_animalie">Logo_Animalie</string>
+    <string name="email_atau_username">Email atau Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="tidak_mempunyai_akun">Tidak mempunyai akun?&#32; &#8200; &#8195;</string>
+    <string name="registrasi">Registrasi</string>
+    <string name="nama">Nama</string>
+    <string name="email">Email</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="daftar">Daftar</string>
+    <string name="sudah_punya_akun">Sudah punya akun?&#32; &#8200; &#8195;</string>
+    <string name="something_went_wrong">Something went wrong!</string>
+    <string name="error_text">Error: %1$s</string>
+
+    <!-- Tab -->
+    <string name="tab_home">Latest</string>
+    <string name="tab_interest">Popular</string>
+    <string name="tab_unanswerd">Unanswerd</string>
+    <string name="tab_mypost">My Post</string>
+    <string name="tab_discussion">Discussion</string>
+    <string name="tab_savedpost">Saved Post</string>
+
 
 </resources>
