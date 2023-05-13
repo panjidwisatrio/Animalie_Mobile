@@ -9,6 +9,7 @@ import com.panji.animalie.ui.utils.AppExitHandler
 import com.panji.animalie.ui.utils.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES
 
+
 class HomePage : AppCompatActivity() {
 
     private lateinit var binding: HomePageBinding
