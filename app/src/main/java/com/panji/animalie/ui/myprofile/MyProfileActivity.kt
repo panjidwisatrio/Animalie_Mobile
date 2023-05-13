@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.databinding.ActivityMyProfileBinding
 import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.ui.utils.AppExitHandler
+import com.panji.animalie.ui.utils.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES_PROFILE
 
 class MyProfileActivity : AppCompatActivity() {
@@ -15,7 +17,19 @@ class MyProfileActivity : AppCompatActivity() {
         binding = ActivityMyProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        BottomNavigationHelper.setupBottomNavigationBar(
+            binding.bottomNavigation,
+            this,
+            this
+        )
+
         setTabLayout()
+    }
+
+    //    setup exit confirmation
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        AppExitHandler.handleBackPress(this)
     }
 
     private fun setTabLayout() {

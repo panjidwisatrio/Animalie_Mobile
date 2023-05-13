@@ -7,6 +7,29 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+<!--    login register page-->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email_username">Email atau Username</string>
+    <string name="password">Password</string>
+    <string name="no_account">Tidak mempunyai akun? </string>
+    <string name="have_account">Sudah punya akun? </string>
+
+<!--    edit bio-->
+    <string name="edit_bio">Ubah data diri</string>
+    <string name="edit_password">Ubah katasandi</string>
+    <string name="edit_fullname">Nama Lengkap</string>
+    <string name="edit_username">Username</string>
+    <string name="edit_workplace">Tempat bekerja</string>
+    <string name="edit_profession">Pekerjaan</string>
+    <string name="edit_email">Email</string>
+    <string name="save">Simpan</string>
+    <string name="change_password">Ubah kata sandi</string>
+    <string name="current_password">Kata sandi saat ini</string>
+    <string name="new_password">Kata sandi baru</string>
+    <string name="confirm_password">Konfirmasi kata sandi</string>
+    <string name="delete_account">Hapus akun</string>
+
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="navbar_home">Home</string>
@@ -31,7 +54,7 @@
     <string name="tab_unanswered">Belum Terjawab</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="counter">8</string>
+    <string name="counter">0</string>
 
     <string name="fullname">Full Name</string>
     <string name="username">username</string>
@@ -46,20 +69,6 @@
     <string name="share_description">share</string>
     <string name="more_description">more</string>
     <string name="bookmark_description">bookmark</string>
-
-    <string name="edit_bio">Ubah data diri</string>
-    <string name="edit_password">Ubah katasandi</string>
-    <string name="edit_fullname">Nama Lengkap</string>
-    <string name="edit_username">Username</string>
-    <string name="edit_workplace">Tempat bekerja</string>
-    <string name="edit_profession">Pekerjaan</string>
-    <string name="edit_email">Email</string>
-    <string name="save">Simpan</string>
-    <string name="change_password">Ubah kata sandi</string>
-    <string name="current_password">Kata sandi saat ini</string>
-    <string name="new_password">Kata sandi baru</string>
-    <string name="confirm_password">Konfirmasi kata sandi</string>
-    <string name="delete_account">Hapus akun</string>
 
     <string name="myprofile">My Profile</string>
     <string name="othprofile">Other Profile</string>
@@ -83,8 +92,6 @@
     <string name="ketik_pesan_anda_disini">Ketik pesan anda disini…</string>
     <string name="logo_animalie">Logo_Animalie</string>
     <string name="email_atau_username">Email atau Username</string>
-    <string name="password">Password</string>
-    <string name="login">Login</string>
     <string name="tidak_mempunyai_akun">Tidak mempunyai akun?&#32; &#8200; &#8195;</string>
     <string name="registrasi">Registrasi</string>
     <string name="nama">Nama</string>

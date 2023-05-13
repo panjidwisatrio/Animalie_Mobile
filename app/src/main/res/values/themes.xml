@@ -39,6 +39,7 @@
 <!--    remove underline in textfield-->
     <style name="CustomTextFieldStyle" parent="Widget.Material3.TextInputLayout.FilledBox">
         <item name="boxStrokeWidth">0dp</item>
+        <item name="background">?attr/background</item>
     </style>
 
     <!-- Splash Screen -->

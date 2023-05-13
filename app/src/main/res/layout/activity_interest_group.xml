@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.interestgroup.InterestGroupActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!--        BOTTOM NAVIGATION-->
+<!--    <include-->
+<!--        android:id="@+id/bottom_navigation"-->
+<!--        layout="@layout/bottom_navigation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true" />-->
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_navigation"
+        android:layout_alignParentBottom="true"
+        app:elevation="4dp"
+        app:itemIconTint="@drawable/bottom_navigation_item_colors"
+        app:itemRippleColor="?attr/colorPrimaryInverse"
+        app:itemTextColor="?attr/colorPrimary"
+        app:labelVisibilityMode="selected"
+        app:menu="@menu/bottom_navigation_menu" />
+
+</RelativeLayout>
