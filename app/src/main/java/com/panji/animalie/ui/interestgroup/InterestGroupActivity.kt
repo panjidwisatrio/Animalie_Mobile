@@ -17,7 +17,7 @@ class InterestGroupActivity : AppCompatActivity() {
 
 //        setup bottom navigation bar
         BottomNavigationHelper.setupBottomNavigationBar(
-            binding.bottomNavigation,
+            binding.bottomNavigation.bottomNavigation,
             this,
             this
         )

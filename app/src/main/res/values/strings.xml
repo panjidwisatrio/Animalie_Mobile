@@ -7,7 +7,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-<!--    login register page-->
+    <!--    login register page-->
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="email_username">Email atau Username</string>
@@ -15,7 +15,7 @@
     <string name="no_account">Tidak mempunyai akun? </string>
     <string name="have_account">Sudah punya akun? </string>
 
-<!--    edit bio-->
+    <!--    edit bio-->
     <string name="edit_bio">Ubah data diri</string>
     <string name="edit_password">Ubah katasandi</string>
     <string name="edit_fullname">Nama Lengkap</string>
@@ -110,5 +110,13 @@
     <string name="tab_discussion">Discussion</string>
     <string name="tab_savedpost">Saved Post</string>
 
+
+    <!-- Categories-->
+    <string name="cow">Sapi</string>
+    <string name="poultry">Unggas</string>
+    <string name="goat">Kambing</string>
+    <string name="sheep">Domba</string>
+    <string name="fish">Ikan</string>
+    <string name="other">Lainnya</string>
 
 </resources>
