@@ -3,7 +3,14 @@ package com.panji.animalie.model
 import com.squareup.moshi.Json
 
 data class PostReady(
-    val data: List<Post>
+    @field:Json(name = "current_page")
+    val currentPage: Int,
+    @field:Json(name = "last_page")
+    val lastPage: Int,
+    @field:Json(name = "data")
+    val data: List<Post>,
+    @field:Json(name = "total")
+    val total: Int,
 )
 
 data class Post(

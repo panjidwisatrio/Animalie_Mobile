@@ -84,7 +84,7 @@ class Repository(application: Application) {
         return auth
     }
 
-    suspend fun getPost(): LiveData<Resource<PostResponse>> {
+    suspend fun getLatestPost(type: String, selectedCategory: String?, selectedTag: String?): LiveData<Resource<PostResponse>> {
         val post = MutableLiveData<Resource<PostResponse>>()
 
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -93,7 +93,13 @@ class Repository(application: Application) {
 
         post.postValue(Resource.Loading())
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.post()
+            val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
+                retrofit.latestCategory(type, selectedCategory)
+            } else if(selectedTag != null && type != "dashboard" && type != "interestGroup") {
+                retrofit.latestTag(type, selectedTag)
+            } else {
+                retrofit.latest(type)
+            }
 
             if (response.isSuccessful) {
                 post.postValue(Resource.Success(response.body()))
@@ -114,5 +120,75 @@ class Repository(application: Application) {
         return post
     }
 
+    suspend fun getPopularPost(type: String, selectedCategory: String?, selectedTag: String?): LiveData<Resource<PostResponse>> {
+        val post = MutableLiveData<Resource<PostResponse>>()
 
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            post.postValue(Resource.Error(throwable.message))
+        }
+
+        post.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
+                retrofit.popularCategory(type, selectedCategory)
+            } else if(selectedTag != null && type != "dashboard" && type != "interestGroup") {
+                retrofit.popularTag(type, selectedTag)
+            } else {
+                retrofit.popular(type)
+            }
+
+            if (response.isSuccessful) {
+                post.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    post.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    post.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    post.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    post.postValue(Resource.Error("Internal server error"))
+                } else {
+                    post.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return post
+    }
+
+    suspend fun getUnanswerdPost(type: String, selectedCategory: String?, selectedTag: String?): LiveData<Resource<PostResponse>> {
+        val post = MutableLiveData<Resource<PostResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            post.postValue(Resource.Error(throwable.message))
+        }
+
+        post.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
+                retrofit.unanswerdCategory(type, selectedCategory)
+            } else if(selectedTag != null && type != "dashboard" && type != "interestGroup") {
+                retrofit.unanswerdTag(type, selectedTag)
+            } else {
+                retrofit.unanswerd(type)
+            }
+
+            if (response.isSuccessful) {
+                post.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    post.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    post.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    post.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    post.postValue(Resource.Error("Internal server error"))
+                } else {
+                    post.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return post
+    }
 }

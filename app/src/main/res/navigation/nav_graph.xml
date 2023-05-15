@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginActivity">
+
     <activity
         android:id="@+id/loginActivity"
         android:name="com.panji.animalie.ui.login.LoginActivity"

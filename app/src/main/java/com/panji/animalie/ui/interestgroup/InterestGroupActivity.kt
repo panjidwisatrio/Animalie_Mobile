@@ -2,31 +2,49 @@ package com.panji.animalie.ui.interestgroup
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.panji.animalie.R
 import com.panji.animalie.databinding.ActivityInterestGroupBinding
-import com.panji.animalie.ui.utils.AppExitHandler
 import com.panji.animalie.ui.utils.BottomNavigationHelper
 
 class InterestGroupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityInterestGroupBinding
 
+    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            showAppClosingDialog()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInterestGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        setup bottom navigation bar
+        binding.bottomNavigation.selectedItemId = R.id.interest_group
+
+        // setup bottomNavigation
         BottomNavigationHelper.setupBottomNavigationBar(
             binding.bottomNavigation,
             this,
             this
         )
+
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
-    //    setup exit confirmation
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        AppExitHandler.handleBackPress(this)
+    private fun showAppClosingDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Keluar dari aplikasi?")
+            .setMessage("Apakah kamu yakin ingin keluar dari aplikasi?")
+            .setNegativeButton("Tidak") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("Ya") { _, _ ->
+                finish()
+            }
+            .show()
     }
-
 }

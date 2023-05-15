@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.myprofile.MyProfileActivity">
 
-    <!--    TOOLBAR-->
+    <!-- TOOLBAR -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/profile_toolbar"
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!--    PROFILE BIO-->
+    <!-- PROFILE BIO -->
     <LinearLayout
         android:id="@+id/biodata_layout"
         android:layout_width="match_parent"

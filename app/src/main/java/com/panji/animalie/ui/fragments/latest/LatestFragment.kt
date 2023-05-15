@@ -21,6 +21,14 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private lateinit var binding: FragmentLatestBinding
     private val viewModel: ViewModelLatest by viewModels()
     private lateinit var adapterLatest: PostAdapter
+    private var typePost: String = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            typePost = it.getString(KEY_BUNDLE).toString()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +50,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private fun getPostLatest() {
         // get data from viewmodel
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getPost().observe(viewLifecycleOwner) {
+            viewModel.getLatestPost(typePost, null, null).observe(viewLifecycleOwner) {
                 when (it) {
                     is Resource.Error -> onFailed(it.message)
                     is Resource.Loading -> onLoading()
@@ -99,8 +107,13 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     }
 
     companion object {
-        fun getInstance(): Fragment {
-            return LatestFragment()
+        private const val KEY_BUNDLE = "type_post"
+        fun getInstance(typePost: String): Fragment {
+            return LatestFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_BUNDLE, typePost)
+                }
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ import com.panji.animalie.ui.fragments.popular.PopularFragment
 import com.panji.animalie.ui.fragments.savedpost.SavedPostFragment
 import com.panji.animalie.ui.fragments.unanswerd.UnansweredFragment
 
-class SectionTabAdapter(activity: AppCompatActivity, private val type: String) :
+class SectionTabAdapter(activity: AppCompatActivity, private val type: String, private val typePost: String) :
     FragmentStateAdapter(activity) {
     override fun getItemCount(): Int = 3
 
@@ -19,9 +19,9 @@ class SectionTabAdapter(activity: AppCompatActivity, private val type: String) :
 
         if (type == "homepage") {
             when (position) {
-                0 -> fragment = LatestFragment.getInstance()
-                1 -> fragment = PopularFragment.getInstance()
-                2 -> fragment = UnansweredFragment.getInstance()
+                0 -> fragment = LatestFragment.getInstance(typePost)
+                1 -> fragment = PopularFragment.getInstance(typePost)
+                2 -> fragment = UnansweredFragment.getInstance(typePost)
             }
         } else if (type == "profile") {
             when (position) {

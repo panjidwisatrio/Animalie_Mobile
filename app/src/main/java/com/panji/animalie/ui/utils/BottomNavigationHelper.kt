@@ -17,7 +17,7 @@ object BottomNavigationHelper {
         context: Context,
         currentActivity: AppCompatActivity
     ) {
-        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+        bottomNavigation.setOnItemSelectedListener { item ->
 
             val shouldSwitchActivity =
                 when (item.itemId) {
