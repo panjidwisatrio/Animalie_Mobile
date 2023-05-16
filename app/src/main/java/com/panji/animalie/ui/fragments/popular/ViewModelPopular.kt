@@ -9,6 +9,6 @@ class ViewModelPopular(application: Application) : AndroidViewModel(application)
     private val repository = Repository(application)
 
     // mengambil data post
-    suspend fun getPopularPost(type: String, selectedCategory: String?, selectedTag: String?) =
+    suspend fun getPopularPost(type: String, selectedCategory: String? = null, selectedTag: String?) =
         repository.getPopularPost(type, selectedCategory, selectedTag)
 }

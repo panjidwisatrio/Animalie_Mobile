@@ -1,4 +1,4 @@
-package com.panji.animalie.ui.utils
+package com.panji.animalie.util
 
 import android.content.Context
 import android.content.Intent

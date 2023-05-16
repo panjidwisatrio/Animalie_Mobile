@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.panji.animalie.R
 import com.panji.animalie.data.Resource
 import com.panji.animalie.databinding.FragmentUnansweredBinding
 import com.panji.animalie.model.response.PostResponse
@@ -22,11 +23,13 @@ class UnansweredFragment : Fragment(), ViewStateCallback<PostResponse> {
     private val viewModel: ViewModelUnanswerd by viewModels()
     private lateinit var adapterUnanswerd: PostAdapter
     private var typePost: String = ""
+    private var chipInterest: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             typePost = it.getString(KEY_BUNDLE).toString()
+            chipInterest = it.getString(CHIP_INTEREST)
         }
     }
 
@@ -40,26 +43,17 @@ class UnansweredFragment : Fragment(), ViewStateCallback<PostResponse> {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapterUnanswerd = PostAdapter()
+        adapterUnanswerd = PostAdapter(context)
 
-        setVisibility()
         getUnanswerdPost()
         showRecycleView()
-    }
-
-    private fun setVisibility() {
-        binding.apply {
-            unanswerdRecyclerView.visibility = visible
-            progressBar.visibility = invisible
-            errorText.visibility = invisible
-        }
     }
 
     private fun getUnanswerdPost() {
         // get data from viewmodel
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getUnanswerdPost(typePost, null, null).observe(viewLifecycleOwner) {
-                when(it) {
+            viewModel.getUnanswerdPost(typePost, chipInterest, null).observe(viewLifecycleOwner) {
+                when (it) {
                     is Resource.Loading -> onLoading()
                     is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
                     is Resource.Error -> onFailed(it.message)
@@ -78,11 +72,17 @@ class UnansweredFragment : Fragment(), ViewStateCallback<PostResponse> {
 
     override fun onSuccess(data: PostResponse) {
         // set data ke adapter
-        adapterUnanswerd.submitList(data.posts.data)
         binding.apply {
-            unanswerdRecyclerView.visibility = visible
-            progressBar.visibility = invisible
-            errorText.visibility = invisible
+            if (data.posts.data.isEmpty()) {
+                errorText.visibility = visible
+                progressBar.visibility = invisible
+                errorText.text = getString(R.string.empty_data)
+            } else {
+                adapterUnanswerd.submitList(data.posts.data)
+                unanswerdRecyclerView.visibility = visible
+                progressBar.visibility = invisible
+                errorText.visibility = invisible
+            }
         }
     }
 
@@ -107,10 +107,12 @@ class UnansweredFragment : Fragment(), ViewStateCallback<PostResponse> {
 
     companion object {
         private const val KEY_BUNDLE = "type_post"
-        fun getInstance(typePost: String): Fragment {
+        private const val CHIP_INTEREST = "chip_interest"
+        fun getInstance(typePost: String, chipInterest: String? = null): Fragment {
             return UnansweredFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_BUNDLE, typePost)
+                    putString(CHIP_INTEREST, chipInterest)
                 }
             }
         }

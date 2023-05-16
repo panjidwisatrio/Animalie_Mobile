@@ -5,6 +5,10 @@ import com.squareup.moshi.Json
 data class PostReady(
     @field:Json(name = "current_page")
     val currentPage: Int,
+    @field:Json(name = "first_page_url")
+    val firstPageUrl: String,
+    @field:Json(name = "next_page_url")
+    val nextPageUrl: String,
     @field:Json(name = "last_page")
     val lastPage: Int,
     @field:Json(name = "data")

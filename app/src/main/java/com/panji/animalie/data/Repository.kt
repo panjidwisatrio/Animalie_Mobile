@@ -84,7 +84,7 @@ class Repository(application: Application) {
         return auth
     }
 
-    suspend fun getLatestPost(type: String, selectedCategory: String?, selectedTag: String?): LiveData<Resource<PostResponse>> {
+    suspend fun getLatestPost(type: String, selectedCategory: String? = null, selectedTag: String?): LiveData<Resource<PostResponse>> {
         val post = MutableLiveData<Resource<PostResponse>>()
 
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
