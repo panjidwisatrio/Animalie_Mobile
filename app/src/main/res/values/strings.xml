@@ -35,6 +35,7 @@
     <string name="navbar_home">Home</string>
     <string name="navbar_interest">Interest</string>
     <string name="navbar_create">Create</string>
+    <string name="navbar_tag">Tag</string>
     <string name="navbar_chat">Chat</string>
     <string name="navbar_profile">Profile</string>
 
