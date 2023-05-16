@@ -102,6 +102,8 @@
     <string name="sudah_punya_akun">Sudah punya akun?&#32; &#8200; &#8195;</string>
     <string name="something_went_wrong">Something went wrong!</string>
     <string name="error_text">Error: %1$s</string>
+    <string name="posted_at">%1$s min ago</string>
+    <string name="empty_data">Tidak ada data</string>
 
     <!-- Tab -->
     <string name="tab_home">Latest</string>
@@ -119,5 +121,6 @@
     <string name="sheep">Domba</string>
     <string name="fish">Ikan</string>
     <string name="other">Lainnya</string>
+    <string name="lainnya">Lainnya</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.panji.animalie.R
 import com.panji.animalie.data.Resource
 import com.panji.animalie.databinding.FragmentLatestBinding
 import com.panji.animalie.model.response.PostResponse
@@ -21,6 +22,16 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private lateinit var binding: FragmentLatestBinding
     private val viewModel: ViewModelLatest by viewModels()
     private lateinit var adapterLatest: PostAdapter
+    private var typePost: String = ""
+    private var chipInterest: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            typePost = it.getString(KEY_BUNDLE).toString()
+            chipInterest = it.getString(CHIP_INTEREST)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +43,8 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapterLatest = PostAdapter()
+        adapterLatest = PostAdapter(context)
 
-        setVisibility()
         getPostLatest()
         showRecycleView()
     }
@@ -42,7 +52,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private fun getPostLatest() {
         // get data from viewmodel
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getPost().observe(viewLifecycleOwner) {
+            viewModel.getLatestPost(typePost, chipInterest, null).observe(viewLifecycleOwner) {
                 when (it) {
                     is Resource.Error -> onFailed(it.message)
                     is Resource.Loading -> onLoading()
@@ -60,22 +70,19 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
         }
     }
 
-    private fun setVisibility() {
-        // set visibility
-        binding.apply {
-            recyclerView.visibility = visible
-            progressBar.visibility = invisible
-            errorText.visibility = invisible
-        }
-    }
-
     override fun onSuccess(data: PostResponse) {
         // set data ke adapter
-        adapterLatest.submitList(data.posts.data)
         binding.apply {
-            recyclerView.visibility = visible
-            progressBar.visibility = invisible
-            errorText.visibility = invisible
+            if (data.posts.data.isEmpty()) {
+                errorText.visibility = visible
+                progressBar.visibility = invisible
+                errorText.text = getString(R.string.empty_data)
+            } else {
+                adapterLatest.submitList(data.posts.data)
+                recyclerView.visibility = visible
+                progressBar.visibility = invisible
+                errorText.visibility = invisible
+            }
         }
     }
 
@@ -99,8 +106,15 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     }
 
     companion object {
-        fun getInstance(): Fragment {
-            return LatestFragment()
+        private const val KEY_BUNDLE = "type_post"
+        private const val CHIP_INTEREST = "chip_interest"
+        fun getInstance(typePost: String, chipInterest: String? = null): Fragment {
+            return LatestFragment().apply {
+                arguments = Bundle().apply {
+                    putString(KEY_BUNDLE, typePost)
+                    putString(CHIP_INTEREST, chipInterest)
+                }
+            }
         }
     }
 }

@@ -4,10 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.panji.animalie.data.Repository
 
-class ViewModelLatest(application: Application): AndroidViewModel(application) {
+class ViewModelLatest(application: Application) : AndroidViewModel(application) {
     // inisialisasi repository
     private val repository = Repository(application)
 
     // mengambil data post
-    suspend fun getPost() = repository.getPost()
+    suspend fun getLatestPost(type: String, selectedCategory: String? = null, selectedTag: String?) =
+        repository.getLatestPost(type, selectedCategory, selectedTag)
 }

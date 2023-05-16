@@ -1,4 +1,4 @@
-package com.panji.animalie.ui.utils
+package com.panji.animalie.util
 
 import android.content.Context
 import android.content.Intent
@@ -17,7 +17,7 @@ object BottomNavigationHelper {
         context: Context,
         currentActivity: AppCompatActivity
     ) {
-        bottomNavigation.setOnNavigationItemSelectedListener { item ->
+        bottomNavigation.setOnItemSelectedListener { item ->
 
             val shouldSwitchActivity =
                 when (item.itemId) {

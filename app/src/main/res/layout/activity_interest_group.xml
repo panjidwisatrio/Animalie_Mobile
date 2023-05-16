@@ -25,6 +25,9 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/categories"
+            app:singleSelection="true"
+            app:checkedChip="@+id/cow_chip"
+            app:selectionRequired="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleLine="true">
@@ -32,6 +35,7 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/cow_chip"
                 style="@style/Widget.Material3.Chip.Filter"
+                app:checkedIconVisible="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cow"
@@ -41,6 +45,7 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/poultry_chip"
                 style="@style/Widget.Material3.Chip.Filter"
+                app:checkedIconVisible="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/poultry"
@@ -50,6 +55,7 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/goat_chip"
                 style="@style/Widget.Material3.Chip.Filter"
+                app:checkedIconVisible="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/goat"
@@ -59,6 +65,7 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/sheep_chip"
                 style="@style/Widget.Material3.Chip.Filter"
+                app:checkedIconVisible="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sheep"
@@ -68,6 +75,7 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/fish_chip"
                 style="@style/Widget.Material3.Chip.Filter"
+                app:checkedIconVisible="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fish"
@@ -77,9 +85,10 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/other_chip"
                 style="@style/Widget.Material3.Chip.Filter"
+                app:checkedIconVisible="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fish"
+                android:text="@string/lainnya"
                 app:chipIcon="@drawable/ic_other"
                 app:chipIconVisible="true" />
         </com.google.android.material.chip.ChipGroup>
