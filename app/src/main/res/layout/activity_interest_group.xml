@@ -6,24 +6,114 @@
     android:layout_height="match_parent"
     tools:context=".ui.interestgroup.InterestGroupActivity">
 
-    <!--        BOTTOM NAVIGATION-->
-<!--    <include-->
-<!--        android:id="@+id/bottom_navigation"-->
-<!--        layout="@layout/bottom_navigation"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true" />-->
+    <!--            SEARCH BAR-->
+    <include
+        android:id="@+id/search_bar"
+        layout="@layout/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <!--   CATEGORIES CHIPS-->
+    <HorizontalScrollView
+        android:id="@+id/categories_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_below="@id/search_bar"
+        android:layout_marginHorizontal="16dp">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/categories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cow_chip"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cow"
+                app:chipIcon="@drawable/ic_cow"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/poultry_chip"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/poultry"
+                app:chipIcon="@drawable/ic_poultry"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/goat_chip"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/goat"
+                app:chipIcon="@drawable/ic_goat"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sheep_chip"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sheep"
+                app:chipIcon="@drawable/ic_sheep"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/fish_chip"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fish"
+                app:chipIcon="@drawable/ic_fish"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/other_chip"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fish"
+                app:chipIcon="@drawable/ic_other"
+                app:chipIconVisible="true" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+
+    <!--   TAB LAYOUT-->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/categories_layout"
+        app:tabIndicator="?attr/colorPrimary"
+        app:tabMode="fixed"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="?attr/colorPrimary"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="?attr/colorOnSurfaceVariant" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_below="@+id/tab_layout"
+        android:layout_marginBottom="8dp" />
+
+
+    <!--        BOTTOM NAVIGATION-->
+    <include
         android:id="@+id/bottom_navigation"
-        android:layout_alignParentBottom="true"
-        app:elevation="4dp"
-        app:itemIconTint="@drawable/bottom_navigation_item_colors"
-        app:itemRippleColor="?attr/colorPrimaryInverse"
-        app:itemTextColor="?attr/colorPrimary"
-        app:labelVisibilityMode="selected"
-        app:menu="@menu/bottom_navigation_menu" />
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
