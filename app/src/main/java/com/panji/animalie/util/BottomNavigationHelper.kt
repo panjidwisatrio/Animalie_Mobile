@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.panji.animalie.R
 import com.panji.animalie.ui.chat.ChatActivity
-import com.panji.animalie.ui.createpost.CreatePostActivity
 import com.panji.animalie.ui.homepage.HomePage
 import com.panji.animalie.ui.interestgroup.InterestGroupActivity
 import com.panji.animalie.ui.myprofile.MyProfileActivity
+import com.panji.animalie.ui.tag.TagActivity
 
 object BottomNavigationHelper {
     fun setupBottomNavigationBar(
@@ -31,8 +31,8 @@ object BottomNavigationHelper {
                         true
                     }
 
-                    R.id.create_post -> {
-                        context.startActivity(Intent(context, CreatePostActivity::class.java))
+                    R.id.tag -> {
+                        context.startActivity(Intent(context, TagActivity::class.java))
                         true
                     }
 
