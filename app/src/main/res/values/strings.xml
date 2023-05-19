@@ -7,7 +7,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-<!--    login register page-->
+    <!--    login register page-->
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="email_username">Email atau Username</string>
@@ -15,7 +15,7 @@
     <string name="no_account">Tidak mempunyai akun? </string>
     <string name="have_account">Sudah punya akun? </string>
 
-<!--    edit bio-->
+    <!--    edit bio-->
     <string name="edit_bio">Ubah data diri</string>
     <string name="edit_password">Ubah katasandi</string>
     <string name="edit_fullname">Nama Lengkap</string>
@@ -48,6 +48,29 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
+    <!-- Strings related to notification-->
+    <string name="set_notifications_Chat">mengirim pesan kepada anda</string>
+    <string name="set_notification_like">menyukai postingan anda</string>
+    <string name="set_notification_comment">mengomentari postingan anda: </string>
+
+    <string name="person_name">Nama</string>
+    <string name="badge">verification badge</string>
+
+    <!-- Strings related to chat-->
+    <string name="room_chat_receiver_name">Contact Name</string>
+    <string name="room_chat_ketik_pesan">Ketik pesan disini...</string>
+    <string name="room_chat_preview_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+
+    <string name="contact_card_name">Doctor Name</string>
+    <string name="contact_doctor_specialist">Specialist</string>
+    <string name="contact_doctor_work_experience">10</string>
+
+    <!-- Strings related to notification-->
+    <string name="notification">Tandai sudah dibaca</string>
+    <string name="notification_username">nama</string>
+    <string name="notification_description">notification</string>
+
+
     <string name="search_hint">Cari disini..</string>
     <string name="tab_latest">Terbaru</string>
     <string name="tab_popular">Popular</string>
@@ -63,7 +86,7 @@
     <string name="post_content">This is the post content. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vestibulum tellus et ex tristique, non suscipit urna gravida. Sed nec interdum elit. Vestibulum sit amet felis ac tortor viverra ultrices. Pellentesque eget nibh ipsum.</string>
 
     <string name="profile_description">profile</string>
-    <string name="notification_description">notification</string>
+
     <string name="like_description">like</string>
     <string name="comment_description">comment</string>
     <string name="share_description">share</string>
@@ -72,6 +95,8 @@
 
     <string name="myprofile">My Profile</string>
     <string name="othprofile">Other Profile</string>
+    <string name="chat">Chat</string>
+    <string name="notificationBarTitle">Notifikasi</string>
 
     <string name="profession_workplace">Manager Peternakan di Perusahaan</string>
     <string name="edit_profile">Edit Profile</string>
@@ -90,6 +115,7 @@
     <string name="content">Tulis disini..</string>
     <string name="send">Send</string>
     <string name="ketik_pesan_anda_disini">Ketik pesan anda disini…</string>
+    <string name="mengirim_pesan">mengirim pesan kepada anda</string>
     <string name="logo_animalie">Logo_Animalie</string>
     <string name="email_atau_username">Email atau Username</string>
     <string name="tidak_mempunyai_akun">Tidak mempunyai akun?&#32; &#8200; &#8195;</string>
@@ -102,6 +128,8 @@
     <string name="something_went_wrong">Something went wrong!</string>
     <string name="error_text">Error: %1$s</string>
 
+
+
     <!-- Tab -->
     <string name="tab_home">Latest</string>
     <string name="tab_interest">Popular</string>
@@ -109,6 +137,8 @@
     <string name="tab_mypost">My Post</string>
     <string name="tab_discussion">Discussion</string>
     <string name="tab_savedpost">Saved Post</string>
+
+
 
 
 </resources>
