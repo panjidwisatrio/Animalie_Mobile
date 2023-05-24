@@ -77,20 +77,7 @@
             android:hint="@string/tag" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--            Content-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/content_layout"
-        style="@style/CustomTextFieldStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+    <!-- Text Editor-->
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/background"
-            android:hint="@string/content" />
-    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

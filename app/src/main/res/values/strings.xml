@@ -123,4 +123,7 @@
     <string name="other">Lainnya</string>
     <string name="lainnya">Lainnya</string>
 
+    <!--    Tags-->
+    <string name="tag_name">Name tag</string>
+    <string name="tag_counter">%1$f posts</string>
 </resources>

@@ -30,7 +30,8 @@ class CertificateAdapter(private val data: List<Certificate>) :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(certificate: Certificate) = with(binding) {
 
-//            temporary change
+            //TODO:show certificate picture
+
             certificateTitle.text = certificate.name
             certificatePublisher.text = certificate.organization_issue
         }
