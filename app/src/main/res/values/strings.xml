@@ -59,7 +59,7 @@
 
     <!-- Strings related to chat-->
     <string name="room_chat_receiver_name">Contact Name</string>
-    <string name="room_chat_ketik_pesan">Ketik pesan disini...</string>
+    <string name="room_chat_ketik_pesan">Ketik pesan disini&#8230;</string>
     <string name="room_chat_preview_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
 
     <string name="contact_card_name">Doctor Name</string>
@@ -131,8 +131,6 @@
     <string name="posted_at">%1$s min ago</string>
     <string name="empty_data">Tidak ada data</string>
 
-
-
     <!-- Tab -->
     <string name="tab_home">Latest</string>
     <string name="tab_interest">Popular</string>
@@ -140,5 +138,17 @@
     <string name="tab_mypost">My Post</string>
     <string name="tab_discussion">Discussion</string>
     <string name="tab_savedpost">Saved Post</string>
+
+    <!-- Categories-->
+    <string name="cow">Sapi</string>
+    <string name="poultry">Unggas</string>
+    <string name="goat">Kambing</string>
+    <string name="sheep">Domba</string>
+    <string name="fish">Ikan</string>
+    <string name="other">Lainnya</string>
+    <string name="lainnya">Lainnya</string>
+    <string name="job">Job</string>
+    <string name="di">di</string>
+    <string name="belum_ada_pekerjaan">Belum ada pekerjaan</string>
 
 </resources>
