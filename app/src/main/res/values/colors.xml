@@ -62,4 +62,10 @@
     <color name="md_theme_dark_outlineVariant">#414941</color>
     <color name="md_theme_dark_scrim">#000000</color>
     <color name="transparent">#00000000</color>
+    <color name="send_bubble_chat">#D5F5F6</color>
+    <color name="receiver_bubble_chat">#5CCD74</color>
+    <color name="search_chat_background">#F4F2F2</color>
+    <color name="search_text_color">#49454F</color>
+    <color name="experience_time_background">#D9D9D9</color>
+    <color name="notification_background_unread">#CFF4D2</color>
 </resources>
