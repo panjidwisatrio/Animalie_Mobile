@@ -7,11 +7,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.panji.animalie.R
 import com.panji.animalie.data.Resource
+import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.ActivityLoginBinding
 import com.panji.animalie.model.response.Auth
 import com.panji.animalie.ui.homepage.HomePage
 import com.panji.animalie.ui.register.RegisterActivity
-import com.panji.animalie.util.Constanta.PREFS_NAME
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +21,9 @@ class LoginActivity : AppCompatActivity(), ViewStateCallback<Auth> {
 
     private lateinit var binding: ActivityLoginBinding
     private val viewModel by viewModels<ViewModelLogin>()
+    private val sessionManager: SessionManager by lazy {
+        SessionManager(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,11 @@ class LoginActivity : AppCompatActivity(), ViewStateCallback<Auth> {
         binding.loginButton.setOnClickListener {
             val email = binding.UsernameEmailForm.text.toString()
             val password = binding.NewPasswordForm.text.toString()
+
+            if (email.isBlank() || password.isBlank()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             CoroutineScope(Dispatchers.Main).launch {
                 viewModel.login(email, password).observe(this@LoginActivity) {
@@ -67,10 +75,7 @@ class LoginActivity : AppCompatActivity(), ViewStateCallback<Auth> {
     }
 
     override fun onSuccess(data: Auth) {
-        getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit().apply {
-            putString("TOKEN", data.access_token)
-            apply()
-        }
+        sessionManager.saveToken(data.access_token)
 
         binding.progressBarLogin.visibility = invisible
         Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()

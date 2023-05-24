@@ -40,6 +40,8 @@ data class Post(
     val User: User,
     @field:Json(name = "category")
     val Category: Category,
-    @field:Json(name = "comments")
-    val Comments: List<Comment>
+    @field:Json(name = "comment")
+    val Comments: List<Comment>,
+    @field:Json(name = "like_count_api")
+    val like: Like?
 )

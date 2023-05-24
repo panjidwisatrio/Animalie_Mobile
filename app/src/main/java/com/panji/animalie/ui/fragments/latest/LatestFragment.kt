@@ -1,17 +1,21 @@
 package com.panji.animalie.ui.fragments.latest
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.panji.animalie.R
 import com.panji.animalie.data.Resource
 import com.panji.animalie.databinding.FragmentLatestBinding
+import com.panji.animalie.model.Post
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.ui.adapter.PostAdapter
+import com.panji.animalie.util.PaginationScrollListener
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +28,9 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private lateinit var adapterLatest: PostAdapter
     private var typePost: String = ""
     private var chipInterest: String? = null
+    private var isLoading = false
+    private var currentPage = 1
+    private var totalPage: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,13 +59,14 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private fun getPostLatest() {
         // get data from viewmodel
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getLatestPost(typePost, chipInterest, null).observe(viewLifecycleOwner) {
-                when (it) {
-                    is Resource.Error -> onFailed(it.message)
-                    is Resource.Loading -> onLoading()
-                    is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
+            viewModel.getLatestPost(typePost, chipInterest, null, currentPage)
+                .observe(viewLifecycleOwner) {
+                    when (it) {
+                        is Resource.Error -> onFailed(it.message)
+                        is Resource.Loading -> onLoading()
+                        is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
+                    }
                 }
-            }
         }
     }
 
@@ -67,7 +75,46 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
         binding.recyclerView.apply {
             adapter = adapterLatest
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            // TODO 2: set scroll listener for pagination
+//            addOnScrollListener(object : PaginationScrollListener(layoutManager as LinearLayoutManager) {
+//                override fun loadMoreItems() {
+//                    loadMoreItem(++currentPage)
+//                }
+//
+//                override fun getTotalPageCount(): Int? {
+//                    return totalPage
+//                }
+//
+//                override fun isLastPage(): Boolean {
+//                    return currentPage == totalPage
+//                }
+//
+//                override fun isLoading(): Boolean {
+//                    return isLoading
+//                }
+//            })
         }
+    }
+
+    private fun loadMoreItem(page: Int) {
+        isLoading = true
+
+        // get data from viewmodel
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.getLatestPost(typePost, chipInterest, null, page)
+                .observe(viewLifecycleOwner) {
+                    when (it) {
+                        is Resource.Error -> onFailed(it.message)
+                        is Resource.Loading -> binding.progressBar.visibility = visible
+                        is Resource.Success -> {
+                            binding.progressBar.visibility = invisible
+                            adapterLatest.submitList(it.data?.posts?.data)
+                        }
+                    }
+                }
+        }
+
+        isLoading = false
     }
 
     override fun onSuccess(data: PostResponse) {
@@ -78,6 +125,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
                 progressBar.visibility = invisible
                 errorText.text = getString(R.string.empty_data)
             } else {
+                totalPage = data.posts.lastPage
                 adapterLatest.submitList(data.posts.data)
                 recyclerView.visibility = visible
                 progressBar.visibility = invisible

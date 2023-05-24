@@ -4,28 +4,24 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.ui.homepage.HomePage
 import com.panji.animalie.ui.login.LoginActivity
-import com.panji.animalie.util.Constanta.PREFS_NAME
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
+    private val sessionManager: SessionManager by lazy {
+        SessionManager(this)
+    }
 
-            getSharedPreferences(PREFS_NAME, MODE_PRIVATE).apply {
-                if (getString("TOKEN", null) != null) {
-                    startActivity(
-                        Intent(this@SplashActivity, HomePage::class.java)
-                    )
-                    finish()
-                } else {
-                    startActivity(
-                        Intent(this@SplashActivity, LoginActivity::class.java)
-                    )
-                    finish()
-                }
-            }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (sessionManager.fetchToken() == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+        } else {
+            startActivity(Intent(this, HomePage::class.java))
         }
+    }
 }
