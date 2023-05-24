@@ -122,5 +122,8 @@
     <string name="fish">Ikan</string>
     <string name="other">Lainnya</string>
     <string name="lainnya">Lainnya</string>
+    <string name="job">Job</string>
+    <string name="di">di</string>
+    <string name="belum_ada_pekerjaan">Belum ada pekerjaan</string>
 
 </resources>

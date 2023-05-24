@@ -8,7 +8,6 @@ import com.panji.animalie.databinding.ActivityTagBinding
 class TagActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTagBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTagBinding.inflate(layoutInflater)
