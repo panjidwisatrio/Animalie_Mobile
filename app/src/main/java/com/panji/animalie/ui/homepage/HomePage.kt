@@ -8,7 +8,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.R
 import com.panji.animalie.databinding.HomePageBinding
 import com.panji.animalie.ui.adapter.SectionTabAdapter
-import com.panji.animalie.ui.utils.BottomNavigationHelper
+import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES
 
 
@@ -27,11 +27,11 @@ class HomePage : AppCompatActivity() {
         binding = HomePageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.bottomNavigation.selectedItemId = R.id.home
+        binding.bottomNavigation.bottomNavigation.selectedItemId = R.id.home
 
         // setup bottomNavigation
         BottomNavigationHelper.setupBottomNavigationBar(
-            binding.bottomNavigation,
+            binding.bottomNavigation.bottomNavigation,
             this,
             this
         )

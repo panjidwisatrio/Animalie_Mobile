@@ -1,9 +1,11 @@
 package com.panji.animalie.data.remote.api
 
 import com.panji.animalie.model.response.Auth
+import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -30,13 +32,12 @@ interface ApiService {
         confirm_password: String
     ): Response<Auth>
 
-    @GET("post")
-    suspend fun post(): Response<PostResponse>
-
     @GET("latest")
     suspend fun latest(
         @Query("type")
         type: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("latest")
@@ -45,6 +46,8 @@ interface ApiService {
         type: String,
         @Query("selectedCategory")
         selectedCategory: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("latest")
@@ -53,12 +56,16 @@ interface ApiService {
         type: String,
         @Query("selectedTag")
         selectedTag: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("popular")
     suspend fun popular(
         @Query("type")
         type: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("popular")
@@ -67,6 +74,8 @@ interface ApiService {
         type: String,
         @Query("selectedCategory")
         selectedCategory: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("popular")
@@ -75,12 +84,16 @@ interface ApiService {
         type: String,
         @Query("selectedTag")
         selectedTag: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("unanswerd")
     suspend fun unanswerd(
         @Query("type")
         type: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("unanswerd")
@@ -89,6 +102,8 @@ interface ApiService {
         type: String,
         @Query("selectedCategory")
         selectedCategory: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("unanswerd")
@@ -97,5 +112,35 @@ interface ApiService {
         type: String,
         @Query("selectedTag")
         selectedTag: String,
+        @Query("page")
+        page: Int? = 1,
+    ): Response<PostResponse>
+
+    @GET("myProfile")
+    suspend fun myProfile(
+        @Header("Authorization")
+        token: String
+    ): Response<MyProfileResponse>
+
+    @GET("savedpost")
+    suspend fun savedPost(
+        @Header("Authorization")
+        token: String,
+    ): Response<PostResponse>
+
+    @GET("myProfile/mypost")
+    suspend fun myPost(
+        @Query("userId")
+        userId: String,
+        @Query("page")
+        page: Int? = 1,
+    ): Response<PostResponse>
+
+    @GET("myProfile/discussion")
+    suspend fun myDiscussion(
+        @Query("userId")
+        userId: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 }

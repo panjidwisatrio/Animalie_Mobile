@@ -12,8 +12,6 @@ data class User(
     val username: String,
     @field:Json(name = "email")
     val email: String,
-    @field:Json(name = "password")
-    val password: String,
     @field:Json(name = "work_place")
     val work_place: String? = null,
     @field:Json(name = "job_position")
@@ -26,6 +24,4 @@ data class User(
     val created_at: String,
     @field:Json(name = "updated_at")
     val updated_at: String,
-    @field:Json(name = "remember_token")
-    val remember_token: String? = null,
 )
