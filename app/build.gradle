@@ -94,6 +94,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //WYSIWYG
-    //TODO: fix wysiwyg
-    implementation 'com.github.chinalwb:are:0.1.7'
+//    implementation 'com.github.chinalwb:are:0.1.7'
 }
