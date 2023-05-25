@@ -1,3 +1,5 @@
 package com.panji.animalie.model
 
-data class Doctor()
+data class Doctor(
+    val id: Int
+    )
