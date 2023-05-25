@@ -95,7 +95,7 @@
     <string name="bookmark_description">bookmark</string>
 
     <string name="myprofile">My Profile</string>
-    <string name="othprofile">Other Profile</string>
+    <string name="othprofile">Profile</string>
     <string name="chat">Chat</string>
     <string name="notificationBarTitle">Notifikasi</string>
 
@@ -150,5 +150,6 @@
     <string name="job">Job</string>
     <string name="di">di</string>
     <string name="belum_ada_pekerjaan">Belum ada pekerjaan</string>
+    <string name="Room_chat_ketik_pesan">ketik pesan</string>
 
 </resources>

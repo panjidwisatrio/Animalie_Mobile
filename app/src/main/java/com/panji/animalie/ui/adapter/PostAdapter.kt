@@ -3,6 +3,7 @@ package com.panji.animalie.ui.adapter
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import com.bumptech.glide.Glide
 import com.panji.animalie.R
 import com.panji.animalie.databinding.PostBinding
 import com.panji.animalie.model.Post
+import com.panji.animalie.ui.detail.DetailPostActivity
+import com.panji.animalie.util.Constanta.EXTRA_POST
 import com.panji.animalie.util.Constanta.URL_IMAGE
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -56,9 +59,9 @@ class PostAdapter(val context: Context?) : ListAdapter<Post, PostAdapter.ViewHol
                 username.text = post.User.username
                 postTitle.text = post.title
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                if (SDK_INT >= Build.VERSION_CODES.N) {
                     postContent.text = Html.fromHtml(post.content, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                } else if (SDK_INT < Build.VERSION_CODES.N) {
                     postContent.text = Html.fromHtml(post.content)
                 }
 
@@ -86,8 +89,20 @@ class PostAdapter(val context: Context?) : ListAdapter<Post, PostAdapter.ViewHol
                     )
                 }
 
-                // TODO: 1. Buatlah sebuah fungsi untuk melakukan bookmark post
-                // TODO: 2. Buatlah sebuah fungsi untuk melakukan like post
+                bookmark.setOnClickListener {
+                    // TODO: 1. Buatlah sebuah fungsi untuk melakukan bookmark post
+                }
+
+                likeButton.setOnClickListener {
+                    // TODO: 2. Buatlah sebuah fungsi untuk melakukan like post
+                }
+
+                content.setOnClickListener {
+                    content.context?.startActivity(
+                        Intent(content.context, DetailPostActivity::class.java)
+                            .putExtra(EXTRA_POST, post.slug)
+                    )
+                }
             }
         }
     }

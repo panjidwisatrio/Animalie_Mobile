@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.panji.animalie.data.remote.api.ApiService
 import com.panji.animalie.data.remote.api.RetrofitService
 import com.panji.animalie.model.response.Auth
+import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -238,7 +239,37 @@ class Repository(application: Application) {
         return user
     }
 
-    suspend fun getSavedPost(token: String): LiveData<Resource<PostResponse>> {
+    suspend fun getOtherProfile(username: String): LiveData<Resource<MyProfileResponse>> {
+        val user = MutableLiveData<Resource<MyProfileResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            user.postValue(Resource.Error(throwable.message))
+        }
+
+        user.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.otherProfile(username)
+
+            if (response.isSuccessful) {
+                user.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    user.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    user.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    user.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    user.postValue(Resource.Error("Internal server error"))
+                } else {
+                    user.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return user
+    }
+
+    suspend fun getSavedPost(token: String, page: Int?): LiveData<Resource<PostResponse>> {
         val post = MutableLiveData<Resource<PostResponse>>()
 
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -247,7 +278,7 @@ class Repository(application: Application) {
 
         post.postValue(Resource.Loading())
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.savedPost("Bearer $token")
+            val response = retrofit.savedPost("Bearer $token", page)
 
             if (response.isSuccessful) {
                 post.postValue(Resource.Success(response.body()))
@@ -298,7 +329,7 @@ class Repository(application: Application) {
         return post
     }
 
-    suspend fun getMyDiscussion(userId: String, page: Int?): LiveData<Resource<PostResponse>> {
+    suspend fun getDiscussion(userId: String, page: Int?): LiveData<Resource<PostResponse>> {
         val post = MutableLiveData<Resource<PostResponse>>()
 
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -322,6 +353,36 @@ class Repository(application: Application) {
                     post.postValue(Resource.Error("Internal server error"))
                 } else {
                     post.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return post
+    }
+
+    suspend fun getDetailPost(slug: String): LiveData<Resource<DetailPostResponse>> {
+        val post = MutableLiveData<Resource<DetailPostResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            post.postValue(Resource.Error(throwable.message))
+        }
+
+        post.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.detailPost(slug)
+
+            if (response.isSuccessful) {
+                post.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    post.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    post.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    post.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    post.postValue(Resource.Error("Internal server error"))
+                } else {
+                    post.postValue(Resource.Error("Something went wrong: ${response.code()}"))
                 }
             }
         }

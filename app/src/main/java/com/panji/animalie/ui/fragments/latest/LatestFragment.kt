@@ -2,6 +2,7 @@ package com.panji.animalie.ui.fragments.latest
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,7 +63,12 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
             viewModel.getLatestPost(typePost, chipInterest, null, currentPage)
                 .observe(viewLifecycleOwner) {
                     when (it) {
-                        is Resource.Error -> onFailed(it.message)
+                        is Resource.Error -> {
+                            Log.d("LatestFragment", "typePost: $typePost")
+                            Log.d("LatestFragment", "chipInterest: $chipInterest")
+                            Log.d("LatestFragment", "currentPage: $currentPage")
+                            onFailed(it.message)
+                        }
                         is Resource.Loading -> onLoading()
                         is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
                     }

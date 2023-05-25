@@ -92,7 +92,7 @@ class InterestGroupActivity : AppCompatActivity() {
     }
 
     private fun setTabLayout(chipInterest: String) {
-        val pageAdapter = SectionTabAdapter(this, "homepage", "interestGroup", chipInterest)
+        val pageAdapter = SectionTabAdapter(this, "homepage", "interestGroup", chipInterest = chipInterest)
 
         binding.apply {
             viewPager.adapter = pageAdapter

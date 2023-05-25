@@ -1,12 +1,14 @@
 package com.panji.animalie.data.remote.api
 
 import com.panji.animalie.model.response.Auth
+import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -122,10 +124,18 @@ interface ApiService {
         token: String
     ): Response<MyProfileResponse>
 
+    @GET("profile/{username}")
+    suspend fun otherProfile(
+        @Path("username")
+        username: String,
+    ): Response<MyProfileResponse>
+
     @GET("savedpost")
     suspend fun savedPost(
         @Header("Authorization")
         token: String,
+        @Query("page")
+        page: Int? = 1,
     ): Response<PostResponse>
 
     @GET("myProfile/mypost")
@@ -143,4 +153,10 @@ interface ApiService {
         @Query("page")
         page: Int? = 1,
     ): Response<PostResponse>
+
+    @GET("post-detail/{slug}")
+    suspend fun detailPost(
+        @Path("slug")
+        slug: String,
+    ): Response<DetailPostResponse>
 }
