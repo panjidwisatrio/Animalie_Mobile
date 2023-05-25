@@ -10,6 +10,8 @@ object Constanta {
     const val BASE_URL = "http://127.0.0.1:8000/api/"
     const val URL_IMAGE = "http://127.0.0.1:8000/storage/"
 
+    const val EXTRA_POST = "extra_post"
+
     val TAB_TITLES = intArrayOf(
         tab_home,
         tab_interest,

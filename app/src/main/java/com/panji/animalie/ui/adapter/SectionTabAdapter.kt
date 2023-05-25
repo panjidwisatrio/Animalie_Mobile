@@ -10,8 +10,14 @@ import com.panji.animalie.ui.fragments.popular.PopularFragment
 import com.panji.animalie.ui.fragments.savedpost.SavedPostFragment
 import com.panji.animalie.ui.fragments.unanswerd.UnansweredFragment
 
-class SectionTabAdapter(activity: AppCompatActivity, private val type: String, private val typePost: String, private val chipInterest: String? = null) :
-    FragmentStateAdapter(activity) {
+class SectionTabAdapter(
+    activity: AppCompatActivity,
+    private val type: String,
+    private val typePost: String,
+    private val userId: String? = null,
+    private val chipInterest: String? = null,
+    private val token: String? = null,
+): FragmentStateAdapter(activity) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
@@ -25,9 +31,9 @@ class SectionTabAdapter(activity: AppCompatActivity, private val type: String, p
             }
         } else if (type == "profile") {
             when (position) {
-                0 -> fragment = MyPostFragment.getInstance()
-                1 -> fragment = DiscussionFragment.getInstance()
-                2 -> fragment = SavedPostFragment.getInstance()
+                0 -> fragment = userId?.let { MyPostFragment.getInstance(it) }
+                1 -> fragment = userId?.let { DiscussionFragment.getInstance(it) }
+                2 -> fragment = token?.let { SavedPostFragment.getInstance(it) }
             }
         }
         return fragment as Fragment

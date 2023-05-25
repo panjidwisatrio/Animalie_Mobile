@@ -2,7 +2,6 @@ package com.panji.animalie.model
 
 import com.squareup.moshi.Json
 
-
 data class User(
     @field:Json(name = "id")
     val id: Int,

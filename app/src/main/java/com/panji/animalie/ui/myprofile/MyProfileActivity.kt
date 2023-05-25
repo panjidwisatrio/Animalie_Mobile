@@ -15,6 +15,7 @@ import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.ui.adapter.SectionTabAdapter
 import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES_PROFILE
+import com.panji.animalie.util.Constanta.URL_IMAGE
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,7 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
     private val sessionManager: SessionManager by lazy {
         SessionManager(this)
     }
+    private var userId: String = ""
 
     private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -40,6 +42,8 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
         setContentView(binding.root)
 
         binding.bottomNavigation.bottomNavigation.selectedItemId = R.id.profile
+        setSupportActionBar(binding.profileToolbar.appBar)
+        supportActionBar?.title = "My Profile"
 
         // setup bottomNavigation
         BottomNavigationHelper.setupBottomNavigationBar(
@@ -84,7 +88,7 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
     }
 
     private fun setTabLayout() {
-        val pageAdapter = SectionTabAdapter(this, "profile", "myProfile")
+        val pageAdapter = SectionTabAdapter(this, "profile", "myProfile", userId = userId, token = sessionManager.fetchToken())
 
         binding.apply {
             viewPager.adapter = pageAdapter
@@ -96,8 +100,14 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
     }
 
     override fun onSuccess(data: MyProfileResponse) {
+        userId = data.user.id.toString()
+        val stringBuilder = data.user.avatar?.let { StringBuilder(it) }
+        val fixString = stringBuilder?.replace(11, 12, "/").toString()
+
         binding.apply {
             progressBar.visibility = invisible
+            biodataLayout.visibility = visible
+            scrollView.visibility = visible
 
             fullname.text = data.user.name
             username.text = data.user.username
@@ -115,7 +125,7 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
                 profilePhoto.setImageResource(R.mipmap.profile_photo_round)
             } else {
                 Glide.with(this@MyProfileActivity)
-                    .load(data.user.avatar)
+                    .load(URL_IMAGE + fixString)
                     .into(profilePhoto)
             }
 
@@ -125,12 +135,16 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
     override fun onLoading() {
         binding.apply {
             progressBar.visibility = visible
+            biodataLayout.visibility = invisible
+            scrollView.visibility = invisible
         }
     }
 
     override fun onFailed(message: String?) {
         binding.apply {
             progressBar.visibility = invisible
+            biodataLayout.visibility = invisible
+            scrollView.visibility = invisible
         }
 
         message?.let {
