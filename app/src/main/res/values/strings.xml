@@ -59,7 +59,7 @@
 
     <!-- Strings related to chat-->
     <string name="room_chat_receiver_name">Contact Name</string>
-    <string name="room_chat_ketik_pesan">Ketik pesan disini...</string>
+    <string name="room_chat_ketik_pesan">Ketik pesan disini&#8230;</string>
     <string name="room_chat_preview_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
 
     <string name="contact_card_name">Doctor Name</string>
