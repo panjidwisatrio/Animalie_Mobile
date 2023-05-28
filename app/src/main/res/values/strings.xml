@@ -134,7 +134,7 @@
     <!-- Tab -->
     <string name="tab_home">Latest</string>
     <string name="tab_interest">Popular</string>
-    <string name="tab_unanswerd">Unanswerd</string>
+    <string name="tab_unanswerd">Unanswered</string>
     <string name="tab_mypost">My Post</string>
     <string name="tab_discussion">Discussion</string>
     <string name="tab_savedpost">Saved Post</string>
@@ -154,7 +154,9 @@
 
     <!--    Tags-->
     <string name="tag_name">Name tag</string>
-    <string name="tag_counter">%1$f posts</string>
+    <string name="tag_counter">%1$s posts</string>
 
     <string name="comment">Tulis komentar...</string>
+
+    <string name="appBar_name">Appbar Name</string>
 </resources>

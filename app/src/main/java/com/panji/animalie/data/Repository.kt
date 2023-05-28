@@ -5,14 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.panji.animalie.data.remote.api.ApiService
 import com.panji.animalie.data.remote.api.RetrofitService
+import com.panji.animalie.model.Tag
 import com.panji.animalie.model.response.Auth
 import com.panji.animalie.model.response.DetailPostResponse
+import com.panji.animalie.model.response.DetailTagResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
+import com.panji.animalie.model.response.TagResponse
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class Repository(application: Application) {
     private val retrofit: ApiService = RetrofitService.create()
@@ -102,7 +106,7 @@ class Repository(application: Application) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
                 retrofit.latestCategory(type, selectedCategory, page)
-            } else if(selectedTag != null && type != "dashboard" && type != "interestGroup") {
+            } else if (selectedTag != null && type != "dashboard" && type != "interestGroup") {
                 retrofit.latestTag(type, selectedTag, page)
             } else {
                 retrofit.latest(type, page)
@@ -143,7 +147,7 @@ class Repository(application: Application) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
                 retrofit.popularCategory(type, selectedCategory, page)
-            } else if(selectedTag != null && type != "dashboard" && type != "interestGroup") {
+            } else if (selectedTag != null && type != "dashboard" && type != "interestGroup") {
                 retrofit.popularTag(type, selectedTag, page)
             } else {
                 retrofit.popular(type, page)
@@ -184,7 +188,7 @@ class Repository(application: Application) {
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
                 retrofit.unanswerdCategory(type, selectedCategory, page)
-            } else if(selectedTag != null && type != "dashboard" && type != "interestGroup") {
+            } else if (selectedTag != null && type != "dashboard" && type != "interestGroup") {
                 retrofit.unanswerdTag(type, selectedTag, page)
             } else {
                 retrofit.unanswerd(type, page)
@@ -387,5 +391,69 @@ class Repository(application: Application) {
             }
         }
         return post
+    }
+
+    suspend fun getAllTag(): LiveData<Resource<TagResponse>> {
+        val tag = MutableLiveData<Resource<TagResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            tag.postValue(Resource.Error(throwable.message))
+        }
+
+        tag.postValue(Resource.Loading())
+
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.allTag()
+
+            if (response.isSuccessful) {
+                tag.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    tag.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    tag.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    tag.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    tag.postValue(Resource.Error("Internal server error"))
+                } else {
+                    tag.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return tag
+    }
+
+    suspend fun getDetailTag(slug: String): LiveData<Resource<DetailTagResponse>>{
+        val detailTag = MutableLiveData<Resource<DetailTagResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            detailTag.postValue(Resource.Error(throwable.message))
+        }
+
+        detailTag.postValue(Resource.Loading())
+
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.detailTag(slug)
+
+            if (response.isSuccessful) {
+                detailTag.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    detailTag.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    detailTag.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    detailTag.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    detailTag.postValue(Resource.Error("Internal server error"))
+                } else {
+                    detailTag.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return detailTag
+
+
     }
 }

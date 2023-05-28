@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.panji.animalie.R
 import com.panji.animalie.data.Resource
 import com.panji.animalie.databinding.FragmentLatestBinding
+import com.panji.animalie.model.DetailTag
 import com.panji.animalie.model.Post
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.ui.adapter.PostAdapter
@@ -29,6 +30,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private lateinit var adapterLatest: PostAdapter
     private var typePost: String = ""
     private var chipInterest: String? = null
+    private var selectedTag: String? = null
     private var isLoading = false
     private var currentPage = 1
     private var totalPage: Int? = null
@@ -38,6 +40,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
         arguments?.let {
             typePost = it.getString(KEY_BUNDLE).toString()
             chipInterest = it.getString(CHIP_INTEREST)
+            selectedTag = it.getString(SELECTED_TAG)
         }
     }
 
@@ -60,7 +63,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private fun getPostLatest() {
         // get data from viewmodel
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getLatestPost(typePost, chipInterest, null, currentPage)
+            viewModel.getLatestPost(typePost, chipInterest, selectedTag, currentPage)
                 .observe(viewLifecycleOwner) {
                     when (it) {
                         is Resource.Error -> {
@@ -69,6 +72,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
                             Log.d("LatestFragment", "currentPage: $currentPage")
                             onFailed(it.message)
                         }
+
                         is Resource.Loading -> onLoading()
                         is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
                     }
@@ -124,6 +128,9 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     }
 
     override fun onSuccess(data: PostResponse) {
+
+        Log.d("TagTest", data.posts.data.isEmpty().toString())
+
         // set data ke adapter
         binding.apply {
             if (data.posts.data.isEmpty()) {
@@ -138,6 +145,8 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
                 errorText.visibility = invisible
             }
         }
+
+
     }
 
     override fun onLoading() {
@@ -157,16 +166,20 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
             errorText.visibility = visible
             errorText.text = message
         }
+
+        Log.d("TagTest", "error")
     }
 
     companion object {
         private const val KEY_BUNDLE = "type_post"
         private const val CHIP_INTEREST = "chip_interest"
-        fun getInstance(typePost: String, chipInterest: String? = null): Fragment {
+        private const val SELECTED_TAG = "selected_tag"
+        fun getInstance(typePost: String, chipInterest: String? = null, selectedTag: String? = null): Fragment {
             return LatestFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_BUNDLE, typePost)
                     putString(CHIP_INTEREST, chipInterest)
+                    putString(SELECTED_TAG, selectedTag)
                 }
             }
         }

@@ -7,6 +7,20 @@
     android:orientation="vertical"
     tools:context=".ui.tag.TagActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:id="@+id/error_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/empty_data"
+        android:visibility="gone" />
+
     <!--            SEARCH BAR-->
     <include
         android:id="@+id/search_bar"

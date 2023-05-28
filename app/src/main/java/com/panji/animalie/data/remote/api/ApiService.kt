@@ -2,8 +2,10 @@ package com.panji.animalie.data.remote.api
 
 import com.panji.animalie.model.response.Auth
 import com.panji.animalie.model.response.DetailPostResponse
+import com.panji.animalie.model.response.DetailTagResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
+import com.panji.animalie.model.response.TagResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -159,4 +161,13 @@ interface ApiService {
         @Path("slug")
         slug: String,
     ): Response<DetailPostResponse>
+
+    @GET("tag")
+    suspend fun allTag(): Response<TagResponse>
+
+    @GET("tag/{tag:slug")
+    suspend fun detailTag(
+        @Path("slug")
+        slug: String
+    ): Response<DetailTagResponse>
 }

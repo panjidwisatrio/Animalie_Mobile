@@ -43,7 +43,6 @@ object BottomNavigationHelper {
 
                     R.id.profile -> {
                         context.startActivity(Intent(context, MyProfileActivity::class.java))
-                        item.isChecked = true
                         true
                     }
 

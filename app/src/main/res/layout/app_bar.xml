@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="8dp"
-        app:title="@string/myprofile"
+        app:title="@string/appBar_name"
         app:titleCentered="true" />
 
 </com.google.android.material.appbar.AppBarLayout>

@@ -24,7 +24,8 @@ import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
-class PostAdapter(val context: Context?) : ListAdapter<Post, PostAdapter.ViewHolder>(DIFF_UTIL) {
+class PostAdapter(val context: Context?) :
+    ListAdapter<Post, PostAdapter.ViewHolder>(DIFF_UTIL) {
 
     companion object {
         private val DIFF_UTIL = object : DiffUtil.ItemCallback<Post>() {
