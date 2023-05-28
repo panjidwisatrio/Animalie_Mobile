@@ -1,7 +1,6 @@
 package com.panji.animalie.data.remote.api
 
 import com.panji.animalie.model.response.Auth
-import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
@@ -160,6 +159,15 @@ interface ApiService {
         @Path("slug")
         slug: String,
     ): Response<DetailPostResponse>
+
+    @GET("tag")
+    suspend fun allTag(): Response<TagResponse>
+
+    @GET("tag/{tag:slug")
+    suspend fun detailTag(
+        @Path("slug")
+        slug: String
+    ): Response<DetailTagResponse>
 
     @GET("post/create")
     suspend fun createPost(

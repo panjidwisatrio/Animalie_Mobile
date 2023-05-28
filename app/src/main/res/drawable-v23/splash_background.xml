@@ -6,7 +6,7 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_animalie_svg"
+        android:drawable="@mipmap/ic_animalie"
         android:gravity="center"
         android:height="96dp"
         android:width="96dp"/>

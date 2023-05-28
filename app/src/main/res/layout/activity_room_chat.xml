@@ -105,7 +105,7 @@
                         android:fontFamily="@font/manrope_regular"
                         android:maxLines="4"
                         android:padding="10dp"
-                        android:text="@string/Room_chat_ketik_pesan"
+                        android:text="@string/room_chat_ketik_pesan"
                         android:textAlignment="textStart"
                         android:textSize="16sp" />
                 </LinearLayout>

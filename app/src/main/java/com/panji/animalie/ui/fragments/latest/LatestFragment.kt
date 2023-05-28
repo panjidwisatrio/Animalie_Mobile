@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.panji.animalie.R
 import com.panji.animalie.data.Resource
 import com.panji.animalie.databinding.FragmentLatestBinding
+import com.panji.animalie.model.DetailTag
 import com.panji.animalie.model.Post
 import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.PostResponse
@@ -63,7 +64,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private fun getPostLatest() {
         // get data from viewmodel
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getLatestPost(typePost, chipInterest, null, currentPage)
+            viewModel.getLatestPost(typePost, chipInterest, selectedTag, currentPage)
                 .observe(viewLifecycleOwner) {
                     when (it) {
                         is Resource.Error -> {
@@ -72,6 +73,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
                             Log.d("LatestFragment", "currentPage: $currentPage")
                             onFailed(it.message)
                         }
+
                         is Resource.Loading -> onLoading()
                         is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
                     }
@@ -127,6 +129,9 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     }
 
     override fun onSuccess(data: PostResponse) {
+
+        Log.d("TagTest", data.posts.data.isEmpty().toString())
+
         // set data ke adapter
         binding.apply {
             if (data.posts.data.isEmpty()) {
@@ -141,6 +146,8 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
                 errorText.visibility = invisible
             }
         }
+
+
     }
 
     override fun onLoading() {
@@ -160,6 +167,8 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
             errorText.visibility = visible
             errorText.text = message
         }
+
+        Log.d("TagTest", "error")
     }
 
     companion object {

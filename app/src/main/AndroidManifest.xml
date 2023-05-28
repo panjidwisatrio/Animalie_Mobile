@@ -17,15 +17,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".ui.detail.DetailPostActivity"
-            android:exported="false" />
-        <!-- <activity -->
-        <!-- android:name=".ui.FragmentTry" -->
-        <!-- android:exported="false" /> -->
-        <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashScreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,6 +38,15 @@
             android:exported="false" />
         <activity
             android:name=".ui.notificationroom.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.tag.DetailTagActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.tag.TagActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.detail.DetailPostActivity"
             android:exported="false" />
         <activity
             android:name=".ui.myprofile.MyProfileActivity"
@@ -65,15 +69,7 @@
             android:label="@string/title_activity_chat" />
         <activity
             android:name=".ui.homepage.HomePage"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

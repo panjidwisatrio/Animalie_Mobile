@@ -11,6 +11,7 @@ object Constanta {
     const val URL_IMAGE = "http://127.0.0.1:8000/storage/"
 
     const val EXTRA_POST = "extra_post"
+    const val EXTRA_SLUG = "extra_slug"
     const val EXTRA_USER = "extra_user"
 
     val TAB_TITLES = intArrayOf(

@@ -16,6 +16,7 @@ class SectionTabAdapter(
     private val typePost: String,
     private val userId: String? = null,
     private val chipInterest: String? = null,
+    private val selectedTag: String? = null,
     private val token: String? = null,
 ): FragmentStateAdapter(activity) {
     override fun getItemCount(): Int = if (
@@ -28,7 +29,7 @@ class SectionTabAdapter(
 
         if (type == "homepage") {
             when (position) {
-                0 -> fragment = LatestFragment.getInstance(typePost, chipInterest)
+                0 -> fragment = LatestFragment.getInstance(typePost, chipInterest, selectedTag)
                 1 -> fragment = PopularFragment.getInstance(typePost, chipInterest)
                 2 -> fragment = UnansweredFragment.getInstance(typePost, chipInterest)
             }

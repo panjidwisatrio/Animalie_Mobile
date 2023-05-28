@@ -10,4 +10,4 @@ data class Doctor(
     val photo: String,
     val created_at: String,
     val updated_at: String
-)
+    )
