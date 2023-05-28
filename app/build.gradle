@@ -95,7 +95,4 @@ dependencies {
     // Testing
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
-    //WYSIWYG
-//    implementation 'com.github.chinalwb:are:0.1.7'
 }
