@@ -14,6 +14,7 @@ import com.panji.animalie.R
 import com.panji.animalie.data.Resource
 import com.panji.animalie.databinding.FragmentLatestBinding
 import com.panji.animalie.model.Post
+import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.ui.adapter.PostAdapter
 import com.panji.animalie.util.PaginationScrollListener
@@ -29,6 +30,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private lateinit var adapterLatest: PostAdapter
     private var typePost: String = ""
     private var chipInterest: String? = null
+    private var selectedTag: String? = null
     private var isLoading = false
     private var currentPage = 1
     private var totalPage: Int? = null
@@ -38,6 +40,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
         arguments?.let {
             typePost = it.getString(KEY_BUNDLE).toString()
             chipInterest = it.getString(CHIP_INTEREST)
+            selectedTag = it.getString(SELECTED_TAG)
         }
     }
 
@@ -162,11 +165,13 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     companion object {
         private const val KEY_BUNDLE = "type_post"
         private const val CHIP_INTEREST = "chip_interest"
-        fun getInstance(typePost: String, chipInterest: String? = null): Fragment {
+        private const val SELECTED_TAG = "selected_tag"
+        fun getInstance(typePost: String, chipInterest: String? = null, selectedTag: String? = null): Fragment {
             return LatestFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_BUNDLE, typePost)
                     putString(CHIP_INTEREST, chipInterest)
+                    putString(SELECTED_TAG, selectedTag)
                 }
             }
         }

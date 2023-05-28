@@ -1,5 +1,6 @@
 package com.panji.animalie.ui.homepage
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
@@ -8,6 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.R
 import com.panji.animalie.databinding.HomePageBinding
 import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.ui.createpost.CreatePostActivity
 import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES
 
@@ -41,6 +43,15 @@ class HomePage : AppCompatActivity() {
 
         // setup tab
         setTabLayout()
+        setFab()
+    }
+
+    private fun setFab() {
+        binding.createFab.createFab.setOnClickListener {
+            startActivity(
+                Intent(this, CreatePostActivity::class.java)
+            )
+        }
     }
 
     private fun showAppClosingDialog() {

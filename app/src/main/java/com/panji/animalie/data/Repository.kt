@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.panji.animalie.data.remote.api.ApiService
 import com.panji.animalie.data.remote.api.RetrofitService
 import com.panji.animalie.model.response.Auth
+import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
@@ -209,7 +210,10 @@ class Repository(application: Application) {
         return post
     }
 
-    suspend fun getMyProfile(token: String): LiveData<Resource<MyProfileResponse>> {
+    suspend fun getMyProfile(
+        token: String? = null,
+        username: String? = null,
+    ): LiveData<Resource<MyProfileResponse>> {
         val user = MutableLiveData<Resource<MyProfileResponse>>()
 
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -218,37 +222,11 @@ class Repository(application: Application) {
 
         user.postValue(Resource.Loading())
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.myProfile("Bearer $token")
-
-            if (response.isSuccessful) {
-                user.postValue(Resource.Success(response.body()))
+            val response = if (token != null) {
+                retrofit.myProfile("Bearer $token")
             } else {
-                if (response.code() == 401) {
-                    user.postValue(Resource.Error("Unauthorized"))
-                } else if (response.code() == 403) {
-                    user.postValue(Resource.Error("API limit exceeded"))
-                } else if (response.code() == 422) {
-                    user.postValue(Resource.Error("Query parameter is missing"))
-                } else if (response.code() == 500) {
-                    user.postValue(Resource.Error("Internal server error"))
-                } else {
-                    user.postValue(Resource.Error("Something went wrong"))
-                }
+                retrofit.otherProfile(username!!)
             }
-        }
-        return user
-    }
-
-    suspend fun getOtherProfile(username: String): LiveData<Resource<MyProfileResponse>> {
-        val user = MutableLiveData<Resource<MyProfileResponse>>()
-
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            user.postValue(Resource.Error(throwable.message))
-        }
-
-        user.postValue(Resource.Loading())
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.otherProfile(username)
 
             if (response.isSuccessful) {
                 user.postValue(Resource.Success(response.body()))
@@ -387,5 +365,35 @@ class Repository(application: Application) {
             }
         }
         return post
+    }
+
+    suspend fun getDataPreparedCreatePost(token: String): LiveData<Resource<CreatePostResponse>> {
+        val catetag = MutableLiveData<Resource<CreatePostResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            catetag.postValue(Resource.Error(throwable.message))
+        }
+
+        catetag.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.createPost("Bearer $token")
+
+            if (response.isSuccessful) {
+                catetag.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    catetag.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    catetag.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    catetag.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    catetag.postValue(Resource.Error("Internal server error"))
+                } else {
+                    catetag.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return catetag
     }
 }

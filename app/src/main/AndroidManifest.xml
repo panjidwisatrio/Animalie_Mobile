@@ -39,7 +39,7 @@
             android:name=".ui.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.otherprofile.OtherProfileActivity"
+            android:name=".ui.myprofile.OtherProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ui.notificationroom.NotificationActivity"

@@ -11,6 +11,7 @@ object Constanta {
     const val URL_IMAGE = "http://127.0.0.1:8000/storage/"
 
     const val EXTRA_POST = "extra_post"
+    const val EXTRA_USER = "extra_user"
 
     val TAB_TITLES = intArrayOf(
         tab_home,
@@ -22,5 +23,10 @@ object Constanta {
         tab_mypost,
         tab_discussion,
         tab_savedpost
+    )
+
+    val TAB_TITLES_OTHER_PROFILE = intArrayOf(
+        tab_mypost,
+        tab_discussion,
     )
 }

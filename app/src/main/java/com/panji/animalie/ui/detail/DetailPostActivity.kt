@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.panji.animalie.R
 import com.panji.animalie.data.Resource
 import com.panji.animalie.databinding.ActivityDetailPostBinding
-import com.panji.animalie.model.Post
 import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.util.Constanta
 import com.panji.animalie.util.Constanta.EXTRA_POST
