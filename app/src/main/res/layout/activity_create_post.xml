@@ -5,79 +5,266 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="16dp"
     tools:context=".ui.createpost.CreatePostActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <include
         android:id="@+id/create_post_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        layout="@layout/app_bar" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_back"
-            app:title="@string/create_post" />
-
-        <!--            <Button-->
-        <!--                android:id="@+id/post_button"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_gravity="center_vertical"-->
-        <!--                android:paddingVertical="8dp"-->
-        <!--                android:text="@string/post" />-->
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-    <!--            Title-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/title_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/title"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        <!--Title-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/title_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/title" />
-    </com.google.android.material.textfield.TextInputLayout>
+            app:errorEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
+            android:layout_marginTop="8dp">
 
-    <!--            Category dropdown-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/category_layout"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/title"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/title" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Category dropdown-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/category_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/category"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Tag-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tag_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/tag" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <!--(WYSIWYG)-->
+    <jp.wasabeef.richeditor.RichEditor
+        android:id="@+id/editor"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1" />
+
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:background="?attr/colorOnPrimary">
 
-        <AutoCompleteTextView
-            android:id="@+id/category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/category"
-            android:inputType="none" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <ImageButton
+                android:id="@+id/action_undo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/undo" />
 
-    <!--            Tag-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tag_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+            <ImageButton
+                android:id="@+id/action_redo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/redo" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/tag" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <ImageButton
+                android:id="@+id/action_bold"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/bold" />
 
-    <!-- Text Editor-->
+            <ImageButton
+                android:id="@+id/action_italic"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/italic" />
+
+            <ImageButton
+                android:id="@+id/action_strikethrough"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/strikethrough" />
+
+            <ImageButton
+                android:id="@+id/action_underline"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/underlined" />
+
+            <ImageButton
+                android:id="@+id/action_heading1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/h1" />
+
+            <ImageButton
+                android:id="@+id/action_heading2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/h2" />
+
+            <ImageButton
+                android:id="@+id/action_heading3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/h3" />
+
+            <ImageButton
+                android:id="@+id/action_heading4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/h4" />
+
+            <ImageButton
+                android:id="@+id/action_txt_color"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/txt_color" />
+
+            <ImageButton
+                android:id="@+id/action_bg_color"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/bg_color" />
+
+            <ImageButton
+                android:id="@+id/action_indent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/indent" />
+
+            <ImageButton
+                android:id="@+id/action_outdent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/outdent" />
+
+            <ImageButton
+                android:id="@+id/action_align_left"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/justify_left" />
+
+            <ImageButton
+                android:id="@+id/action_align_center"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/justify_center" />
+
+            <ImageButton
+                android:id="@+id/action_align_right"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/justify_right" />
+
+            <ImageButton
+                android:id="@+id/action_insert_bullets"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/bullets" />
+
+            <ImageButton
+                android:id="@+id/action_insert_numbers"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/numbers" />
+
+            <ImageButton
+                android:id="@+id/action_blockquote"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/blockquote" />
+
+            <ImageButton
+                android:id="@+id/action_insert_image"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/insert_image" />
+
+            <ImageButton
+                android:id="@+id/action_insert_link"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/insert_link" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
 
 </LinearLayout>

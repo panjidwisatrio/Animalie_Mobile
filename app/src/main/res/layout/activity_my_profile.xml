@@ -16,7 +16,7 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"/>
 
     <!-- PROFILE BIO -->
     <LinearLayout
@@ -25,23 +25,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_toolbar"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:visibility="visible">
+        android:visibility="invisible"
+        android:padding="16dp">
 
         <LinearLayout
             android:id="@+id/biodata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_photo"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:layout_gravity="start"
                 android:layout_marginEnd="8dp"
+                android:layout_gravity="start"
                 android:contentDescription="@string/profile_description"
                 android:src="@mipmap/profile_photo_round" />
 
@@ -78,15 +78,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/job"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/tv_di"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
                 android:text="@string/di"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:layout_marginHorizontal="5dp"/>
 
             <TextView
                 android:id="@+id/tv_workplace"
@@ -108,10 +108,10 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigation"
-        android:layout_below="@id/biodata_layout"
-        android:visibility="visible">
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_below="@id/biodata_layout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -199,6 +199,16 @@
         </LinearLayout>
     </ScrollView>
 
+
+    <!--    BOTTOM NAVIGATION-->
+<!--    <include-->
+<!--        android:id="@+id/bottom_navigation"-->
+<!--        layout="@layout/bottom_navigation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true" />-->
+
+    <!--        BOTTOM NAVIGATION-->
     <include
         android:id="@+id/bottom_navigation"
         layout="@layout/bottom_navigation"

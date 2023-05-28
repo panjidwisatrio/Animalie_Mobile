@@ -9,5 +9,5 @@ class ViewModelMyProfile(application: Application): AndroidViewModel(application
     private val repository = Repository(application)
 
     // register dan mengembalikan data ke view
-    suspend fun getProfile(token: String) = repository.getMyProfile(token)
+    suspend fun getProfile(token: String? = null, username: String? = null) = repository.getMyProfile(token, username)
 }

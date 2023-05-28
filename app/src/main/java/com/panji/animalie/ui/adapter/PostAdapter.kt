@@ -13,10 +13,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.panji.animalie.R
+import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.PostBinding
 import com.panji.animalie.model.Post
 import com.panji.animalie.ui.detail.DetailPostActivity
+import com.panji.animalie.ui.myprofile.MyProfileActivity
+import com.panji.animalie.ui.myprofile.OtherProfileActivity
 import com.panji.animalie.util.Constanta.EXTRA_POST
+import com.panji.animalie.util.Constanta.EXTRA_USER
 import com.panji.animalie.util.Constanta.URL_IMAGE
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -26,6 +30,10 @@ import java.util.concurrent.TimeUnit
 
 class PostAdapter(val context: Context?) :
     ListAdapter<Post, PostAdapter.ViewHolder>(DIFF_UTIL) {
+
+    private val sessionManager: SessionManager by lazy {
+        SessionManager(context!!)
+    }
 
     companion object {
         private val DIFF_UTIL = object : DiffUtil.ItemCallback<Post>() {
@@ -78,6 +86,21 @@ class PostAdapter(val context: Context?) :
                     commentCounter.text = "0"
                 } else {
                     commentCounter.text = post.Comments.size.toString()
+                }
+
+                if (post.User.id.toString() == sessionManager.fetchId()) {
+                    biodata.setOnClickListener {
+                        biodata.context?.startActivity(
+                            Intent(biodata.context, MyProfileActivity::class.java)
+                        )
+                    }
+                } else {
+                    biodata.setOnClickListener {
+                        biodata.context?.startActivity(
+                            Intent(biodata.context, OtherProfileActivity::class.java)
+                                .putExtra(EXTRA_USER, post.User.username)
+                        )
+                    }
                 }
 
                 shareButton.setOnClickListener {

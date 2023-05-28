@@ -19,7 +19,10 @@ class SectionTabAdapter(
     private val selectedTag: String? = null,
     private val token: String? = null,
 ): FragmentStateAdapter(activity) {
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = if (
+        typePost == "interestGroup" ||
+        typePost == "dashboard" ||
+        typePost == "myProfile") 3 else 2
 
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
@@ -35,6 +38,11 @@ class SectionTabAdapter(
                 0 -> fragment = userId?.let { MyPostFragment.getInstance(it) }
                 1 -> fragment = userId?.let { DiscussionFragment.getInstance(it) }
                 2 -> fragment = token?.let { SavedPostFragment.getInstance(it) }
+            }
+        } else if (type == "otherProfile") {
+            when (position) {
+                0 -> fragment = userId?.let { MyPostFragment.getInstance(it) }
+                1 -> fragment = userId?.let { DiscussionFragment.getInstance(it) }
             }
         }
         return fragment as Fragment

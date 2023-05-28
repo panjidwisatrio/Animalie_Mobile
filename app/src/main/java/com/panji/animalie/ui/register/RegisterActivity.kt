@@ -80,6 +80,7 @@ class RegisterActivity : AppCompatActivity(), ViewStateCallback<Auth> {
     }
 
     override fun onSuccess(data: Auth) {
+        sessionManager.saveId(data.user.id.toString())
         sessionManager.saveToken(data.access_token)
 
         binding.progressBarRegister.visibility = invisible

@@ -76,6 +76,7 @@ class LoginActivity : AppCompatActivity(), ViewStateCallback<Auth> {
 
     override fun onSuccess(data: Auth) {
         sessionManager.saveToken(data.access_token)
+        sessionManager.saveId(data.user.id.toString())
 
         binding.progressBarLogin.visibility = invisible
         Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()

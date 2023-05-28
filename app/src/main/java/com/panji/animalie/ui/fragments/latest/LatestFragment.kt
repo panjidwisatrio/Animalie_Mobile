@@ -15,6 +15,7 @@ import com.panji.animalie.data.Resource
 import com.panji.animalie.databinding.FragmentLatestBinding
 import com.panji.animalie.model.DetailTag
 import com.panji.animalie.model.Post
+import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.ui.adapter.PostAdapter
 import com.panji.animalie.util.PaginationScrollListener

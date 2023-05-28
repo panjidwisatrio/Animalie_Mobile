@@ -12,6 +12,7 @@ object Constanta {
 
     const val EXTRA_POST = "extra_post"
     const val EXTRA_SLUG = "extra_slug"
+    const val EXTRA_USER = "extra_user"
 
     val TAB_TITLES = intArrayOf(
         tab_home,
@@ -23,5 +24,10 @@ object Constanta {
         tab_mypost,
         tab_discussion,
         tab_savedpost
+    )
+
+    val TAB_TITLES_OTHER_PROFILE = intArrayOf(
+        tab_mypost,
+        tab_discussion,
     )
 }
