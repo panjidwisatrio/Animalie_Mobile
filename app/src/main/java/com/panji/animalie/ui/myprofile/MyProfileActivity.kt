@@ -2,6 +2,9 @@ package com.panji.animalie.ui.myprofile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
@@ -13,6 +16,7 @@ import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.ActivityMyProfileBinding
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.ui.fragments.setting.SettingFragment
 import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES_PROFILE
 import com.panji.animalie.util.Constanta.URL_IMAGE
@@ -30,11 +34,12 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
     }
     private var userId: String = ""
 
-    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            showAppClosingDialog()
+    private val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showAppClosingDialog()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +59,49 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
             this
         )
 
+        //set profile menu
+        binding.profileToolbar.appBar.inflateMenu(R.menu.profile_menu)
+
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
         setTabLayout()
         getProfileData()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.profile_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.setting -> {
+                openSettingFragment()
+                true
+            }
+
+            R.id.logout -> {
+                Log.d("ProfMenu", "Logout")
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun openSettingFragment() {
+        Log.d("ProfMenu", "Setting")
+        val settingFragment = SettingFragment()
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container, settingFragment) // Replace the current fragment
+            // or
+            // add(R.id.fragmentContainer, settingFragment) // Add the fragment on top of the current fragment
+            addToBackStack("setting_tag") // Optional: Add the transaction to the back stack
+            commit()
+        }
+
+        binding.fragmentContainer.visibility = visible
     }
 
     private fun getProfileData() {
@@ -90,7 +134,13 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
     }
 
     private fun setTabLayout() {
-        val pageAdapter = SectionTabAdapter(this, "profile", "myProfile", userId = userId, token = sessionManager.fetchToken())
+        val pageAdapter = SectionTabAdapter(
+            this,
+            "profile",
+            "myProfile",
+            userId = userId,
+            token = sessionManager.fetchToken()
+        )
 
         binding.apply {
             viewPager.adapter = pageAdapter

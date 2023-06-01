@@ -67,7 +67,7 @@
     <string name="contact_doctor_work_experience">10</string>
 
     <!-- Strings related to notification-->
-    <string name="notification">Tandai sudah dibaca</string>
+    <string name="notification_readed">Tandai sudah dibaca</string>
     <string name="notification_username">nama</string>
     <string name="notification_description">notification</string>
 
@@ -159,4 +159,14 @@
     <string name="comment">Tulis komentar...</string>
 
     <string name="appBar_name">Appbar Name</string>
+
+    <!--    Profile Menu-->
+    <string name="setting">Pengaturan</string>
+    <string name="logout">Log out</string>
+
+
+    <string name="notification">Notifikasi</string>
+    <string name="dark_theme">Tema Gelap</string>
+    <string name="light_theme">Tema Siang</string>
+
 </resources>

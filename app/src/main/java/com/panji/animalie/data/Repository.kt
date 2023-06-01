@@ -402,7 +402,7 @@ class Repository(application: Application) {
         return tag
     }
 
-    suspend fun getDetailTag(slug: String): LiveData<Resource<DetailTagResponse>>{
+    suspend fun getDetailTag(slug: String): LiveData<Resource<DetailTagResponse>> {
         val detailTag = MutableLiveData<Resource<DetailTagResponse>>()
 
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->

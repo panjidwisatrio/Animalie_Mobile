@@ -120,7 +120,7 @@ class CreatePostActivity : AppCompatActivity(), ViewStateCallback<CreatePostResp
             title.isEnabled = false
             category.isEnabled = false
             tag.isEnabled = false
-            editor.isEnabled = false
+//            editor.isEnabled = false
         }
 
         message?.let {
