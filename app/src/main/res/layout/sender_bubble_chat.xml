@@ -11,7 +11,7 @@
     android:layout_marginRight="5dp"
     android:gravity="end"
     android:orientation="horizontal">
-
+//
 
     <LinearLayout
         android:id="@+id/bubble_chat_background"

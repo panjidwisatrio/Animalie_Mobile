@@ -18,7 +18,7 @@ class RoomChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         messages.addAll(messageList)
         notifyDataSetChanged()
     }
-
+//
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_SENDER -> {

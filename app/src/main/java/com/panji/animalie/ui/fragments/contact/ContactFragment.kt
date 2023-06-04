@@ -18,7 +18,7 @@ class ContactFragment : Fragment() {
 
     private lateinit var binding: FragmentContactBinding
     private lateinit var adapter: ContactAdapter
-
+//
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

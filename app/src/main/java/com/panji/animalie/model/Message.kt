@@ -6,3 +6,4 @@ data class Message(
     isSentByUser: Boolean = true,
     val photoProfile: Int
 )
+//

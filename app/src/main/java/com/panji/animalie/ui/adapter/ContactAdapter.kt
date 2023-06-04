@@ -1,5 +1,5 @@
 package com.panji.animalie.ui.adapter
-
+//n
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.panji.animalie.databinding.ContactCardBinding
 import com.panji.animalie.model.Doctor
 
-
+//
 class ContactAdapter(private val doctorList: List<Doctor>) :
     RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
 

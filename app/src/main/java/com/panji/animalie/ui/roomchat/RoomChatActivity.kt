@@ -14,7 +14,7 @@ class RoomChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomChatBinding
     private lateinit var viewModel: RoomChatViewModel
     private lateinit var adapter: RoomChatAdapter
-
+//
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRoomChatBinding.inflate(layoutInflater)

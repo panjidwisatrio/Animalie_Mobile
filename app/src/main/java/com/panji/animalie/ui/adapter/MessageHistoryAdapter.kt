@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.panji.animalie.databinding.MessageHistoryItemBinding
 import com.panji.animalie.model.MessageHistory
-
+//
 class MessageHistoryAdapter(private val messages: List<MessageHistory>) : RecyclerView.Adapter<MessageHistoryAdapter.MessageViewHolder>() {
 
     private var onItemClickListener: ((MessageHistory) -> Unit)? = null

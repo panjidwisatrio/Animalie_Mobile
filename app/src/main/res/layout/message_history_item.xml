@@ -40,7 +40,7 @@
             android:fontFamily="@font/manrope_bold"
             android:maxEms="10"
             android:maxLines="1"
-            android:text="@string/chat_item_name" />
+            android:text="ContactName" />
 
 
         <TextView
@@ -52,10 +52,10 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="@string/chat_item_message"
+            android:text="Specialist"
             android:textAlignment="textStart"
             android:textSize="12sp" />
 
     </LinearLayout>
-
+//
 </LinearLayout>

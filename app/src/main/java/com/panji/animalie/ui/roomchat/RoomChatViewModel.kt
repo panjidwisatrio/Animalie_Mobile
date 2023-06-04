@@ -19,7 +19,7 @@ class RoomChatViewModel : ViewModel() {
         messageList.add(message)
         _messages.value = messageList.toList()
     }
-
+//
     private fun getCurrentTimeStamp(): String {
         val timeStampFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         val currentTime = Calendar.getInstance().time

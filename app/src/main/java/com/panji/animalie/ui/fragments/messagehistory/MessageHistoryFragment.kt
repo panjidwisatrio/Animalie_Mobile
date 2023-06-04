@@ -28,7 +28,7 @@ class MessageHistoryFragment : Fragment() {
         binding.itemMessageHistoryList.adapter = adapter
         binding.itemMessageHistoryList.layoutManager = LinearLayoutManager(activity)
     }
-
+//
     private fun getDummyData(): List<MessageHistory> {
         // Data dummy
         val dummyData = mutableListOf<MessageHistory>()

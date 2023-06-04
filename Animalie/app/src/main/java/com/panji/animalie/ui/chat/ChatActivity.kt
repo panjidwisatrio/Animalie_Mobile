@@ -18,10 +18,10 @@ class ChatActivity : AppCompatActivity() {
 
         setTabLayout()
     }
-//
+
     private fun setTabLayout() {
         val pageAdapter = ChatTabAdapter(this)
-        val tabTitles = arrayOf("Contact", "Inbox")
+        val tabTitles = arrayOf("Contact", "Message")
 
         binding.viewPager.adapter = pageAdapter
 

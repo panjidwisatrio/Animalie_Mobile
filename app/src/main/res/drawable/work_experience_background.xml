@@ -4,5 +4,5 @@
     <solid android:color="@color/experience_time_background" />
 
     <corners android:radius="3dp" />
-
+//
 </shape>

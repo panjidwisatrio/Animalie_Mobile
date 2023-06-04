@@ -7,3 +7,4 @@ data class Doctor(
     val workExperience: String,
     val doctorphoto: Int,
 )
+   

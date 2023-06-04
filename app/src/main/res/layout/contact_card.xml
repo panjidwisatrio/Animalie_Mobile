@@ -100,7 +100,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/manrope_bold"
                 android:gravity="center"
-                android:text="@string/contact_item_years_text"
+                android:text="years"
                 android:textAlignment="center"
                 android:textColor="@color/md_theme_dark_onPrimary"
                 android:textSize="10sp" />

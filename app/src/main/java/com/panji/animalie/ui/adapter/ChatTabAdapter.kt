@@ -18,3 +18,4 @@ class ChatTabAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activit
         }
     }
 }
+//
