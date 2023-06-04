@@ -1,84 +1,191 @@
 package com.panji.animalie.ui.adapter
 
+
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.panji.animalie.R
+import com.panji.animalie.databinding.ReceiverBubbleChatBinding
+import com.panji.animalie.databinding.SenderBubbleChatBinding
 import com.panji.animalie.model.Message
 
+class RoomChatAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val messages = mutableListOf<Message>()
 
-class RoomChatAdapter(private val userId: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val chatMessages = mutableListOf<Message>()
-
-    fun setChatMessages(messages: List<Message>) {
-        chatMessages.clear()
-        chatMessages.addAll(messages)
+    fun setMessages(messageList: List<Message>) {
+        messages.clear()
+        messages.addAll(messageList)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == VIEW_TYPE_SENDER) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.sender_bubble_chat, parent, false)
-            SenderViewHolder(view)
-        } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.receiver_bubble_chat, parent, false)
-            ReceiverViewHolder(view)
+        return when (viewType) {
+            VIEW_TYPE_SENDER -> {
+                val binding = SenderBubbleChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                SenderViewHolder(binding)
+            }
+            VIEW_TYPE_RECEIVER -> {
+                val binding = ReceiverBubbleChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ReceiverViewHolder(binding)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val chatMessage = chatMessages[position]
+        val message = messages[position]
 
-        if (holder.itemViewType == VIEW_TYPE_SENDER) {
-            val senderViewHolder = holder as SenderViewHolder
-            senderViewHolder.bind(chatMessage)
-        } else {
-            val receiverViewHolder = holder as ReceiverViewHolder
-            receiverViewHolder.bind(chatMessage)
+        when (holder) {
+            is SenderViewHolder -> {
+                holder.bind(message)
+            }
+            is ReceiverViewHolder -> {
+                holder.bind(message)
+            }
         }
     }
 
-    override fun getItemCount(): Int {
-        return chatMessages.size
-    }
-
     override fun getItemViewType(position: Int): Int {
-        val chatMessage = chatMessages[position]
-        return if (chatMessage.userId == userId) {
+        val message = messages[position]
+        return if (message.isSentByUser) {
             VIEW_TYPE_SENDER
         } else {
             VIEW_TYPE_RECEIVER
         }
     }
 
-    inner class SenderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(chatMessage: Message) {
-            itemView.findViewById<TextView>(R.id.sender_message).text = chatMessage.messageText
+    override fun getItemCount(): Int {
+        return messages.size
+    }
 
-            // Set profile photo using Glide or your preferred image loading library
-            Glide.with(itemView.context)
-                .load(chatMessage.senderProfileImage)
-                .into(itemView.findViewById<de.hdodenhof.circleimageview.CircleImageView>(R.id.sender_photo_profile))
+    class SenderViewHolder(private val binding: SenderBubbleChatBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(message: Message) {
+            binding.senderMessage.text = message.content
+            binding.timeStampSender.text = message.timeStamp
+
+            // Tampilkan foto profil pengirim
+            Glide.with(binding.root.context)
+                .load(message.photoProfile)
+                .placeholder(R.drawable.testingphoto) // Foto profil default jika tidak ada foto profil pengirim
+                .into(binding.senderPhotoProfile)
         }
     }
 
-    inner class ReceiverViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(chatMessage: Message) {
-            itemView.findViewById<TextView>(R.id.receiver_message).text = chatMessage.messageText
+    class ReceiverViewHolder(private val binding: ReceiverBubbleChatBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(message: Message) {
+            binding.receiverMessage.text = message.content
+            binding.timeStampReceiver.text = message.timeStamp
 
-            // Set profile photo using Glide or your preferred image loading library
-            Glide.with(itemView.context)
-                .load(chatMessage.receiverProfileImage)
-                .into(itemView.findViewById<de.hdodenhof.circleimageview.CircleImageView>(R.id.receiver_photo_profile))
+            // Tampilkan foto profil penerima
+            Glide.with(binding.root.context)
+                .load(message.photoProfile)
+                .placeholder(R.drawable.doctor_photo) // Foto profil default jika tidak ada foto profil penerima
+                .into(binding.receiverPhotoProfile)
         }
     }
 
     companion object {
-        private const val VIEW_TYPE_SENDER = 1
-        private const val VIEW_TYPE_RECEIVER = 2
+        private const val VIEW_TYPE_SENDER = 0
+        private const val VIEW_TYPE_RECEIVER = 1
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//import android.view.LayoutInflater
+//import android.view.ViewGroup
+//import androidx.recyclerview.widget.RecyclerView
+//import com.bumptech.glide.Glide
+//import com.panji.animalie.R
+//import com.panji.animalie.databinding.ReceiverBubbleChatBinding
+//import com.panji.animalie.databinding.SenderBubbleChatBinding
+//import com.panji.animalie.model.Message
+//import com.panji.animalie.model.RoomChat
+//import java.text.SimpleDateFormat
+//import java.util.*
+//
+//class RoomChatAdapter(private val roomChat: RoomChat) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+//
+//    companion object {
+//        private const val VIEW_TYPE_SENDER = 1
+//        private const val VIEW_TYPE_RECEIVER = 2
+//    }
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+//        return when (viewType) {
+//            VIEW_TYPE_SENDER -> {
+//                val binding = SenderBubbleChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+//                SenderViewHolder(binding)
+//            }
+//            VIEW_TYPE_RECEIVER -> {
+//                val binding = ReceiverBubbleChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+//                ReceiverViewHolder(binding)
+//            }
+//            else -> throw IllegalArgumentException("Invalid view type")
+//        }
+//    }
+//
+//    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+//        val message = roomChat.messages[position]
+//
+//        when (holder) {
+//            is SenderViewHolder -> {
+//                holder.bind(message)
+//            }
+//            is ReceiverViewHolder -> {
+//                holder.bind(message)
+//            }
+//        }
+//    }
+//
+//    override fun getItemCount(): Int {
+//        return roomChat.messages.size
+//    }
+//
+//    override fun getItemViewType(position: Int): Int {
+//        val message = roomChat.messages[position]
+//        return if (message.sender == roomChat.sender) {
+//            VIEW_TYPE_SENDER
+//        } else {
+//            VIEW_TYPE_RECEIVER
+//        }
+//    }
+//
+//    inner class SenderViewHolder(private val binding: SenderBubbleChatBinding) : RecyclerView.ViewHolder(binding.root) {
+//        fun bind(message: Message) {
+//            binding.senderMessage.text = message.content
+//            binding.timeStampSender.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(message.time)
+//
+//            // Tampilkan foto profil pengirim
+//            Glide.with(binding.root.context)
+//                .load(message.senderProfilePhoto)
+//                .placeholder(R.drawable.testingphoto) // Foto profil default jika tidak ada foto profil pengirim
+//                .into(binding.senderPhotoProfile)
+//        }
+//    }
+//
+//    inner class ReceiverViewHolder(private val binding: ReceiverBubbleChatBinding) : RecyclerView.ViewHolder(binding.root) {
+//        fun bind(message: Message) {
+//            binding.receiverMessage.text = message.content
+//            binding.timeStampReceiver.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(message.time)
+//
+//            // Tampilkan foto profil penerima
+//            Glide.with(binding.root.context)
+//                .load(roomChat.receiverProfilePhoto)
+//                .placeholder(R.drawable.testingphoto) // Foto profil default jika tidak ada foto profil penerima
+//                .into(binding.receiverPhotoProfile)
+//        }
+//    }
+//}
+//

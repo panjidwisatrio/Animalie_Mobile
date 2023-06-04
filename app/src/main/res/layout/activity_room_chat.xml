@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,110 +7,86 @@
     android:layout_height="match_parent"
     tools:context=".ui.roomchat.RoomChatActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="1dp"
+        android:backgroundTint="@color/md_theme_dark_scrim"
+        android:backgroundTintMode="add"
+        android:clickable="true"
+        android:contentDescription="back_button"
+        android:padding="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/item_chat_bubble"
+        app:layout_constraintEnd_toStartOf="@+id/receiver_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back"
+        app:tint="#000000" />
+
+    <TextView
+        android:id="@+id/receiver_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/md_theme_light_surface"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme">
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="48dp"
+        android:elevation="10dp"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/toolbar"
-            android:layout_alignParentTop="false"
-            android:layout_margin="10dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:tint="@color/md_theme_dark_scrim"
-                    app:srcCompat="@drawable/ic_back" />
-
-                <TextView
-                    android:id="@+id/receiver_name_chat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_bold"
-                    android:foregroundGravity="center_horizontal"
-                    android:gravity="center"
-                    android:text="@string/contact_card_name"
-                    android:textAlignment="center"
-                    android:textColor="@color/md_theme_dark_scrim"
-                    android:textSize="24sp"
-                    android:textStyle="normal|bold" />
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <LinearLayout
-        android:id="@+id/linear01"
-        android:orientation="vertical"
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/item_chat_bubble"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible" />
-
-
-    </LinearLayout>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_chat_bubble"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/linear02"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receiver_name"
+        tools:listitem="@layout/sender_bubble_chat" />
 
     <LinearLayout
         android:id="@+id/linear02"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/linear01"
         android:layout_alignParentBottom="true"
         android:background="@color/profile_photo_background"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="284dp"
+            android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="5"
             app:cardCornerRadius="8dp"
             app:cardUseCompatPadding="true">
 
-            <ScrollView
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/write_text_message"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="3dp">
-
-                    <TextView
-                        android:id="@+id/Sending_message_textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/manrope_regular"
-                        android:maxLines="4"
-                        android:padding="10dp"
-                        android:text="@string/Room_chat_ketik_pesan"
-                        android:textAlignment="textStart"
-                        android:textSize="16sp" />
-                </LinearLayout>
-            </ScrollView>
+                android:layout_height="50dp"
+                android:background="@drawable/background_edit_text_chat"
+                android:clickable="true"
+                android:fontFamily="@font/manrope_regular"
+                android:hint="@string/ketik_pesan_anda_disini"
+                android:maxLines="4"
+                android:padding="10dp"
+                android:textAlignment="textStart"
+                android:textSize="16sp" />
 
         </androidx.cardview.widget.CardView>
 
@@ -121,8 +97,9 @@
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_weight="5"
+            android:clickable="true"
             android:gravity="center|end"
-            android:text="@string/send"
+            android:text="@string/room_chat_button"
             android:textAlignment="center"
             android:textSize="16sp"
             app:cornerRadius="8dp" />
@@ -131,4 +108,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
