@@ -8,6 +8,7 @@ import com.panji.animalie.R.string.tab_savedpost
 import com.panji.animalie.R.string.tab_unanswerd
 object Constanta {
     const val BASE_URL = "http://127.0.0.1:8000/api/"
+    const val URL_IMAGE = "http://127.0.0.1:8000/storage/"
 
     val TAB_TITLES = intArrayOf(
         tab_home,
@@ -20,6 +21,4 @@ object Constanta {
         tab_discussion,
         tab_savedpost
     )
-
-    const val PREFS_NAME = "USER_PREFS"
 }

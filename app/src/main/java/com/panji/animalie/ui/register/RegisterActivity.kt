@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.panji.animalie.data.Resource
+import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.ActivityRegisterBinding
 import com.panji.animalie.model.response.Auth
+import com.panji.animalie.ui.homepage.HomePage
 import com.panji.animalie.ui.login.LoginActivity
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +19,9 @@ import kotlinx.coroutines.launch
 class RegisterActivity : AppCompatActivity(), ViewStateCallback<Auth> {
     private lateinit var binding: ActivityRegisterBinding
     private val viewModel by viewModels<ViewModelRegister>()
+    private val sessionManager: SessionManager by lazy {
+        SessionManager(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,9 +80,11 @@ class RegisterActivity : AppCompatActivity(), ViewStateCallback<Auth> {
     }
 
     override fun onSuccess(data: Auth) {
+        sessionManager.saveToken(data.access_token)
+
         binding.progressBarRegister.visibility = invisible
         Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this, LoginActivity::class.java))
+        startActivity(Intent(this, HomePage::class.java))
     }
 
     override fun onLoading() {

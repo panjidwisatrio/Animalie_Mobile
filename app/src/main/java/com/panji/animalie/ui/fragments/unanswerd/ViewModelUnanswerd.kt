@@ -9,6 +9,10 @@ class ViewModelUnanswerd(application: Application): AndroidViewModel(application
      private val repository = Repository(application)
 
      // mengambil data post
-     suspend fun getUnanswerdPost(type: String, selectedCategory: String?, selectedTag: String?) =
-         repository.getUnanswerdPost(type, selectedCategory, selectedTag)
+     suspend fun getUnanswerdPost(
+         type: String,
+         selectedCategory: String? = null,
+         selectedTag: String? = null,
+         page: Int? = 1
+     ) = repository.getUnanswerdPost(type, selectedCategory, selectedTag, page)
 }

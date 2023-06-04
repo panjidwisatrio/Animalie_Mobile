@@ -48,6 +48,29 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
+    <!-- Strings related to notification-->
+    <string name="set_notifications_Chat">mengirim pesan kepada anda</string>
+    <string name="set_notification_like">menyukai postingan anda</string>
+    <string name="set_notification_comment">mengomentari postingan anda: </string>
+
+    <string name="person_name">Nama</string>
+    <string name="badge">verification badge</string>
+
+    <!-- Strings related to chat-->
+    <string name="room_chat_receiver_name">Contact Name</string>
+    <string name="room_chat_ketik_pesan">Ketik pesan disini...</string>
+    <string name="room_chat_preview_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+
+    <string name="contact_card_name">Doctor Name</string>
+    <string name="contact_doctor_specialist">Specialist</string>
+    <string name="contact_doctor_work_experience">10</string>
+
+    <!-- Strings related to notification-->
+    <string name="notification">Tandai sudah dibaca</string>
+    <string name="notification_username">nama</string>
+    <string name="notification_description">notification</string>
+
+
     <string name="search_hint">Cari disini..</string>
     <string name="tab_latest">Terbaru</string>
     <string name="tab_popular">Popular</string>
@@ -72,6 +95,8 @@
 
     <string name="myprofile">My Profile</string>
     <string name="othprofile">Other Profile</string>
+    <string name="chat">Chat</string>
+    <string name="notificationBarTitle">Notifikasi</string>
 
     <string name="profession_workplace">Manager Peternakan di Perusahaan</string>
     <string name="edit_profile">Edit Profile</string>
@@ -114,53 +139,6 @@
     <string name="tab_savedpost">Saved Post</string>
 
 
-
-    <!-- Strings related to chat-->
-
-    <!--    chat card-->
-    <string name="chat_bar_title">Chat</string>
-    <string name="chat_item_name">ContactName</string>
-
-    <!--    contact_card-->
-    <string name="contact_item_years_text">Years</string>
-    <string name="contact_item_name">DoctorName</string>
-    <string name="contact_item_specialist">Specialist</string>
-
-    <!-- Strings related to room chat-->
-    <string name="roomchat_contact_name">Name</string>
-    <string name="room_chat_ketik_pesan">Ketik pesan disini…</string>
-    <string name="room_chat_button">Send</string>
-
-
-
-    <string name="chat_item_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
-
-    <string name="room_chat_receiver_name">Contact Name</string>
-
-    <string name="room_chat_preview_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
-
-
-
-
-
-    <!-- Strings related to notification-->
-    <string name="set_notifications_Chat">mengirim pesan kepada anda</string>
-    <string name="set_notification_like">menyukai postingan anda</string>
-    <string name="set_notification_comment">mengomentari postingan anda: </string>
-
-    <string name="person_name">Nama</string>
-    <string name="badge">verification badge</string>
-
-
-
-
-    <string name="notificationBarTitle">Notifikasi</string>
-
-
-    <!-- Strings related to notification-->
-    <string name="notification">Tandai sudah dibaca</string>
-    <string name="notification_username">nama</string>
-    <string name="notification_description">notification</string>
 
 
 </resources>
