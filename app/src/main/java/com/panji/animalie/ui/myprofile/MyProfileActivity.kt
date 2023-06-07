@@ -1,5 +1,6 @@
 package com.panji.animalie.ui.myprofile
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.ActivityMyProfileBinding
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.ui.editprofile.EditProfileActivity
 import com.panji.animalie.ui.fragments.setting.SettingFragment
 import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES_PROFILE
@@ -89,6 +91,28 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
         }
     }
 
+    private fun openEditActivity(data: MyProfileResponse) {
+        //retrieve given data
+        val fullname = data.user.name
+        val username = data.user.username
+        val job = data.user.job_position
+        val workPlace = data.user.work_place
+        val avatar = data.user.avatar
+        val email = data.user.email
+
+        //set listener for button and send data with intent
+        binding.editProfileButton.setOnClickListener {
+            Intent(this, EditProfileActivity::class.java).also {
+                it.putExtra("EXTRA_FULLNAME", fullname)
+                it.putExtra("EXTRA_USERNAME", username)
+                it.putExtra("EXTRA_JOB", job)
+                it.putExtra("EXTRA_WORKPLACE", workPlace)
+                it.putExtra("EXTRA_EMAIL", email)
+                it.putExtra("EXTRA_AVATAR", avatar)
+                startActivity(it)
+            }
+        }
+    }
     private fun openSettingFragment() {
         Log.d("ProfMenu", "Setting")
         val settingFragment = SettingFragment()
@@ -180,6 +204,8 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
                     .into(profilePhoto)
             }
 
+            //send data to openEditActivity function
+            openEditActivity(data)
         }
     }
 

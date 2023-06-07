@@ -7,8 +7,8 @@ import com.panji.animalie.R.string.tab_mypost
 import com.panji.animalie.R.string.tab_savedpost
 import com.panji.animalie.R.string.tab_unanswerd
 object Constanta {
-    const val BASE_URL = "http://127.0.0.1:8000/api/"
-    const val URL_IMAGE = "http://127.0.0.1:8000/storage/"
+    const val BASE_URL = "https://animalie.my.id/api/"
+    const val URL_IMAGE = "https://animalie.my.id/storage/"
 
     const val EXTRA_POST = "extra_post"
     const val EXTRA_SLUG = "extra_slug"
