@@ -1,15 +1,20 @@
 package com.panji.animalie.model
 
 data class Notification(
-    val id: Int,
-    val profileImage: Int,
-    val personName: String,
-    val isDoctor: Boolean,
-    val notificationType: NotificationType
-) {
-    enum class NotificationType {
-        CHAT,
-        LIKE,
-        COMMENT
-    }
+    val name: String,
+    val description: String,
+    val type: NotificationType,
+    var isRead: Boolean = false,
+    val profilePhotoUrl: Int
+)
+
+enum class NotificationType {
+    MESSAGE,
+    LIKE,
+    COMMENT
 }
+
+
+
+
+

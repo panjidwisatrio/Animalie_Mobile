@@ -28,19 +28,13 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
-            android:padding="7dp"
-            android:text="@string/notification"
-            android:textAlignment="textEnd"
-            android:textColor="@color/md_theme_dark_inversePrimary" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notification_item"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            tools:itemCount="3"
+            tools:listitem="@layout/notification" />
 
 
     </LinearLayout>

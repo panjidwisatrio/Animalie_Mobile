@@ -35,6 +35,7 @@
     <string name="navbar_home">Home</string>
     <string name="navbar_interest">Interest</string>
     <string name="navbar_create">Create</string>
+    <string name="navbar_tag">Tag</string>
     <string name="navbar_chat">Chat</string>
     <string name="navbar_profile">Profile</string>
 
@@ -48,18 +49,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
-    <!-- Strings related to notification-->
-    <string name="set_notifications_Chat">mengirim pesan kepada anda</string>
-    <string name="set_notification_like">menyukai postingan anda</string>
-    <string name="set_notification_comment">mengomentari postingan anda: </string>
 
-    <string name="person_name">Nama</string>
-    <string name="badge">verification badge</string>
-
-    <!-- Strings related to chat-->
-    <string name="room_chat_receiver_name">Contact Name</string>
-    <string name="room_chat_ketik_pesan">Ketik pesan disini...</string>
-    <string name="room_chat_preview_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
 
     <string name="contact_card_name">Doctor Name</string>
     <string name="contact_doctor_specialist">Specialist</string>
@@ -94,7 +84,7 @@
     <string name="bookmark_description">bookmark</string>
 
     <string name="myprofile">My Profile</string>
-    <string name="othprofile">Other Profile</string>
+    <string name="othprofile">Profile</string>
     <string name="chat">Chat</string>
     <string name="notificationBarTitle">Notifikasi</string>
 
@@ -127,18 +117,72 @@
     <string name="sudah_punya_akun">Sudah punya akun?&#32; &#8200; &#8195;</string>
     <string name="something_went_wrong">Something went wrong!</string>
     <string name="error_text">Error: %1$s</string>
-
-
+    <string name="posted_at">%1$s min ago</string>
+    <string name="empty_data">Tidak ada data</string>
 
     <!-- Tab -->
     <string name="tab_home">Latest</string>
     <string name="tab_interest">Popular</string>
-    <string name="tab_unanswerd">Unanswerd</string>
+    <string name="tab_unanswerd">Unanswered</string>
     <string name="tab_mypost">My Post</string>
     <string name="tab_discussion">Discussion</string>
     <string name="tab_savedpost">Saved Post</string>
 
+    <!-- Categories-->
+    <string name="cow">Sapi</string>
+    <string name="poultry">Unggas</string>
+    <string name="goat">Kambing</string>
+    <string name="sheep">Domba</string>
+    <string name="fish">Ikan</string>
+    <string name="other">Lainnya</string>
+    <string name="lainnya">Lainnya</string>
+    <string name="job">Job</string>
+    <string name="di">di</string>
+    <string name="belum_ada_pekerjaan">Belum ada pekerjaan</string>
+    <string name="Room_chat_ketik_pesan">ketik pesan</string>
+
+    <!--    Tags-->
+    <string name="tag_name">Name tag</string>
+    <string name="tag_counter">%1$s posts</string>
+
+    <string name="comment">Tulis komentar...</string>
+
+    <string name="appBar_name">Appbar Name</string>
+
+
+    <!-- Strings related to chat-->
+
+    <!--    chat card-->
+    <string name="chat_bar_title">Chat</string>
+    <string name="chat_item_name">ContactName</string>
+
+    <!--    contact_card-->
+    <string name="contact_item_years_text">Years</string>
+    <string name="contact_item_name">DoctorName</string>
+    <string name="contact_item_specialist">Specialist</string>
+
+    <!-- Strings related to room chat-->
+    <string name="roomchat_contact_name">Name</string>
+    <string name="room_chat_ketik_pesan">Ketik pesan disini…</string>
+    <string name="room_chat_button">Send</string>
 
 
 
+    <string name="chat_item_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+
+    <string name="room_chat_receiver_name">Contact Name</string>
+
+    <string name="room_chat_preview_message">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+
+
+
+
+
+    <!-- Strings related to notification-->
+    <string name="set_notifications_Chat">mengirim pesan kepada anda</string>
+    <string name="set_notification_like">menyukai postingan anda</string>
+    <string name="set_notification_comment">mengomentari postingan anda: </string>
+
+    <string name="person_name">Nama</string>
+    <string name="badge">verification badge</string>
 </resources>

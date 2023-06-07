@@ -69,5 +69,5 @@
     <color name="hovering">#7B7683</color>
     <color name="experience_time_background">#D9D9D9</color>
     <color name="notification_background_unread">#CFF4D2</color>
-    //
+    <color name="notification_background_read">#ADBAAE</color>
 </resources>

@@ -1,62 +1,85 @@
 package com.panji.animalie.ui.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.panji.animalie.R
+import com.panji.animalie.databinding.NotificationBinding
 import com.panji.animalie.model.Notification
+import com.panji.animalie.model.NotificationType
 
-class NotificationAdapter : ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(NotificationDiffCallback()) {
+class NotificationAdapter(private val onNotificationClicked: (Notification) -> Unit) :
+    RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
+    private val notifications: MutableList<Notification> = mutableListOf()
+
+    fun setNotifications(notificationList: List<Notification>) {
+        notifications.clear()
+        notifications.addAll(notificationList)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.notification, parent, false)
-        return NotificationViewHolder(itemView)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = NotificationBinding.inflate(inflater, parent, false)
+        return NotificationViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
-        val notification = getItem(position)
+        val notification = notifications[position]
         holder.bind(notification)
     }
 
-    inner class NotificationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val profilePhoto: ImageView = itemView.findViewById(R.id.profile_photo)
-        private val personName: TextView = itemView.findViewById(R.id.person_name)
-        private val badge: ImageView = itemView.findViewById(R.id.verification_badge)
-        private val notificationText: TextView = itemView.findViewById(R.id.Specialist_doctor)
+    override fun getItemCount(): Int = notifications.size
+
+    inner class NotificationViewHolder(private val binding: NotificationBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(notification: Notification) {
-            // Set profile photo using Glide or your preferred image loading library
-            Glide.with(itemView.context)
-                .load(notification.profileImage)
-                .into(profilePhoto)
+            binding.nameNotification.text = notification.name
+            binding.noficationTypes.text = getNotificationDescription(notification.type)
 
-            personName.text = notification.personName
-            badge.visibility = if (notification.isDoctor) View.VISIBLE else View.GONE
+            Glide.with(binding.root.context)
+                .load(notification.profilePhotoUrl)
+                .into(binding.photoProfileNotification)
 
-            // Set the notification text based on the notification type
-            notificationText.text = when (notification.notificationType) {
-                Notification.NotificationType.CHAT -> itemView.context.getString(R.string.set_notifications_Chat)
-                Notification.NotificationType.LIKE -> itemView.context.getString(R.string.set_notification_like)
-                Notification.NotificationType.COMMENT -> itemView.context.getString(R.string.set_notification_comment)
-                else -> ""
+            val backgroundColorRes = if (notification.isRead) {
+                R.color.notification_background_read
+            } else {
+                R.color.notification_background_unread
+            }
+            val backgroundColor = ContextCompat.getColor(itemView.context, backgroundColorRes)
+            binding.backgroundNotification.setCardBackgroundColor(backgroundColor)
+
+            binding.backgroundNotification.setOnClickListener {
+                if (!notification.isRead) {
+                    notification.isRead = true
+                    markAsRead()
+
+                    val backgroundTintColorRes = if (notification.isRead) {
+                        R.color.notification_background_read
+                    } else {
+                        R.color.notification_background_unread
+                    }
+                    val backgroundTintColor = ContextCompat.getColor(itemView.context, backgroundTintColorRes)
+                    binding.backgroundNotification.setCardBackgroundColor(backgroundTintColor)
+                }
+                onNotificationClicked(notification)
             }
         }
-    }
-}
 
-class NotificationDiffCallback : DiffUtil.ItemCallback<Notification>() {
-    override fun areItemsTheSame(oldItem: Notification, newItem: Notification): Boolean {
-        return oldItem.id == newItem.id
-    }
+        private fun getNotificationDescription(type: NotificationType): String {
+            return when (type) {
+                NotificationType.LIKE -> "Menyukai postingan"
+                NotificationType.COMMENT -> "Mengomentari postingan Anda"
+                NotificationType.MESSAGE -> "Anda memiliki pesan masuk"
+            }
+        }
 
-    override fun areContentsTheSame(oldItem: Notification, newItem: Notification): Boolean {
-        return oldItem == newItem
+        private fun markAsRead() {
+            // Mark the notification as read, for example, update the status in the database
+        }
     }
 }
