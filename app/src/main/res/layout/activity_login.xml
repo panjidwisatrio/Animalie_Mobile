@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/logo_animalie"
-        app:srcCompat="@mipmap/ic_animalie_foreground" />
+        app:srcCompat="@mipmap/ic_animalie_round" />
 
     <TextView
         android:id="@+id/app_Name"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/marcellus"
         android:text="@string/app_name"
-        android:textColor="@color/seed"
+        android:textColor="?attr/colorPrimary"
         android:textSize="24sp"
         android:textStyle="normal" />
 
@@ -50,8 +50,8 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:textAlignment="gravity"
-        android:textColor="@color/seed"
-        android:textColorHint="@color/seed"
+        android:textColor="?attr/colorPrimary"
+        android:textColorHint="?attr/colorPrimary"
         tools:ignore="TextFields" />
 
     <EditText
@@ -70,8 +70,8 @@
         android:inputType="textPassword"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textColor="@color/seed"
-        android:textColorHint="@color/seed" />
+        android:textColor="?attr/colorPrimary"
+        android:textColorHint="?attr/colorPrimary" />
 
     <TextView
         android:id="@+id/error_text"
@@ -117,8 +117,8 @@
             android:fontFamily="@font/manrope_bold"
             android:linksClickable="true"
             android:text="@string/registrasi"
-            android:textColor="@color/seed"
-            android:textColorLink="@color/seed"
+            android:textColor="?attr/colorPrimary"
+            android:textColorLink="?attr/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold" />
 

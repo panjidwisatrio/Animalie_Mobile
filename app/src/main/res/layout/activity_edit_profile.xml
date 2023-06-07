@@ -14,6 +14,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@drawable/ic_back"
@@ -140,8 +141,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/current_pass"
                     android:layout_width="match_parent"
-                    android:inputType="textPassword"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,9 +154,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_pass"
-                    android:inputType="textPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -168,8 +169,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/confirm_pass"
                     android:layout_width="match_parent"
-                    android:inputType="textPassword"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

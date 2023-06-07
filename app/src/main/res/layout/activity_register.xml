@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/marcellus"
         android:text="@string/app_name"
-        android:textColor="@color/seed"
+        android:textColor="?attr/colorPrimary"
         android:textSize="20sp"
         android:textStyle="normal" />
 
@@ -82,8 +82,8 @@
         android:inputType="textPersonName"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textColor="@color/seed"
-        android:textColorHint="@color/seed" />
+        android:textColor="?attr/colorPrimary"
+        android:textColorHint="?attr/colorPrimary" />
 
     <EditText
         android:id="@+id/Email_form"
@@ -93,6 +93,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:autofillHints=""
+        android:background="@drawable/rounded_background"
         android:backgroundTint="?attr/colorSecondaryContainer"
         android:ems="10"
         android:fontFamily="@font/manrope_regular"
@@ -100,8 +101,8 @@
         android:inputType="textEmailAddress"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textColor="@color/seed"
-        android:textColorHint="@color/seed" />
+        android:textColor="?attr/colorPrimary"
+        android:textColorHint="?attr/colorPrimary" />
 
     <EditText
         android:id="@+id/NewPassword_form"
@@ -182,8 +183,8 @@
             android:fontFamily="@font/manrope_bold"
             android:linksClickable="true"
             android:text="@string/login"
-            android:textColor="@color/seed"
-            android:textColorLink="@color/seed"
+            android:textColor="?attr/colorPrimary"
+            android:textColorLink="?attr/colorPrimary"
             android:textStyle="bold" />
     </LinearLayout>
 
