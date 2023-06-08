@@ -153,7 +153,7 @@
                     android:background="@color/transparent"
                     android:contentDescription="@string/like_description"
                     android:padding="12dp"
-                    android:src="@drawable/ic_like" />
+                    android:src="@drawable/ic_like_change" />
 
                 <TextView
                     android:id="@+id/like_counter"

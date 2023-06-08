@@ -156,7 +156,7 @@
     <string name="tag_name">Name tag</string>
     <string name="tag_counter">%1$s posts</string>
 
-    <string name="comment">Tulis komentar...</string>
+    <string name="comment">Tulis komentar..</string>
 
     <string name="appBar_name">Appbar Name</string>
 
@@ -167,6 +167,8 @@
 
     <string name="notification">Notifikasi</string>
     <string name="dark_theme">Tema Gelap</string>
-    <string name="light_theme">Tema Siangf</string>
+    <string name="light_theme">Tema Siang</string>
+
+    <string name="edit_profile_picture">Ubah foto profil</string>
 
 </resources>

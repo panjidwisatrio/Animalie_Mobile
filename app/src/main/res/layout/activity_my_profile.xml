@@ -19,7 +19,7 @@
         android:layout_below="@+id/profile_toolbar"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigation"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -191,6 +191,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
+                android:paddingBottom="8dp"
                 android:layout_height="match_parent" />
         </LinearLayout>
     </ScrollView>
@@ -208,7 +209,7 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <ProgressBar
         android:id="@+id/progressBar"

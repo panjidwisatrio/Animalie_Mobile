@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.panji.animalie.data.remote.api.ApiService
 import com.panji.animalie.data.remote.api.RetrofitService
-import com.panji.animalie.model.Tag
 import com.panji.animalie.model.response.Auth
 import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.model.response.DetailTagResponse
+import com.panji.animalie.model.response.EditProfileResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.model.response.TagResponse
@@ -17,7 +17,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class Repository(application: Application) {
     private val retrofit: ApiService = RetrofitService.create()
@@ -463,5 +462,53 @@ class Repository(application: Application) {
             }
         }
         return catetag
+    }
+
+    suspend fun sendEditedProfile(
+        token: String,
+        name: String,
+        username: String,
+        work_place: String? = null,
+        job_position: String? = null,
+        email: String,
+        avatar: String? = null,
+    ): LiveData<Resource<EditProfileResponse>> {
+        val profileData = MutableLiveData<Resource<EditProfileResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            profileData.postValue(Resource.Error(throwable.message))
+        }
+
+        profileData.postValue(Resource.Loading())
+
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.editProfile(
+                "Bearer $token",
+                name,
+                username,
+                work_place,
+                job_position,
+                email,
+                avatar
+            )
+
+            if (response.isSuccessful) {
+                profileData.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    profileData.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    profileData.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    profileData.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    profileData.postValue(Resource.Error("Internal server error"))
+                } else {
+                    profileData.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+
+        return profileData
     }
 }

@@ -4,12 +4,14 @@ import com.panji.animalie.model.response.Auth
 import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.model.response.DetailTagResponse
+import com.panji.animalie.model.response.EditProfileResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.model.response.TagResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -177,4 +179,22 @@ interface ApiService {
         @Header("Authorization")
         token: String,
     ): Response<CreatePostResponse>
+
+    @PATCH("profile")
+    suspend fun editProfile(
+        @Header("Authorization")
+        token: String,
+        @Query("name")
+        name: String,
+        @Query("username")
+        username: String,
+        @Query("work_place")
+        work_place: String? = null,
+        @Query("job_position")
+        job_position: String? = null,
+        @Query("email")
+        email: String,
+        @Query("avatar")
+        avatar: String? = null,
+    ): Response<EditProfileResponse>
 }

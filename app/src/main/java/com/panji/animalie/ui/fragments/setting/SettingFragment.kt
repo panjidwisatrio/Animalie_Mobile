@@ -1,6 +1,5 @@
 package com.panji.animalie.ui.fragments.setting
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,7 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
 
 
@@ -46,15 +45,14 @@ class SettingFragment : Fragment() {
             navigateToActivity()
         }
 
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkTheme()
-        setToggleTheme()
+        //checkTheme()
+        //setToggleTheme()
 
     }
 
@@ -90,14 +88,6 @@ class SettingFragment : Fragment() {
             }
             buttonView.isChecked = isChecked
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        // Check the current theme and update the toggle accordingly
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        themeToggle.isChecked = currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 
     private fun navigateToActivity() {

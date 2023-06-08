@@ -114,13 +114,12 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
         }
     }
     private fun openSettingFragment() {
-        Log.d("ProfMenu", "Setting")
         val settingFragment = SettingFragment()
 
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container, settingFragment) // Replace the current fragment
+            //replace(R.id.fragment_container, settingFragment) // Replace the current fragment
             // or
-            // add(R.id.fragmentContainer, settingFragment) // Add the fragment on top of the current fragment
+            add(R.id.fragment_container, settingFragment) // Add the fragment on top of the current fragment
             addToBackStack("setting_tag") // Optional: Add the transaction to the back stack
             commit()
         }
