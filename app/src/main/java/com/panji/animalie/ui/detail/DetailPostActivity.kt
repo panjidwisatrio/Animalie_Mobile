@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.panji.animalie.R
 import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.data.resource.Resource
@@ -77,8 +77,6 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
                         when (post) {
                             is Resource.Success -> {
                                 binding.apply {
-                                    progressBar.visibility = invisible
-
                                     if (post.data?.liked == true) {
                                         likeButton.setImageResource(R.drawable.ic_unlike)
                                     } else {
@@ -94,13 +92,11 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
                             }
 
                             is Resource.Error -> {
-                                MaterialAlertDialogBuilder(this@DetailPostActivity)
-                                    .setTitle("Error")
-                                    .setMessage(post.message)
-                                    .setPositiveButton("OK") { dialog, _ ->
-                                        dialog.dismiss()
-                                    }
-                                    .show()
+                                Toast.makeText(
+                                    this@DetailPostActivity,
+                                    post.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
@@ -211,13 +207,11 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
                             }
 
                             is Resource.Error -> {
-                                MaterialAlertDialogBuilder(this@DetailPostActivity)
-                                    .setTitle("Error")
-                                    .setMessage(post.message)
-                                    .setPositiveButton("OK") { dialog, _ ->
-                                        dialog.dismiss()
-                                    }
-                                    .show()
+                                Toast.makeText(
+                                    this@DetailPostActivity,
+                                    post.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }

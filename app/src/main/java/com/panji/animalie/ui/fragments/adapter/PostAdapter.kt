@@ -157,7 +157,6 @@ class PostAdapter(
                 }
 
                 bookmark.setOnClickListener {
-                    // TODO: 1. Buatlah sebuah fungsi untuk melakukan bookmark post
                     bookmarkPost(
                         postId = post.id.toString(),
                         bookmarkButton = bookmark
