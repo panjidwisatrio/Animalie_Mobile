@@ -1,8 +1,7 @@
-package com.panji.animalie.ui.adapter
+package com.panji.animalie.ui.fragments.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -13,6 +12,7 @@ import com.panji.animalie.databinding.TagsBinding
 import com.panji.animalie.model.Tag
 import com.panji.animalie.ui.tag.DetailTagActivity
 import com.panji.animalie.util.Constanta.EXTRA_SLUG
+import com.panji.animalie.util.Constanta.EXTRA_TAG
 
 class TagAdapter(private val context: Context?) :
     ListAdapter<Tag, TagAdapter.ViewHolder>(DIFF_UTIL) {
@@ -44,6 +44,7 @@ class TagAdapter(private val context: Context?) :
                 itemView.context.startActivity(
                     Intent(itemView.context, DetailTagActivity::class.java)
                         .putExtra(EXTRA_SLUG, tag.slug)
+                        .putExtra(EXTRA_TAG, tag.name_tag)
                 )
             }
         }

@@ -108,7 +108,7 @@
     <string name="certificate_publisher">Certificate Publisher</string>
     <string name="certificate_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</string>
 
-    <string name="create_post">Create Post</string>
+    <string name="create_post">Post</string>
     <string name="post">Post</string>
     <string name="title">Judul</string>
     <string name="category">Kategori</string>
@@ -159,4 +159,6 @@
     <string name="comment">Tulis komentar...</string>
 
     <string name="appBar_name">Appbar Name</string>
+    <string name="chip">chip</string>
+    <string name="content_description_end_icon">Add new Tag</string>
 </resources>

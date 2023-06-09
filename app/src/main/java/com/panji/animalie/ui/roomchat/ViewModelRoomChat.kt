@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.panji.animalie.model.Message
-import com.panji.animalie.data.Repository
 
 class MainViewModelRoomChat : ViewModel() {
 //    private val repository: Repository = Repository()

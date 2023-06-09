@@ -9,6 +9,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:subtitleCentered="true"
         android:elevation="8dp"
         app:title="@string/appBar_name"
         app:titleCentered="true" />

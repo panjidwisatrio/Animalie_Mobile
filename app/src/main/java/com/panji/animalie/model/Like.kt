@@ -7,8 +7,8 @@ data class Like(
     val id: Int,
     @field:Json(name = "post_id")
     val post_id: Int,
-    @field:Json(name = "post_type")
-    val postType: String,
+    @field:Json(name = "user_id")
+    val user_id: String,
     @field:Json(name = "count")
     val count: Int
 )

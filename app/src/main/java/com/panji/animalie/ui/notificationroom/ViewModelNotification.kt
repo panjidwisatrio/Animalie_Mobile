@@ -1,14 +1,12 @@
 package com.panji.animalie.ui.notificationroom
 
-import com.panji.animalie.data.Repository
+import com.panji.animalie.data.repo.PostRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.panji.animalie.model.Notification
-import kotlinx.coroutines.launch
 
-class ViewModelNotification(private val repository: Repository) : ViewModel() {
+class ViewModelNotification(private val repository: PostRepository) : ViewModel() {
     private val _notifications = MutableLiveData<List<Notification>>()
     val notifications: LiveData<List<Notification>> get() = _notifications
 

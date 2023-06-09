@@ -1,4 +1,4 @@
-package com.panji.animalie.ui.adapter
+package com.panji.animalie.ui.fragments.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

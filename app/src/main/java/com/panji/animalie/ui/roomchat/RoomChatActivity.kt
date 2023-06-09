@@ -1,13 +1,11 @@
 package com.panji.animalie.ui.roomchat
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.panji.animalie.databinding.ActivityRoomChatBinding
-import com.panji.animalie.model.Message
-import com.panji.animalie.ui.adapter.RoomChatAdapter
+import com.panji.animalie.ui.fragments.adapter.RoomChatAdapter
 
 class RoomChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomChatBinding

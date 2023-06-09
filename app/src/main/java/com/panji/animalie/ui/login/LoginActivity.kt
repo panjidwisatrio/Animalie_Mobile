@@ -5,13 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.panji.animalie.R
-import com.panji.animalie.data.Resource
+import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.ActivityLoginBinding
 import com.panji.animalie.model.response.Auth
 import com.panji.animalie.ui.homepage.HomePage
 import com.panji.animalie.ui.register.RegisterActivity
+import com.panji.animalie.util.DialogHelper
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,13 +25,22 @@ class LoginActivity : AppCompatActivity(), ViewStateCallback<Auth> {
         SessionManager(this)
     }
 
+    private val dialogLoading by lazy {
+        DialogHelper.showLoadingDialog("Please wait...")
+    }
+
+    private val dialogError by lazy {
+        DialogHelper.showErrorDialog("Login failed")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setVisibility()
+        DialogHelper.setUpDialog(this@LoginActivity)
+
         login()
         toRegisterPage()
     }
@@ -64,53 +73,22 @@ class LoginActivity : AppCompatActivity(), ViewStateCallback<Auth> {
         }
     }
 
-    private fun setVisibility() {
-        binding.loginButton.visibility = visible
-        binding.NewPasswordForm.visibility = visible
-        binding.UsernameEmailForm.visibility = visible
-        binding.RegistrasiPageLink.visibility = visible
-        binding.LogoAnimalie.visibility = visible
-        binding.NoAccoundtxt.visibility = visible
-        binding.appName.visibility = visible
-    }
-
     override fun onSuccess(data: Auth) {
         sessionManager.saveToken(data.access_token)
         sessionManager.saveId(data.user.id.toString())
 
-        binding.progressBarLogin.visibility = invisible
-        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+        dialogLoading.dismiss()
+        Toast.makeText(this, "Login success", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, HomePage::class.java))
     }
 
     override fun onLoading() {
-        binding.apply {
-            loginButton.visibility = invisible
-            NewPasswordForm.visibility = invisible
-            UsernameEmailForm.visibility = invisible
-            RegistrasiPageLink.visibility = invisible
-            LogoAnimalie.visibility = invisible
-            NoAccoundtxt.visibility = invisible
-            appName.visibility = invisible
-            errorText.visibility = invisible
-            progressBarLogin.visibility = visible
-        }
+        dialogLoading.show()
     }
 
     override fun onFailed(message: String?) {
-        binding.apply {
-            loginButton.visibility = invisible
-            NewPasswordForm.visibility = invisible
-            UsernameEmailForm.visibility = invisible
-            RegistrasiPageLink.visibility = invisible
-            LogoAnimalie.visibility = invisible
-            NoAccoundtxt.visibility = invisible
-            appName.visibility = invisible
-            progressBarLogin.visibility = invisible
-            errorText.visibility = visible
-            errorText.text = getString(R.string.error_text, message)
-        }
-
+        dialogLoading.dismiss()
+        dialogError.show()
     }
 }
 

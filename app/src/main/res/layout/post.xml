@@ -24,8 +24,8 @@
                 android:id="@+id/profile_photo"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@mipmap/profile_photo_round"
-                android:contentDescription="@string/profile_description" />
+                android:contentDescription="@string/profile_description"
+                android:src="@mipmap/profile_photo_round" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -63,15 +63,15 @@
             android:text="@string/date" />
 
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/more_button"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentRight="true"-->
-<!--                    android:background="@color/transparent"-->
-<!--                    android:contentDescription="@string/more_description"-->
-<!--                    android:padding="12dp"-->
-<!--                    android:src="@drawable/ic_more" />-->
+        <ImageButton
+            android:id="@+id/more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@color/transparent"
+            android:contentDescription="@string/more_description"
+            android:padding="12dp"
+            android:src="@drawable/ic_more" />
     </RelativeLayout>
 
     <!-- Post Content -->
@@ -94,8 +94,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:maxLines="4"
             android:ellipsize="end"
+            android:maxLines="4"
             android:text="@string/post_content"
             android:textSize="14sp" />
 

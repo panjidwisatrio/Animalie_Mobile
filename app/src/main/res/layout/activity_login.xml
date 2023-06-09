@@ -8,13 +8,6 @@
     android:orientation="vertical"
     tools:context=".ui.login.LoginActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBar_login"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
     <ImageView
         android:id="@+id/LogoAnimalie"
         android:layout_width="wrap_content"
@@ -73,14 +66,6 @@
         android:textColor="@color/seed"
         android:textColorHint="@color/seed" />
 
-    <TextView
-        android:id="@+id/error_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/something_went_wrong"
-        android:visibility="gone" />
-
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
@@ -92,7 +77,6 @@
         android:text="@string/login"
         android:textSize="18sp"
         app:cornerRadius="8dp" />
-
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -43,5 +43,7 @@ data class Post(
     @field:Json(name = "comment")
     val Comments: List<Comment>,
     @field:Json(name = "like_count_api")
-    val like: Like?
+    val like: List<Like>,
+    @field:Json(name = "bookmarked_by")
+    val bookmarked_by: List<User>,
 )

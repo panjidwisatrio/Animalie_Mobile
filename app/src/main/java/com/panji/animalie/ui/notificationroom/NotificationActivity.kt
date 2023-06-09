@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.panji.animalie.databinding.ActivityNotificationBinding
-import com.panji.animalie.ui.adapter.NotificationAdapter
+import com.panji.animalie.ui.fragments.adapter.NotificationAdapter
 
 class NotificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNotificationBinding

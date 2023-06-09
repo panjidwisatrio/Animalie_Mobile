@@ -1,4 +1,4 @@
-package com.panji.animalie.ui.adapter
+package com.panji.animalie.ui.fragments.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -22,29 +22,35 @@ class SectionTabAdapter(
     override fun getItemCount(): Int = if (
         typePost == "interestGroup" ||
         typePost == "dashboard" ||
-        typePost == "myProfile") 3 else 2
+        typePost == "myProfile" ||
+        typePost == "tag") 3 else 2
 
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
 
-        if (type == "homepage") {
-            when (position) {
-                0 -> fragment = LatestFragment.getInstance(typePost, chipInterest, selectedTag)
-                1 -> fragment = PopularFragment.getInstance(typePost, chipInterest)
-                2 -> fragment = UnansweredFragment.getInstance(typePost, chipInterest)
+        when (type) {
+            "homepage" -> {
+                when (position) {
+                    0 -> fragment = LatestFragment.getInstance(typePost, chipInterest, selectedTag)
+                    1 -> fragment = PopularFragment.getInstance(typePost, chipInterest, selectedTag)
+                    2 -> fragment = UnansweredFragment.getInstance(typePost, chipInterest, selectedTag)
+                }
             }
-        } else if (type == "profile") {
-            when (position) {
-                0 -> fragment = userId?.let { MyPostFragment.getInstance(it) }
-                1 -> fragment = userId?.let { DiscussionFragment.getInstance(it) }
-                2 -> fragment = token?.let { SavedPostFragment.getInstance(it) }
+            "profile" -> {
+                when (position) {
+                    0 -> fragment = userId?.let { MyPostFragment.getInstance(it) }
+                    1 -> fragment = userId?.let { DiscussionFragment.getInstance(it) }
+                    2 -> fragment = token?.let { SavedPostFragment.getInstance(it) }
+                }
             }
-        } else if (type == "otherProfile") {
-            when (position) {
-                0 -> fragment = userId?.let { MyPostFragment.getInstance(it) }
-                1 -> fragment = userId?.let { DiscussionFragment.getInstance(it) }
+            "otherProfile" -> {
+                when (position) {
+                    0 -> fragment = userId?.let { MyPostFragment.getInstance(it) }
+                    1 -> fragment = userId?.let { DiscussionFragment.getInstance(it) }
+                }
             }
         }
+
         return fragment as Fragment
     }
 }

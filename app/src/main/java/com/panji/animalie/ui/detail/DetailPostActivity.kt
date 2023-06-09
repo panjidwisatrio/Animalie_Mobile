@@ -6,12 +6,15 @@ import android.os.Build.VERSION.SDK_INT
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.panji.animalie.R
-import com.panji.animalie.data.Resource
+import com.panji.animalie.data.preferences.SessionManager
+import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.ActivityDetailPostBinding
 import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.util.Constanta
@@ -30,6 +33,10 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
 
     private lateinit var binding: ActivityDetailPostBinding
     private val viewModel by viewModels<ViewModelDetailPost>()
+    private val sessionManager by lazy { SessionManager(this) }
+
+    private var postId: String? = null
+    private val token by lazy { sessionManager.fetchToken() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +52,57 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
 
     private fun getPost() {
         val slug = intent.getStringExtra(EXTRA_POST)
+        val userId = sessionManager.fetchId()
 
         CoroutineScope(Dispatchers.Main).launch {
             slug?.let {
-                viewModel.getDetailPost(it).observe(this@DetailPostActivity) { post ->
-                    when (post) {
-                        is Resource.Success -> post.data?.let { it1 -> onSuccess(it1) }
-                        is Resource.Loading -> onLoading()
-                        is Resource.Error -> onFailed(post.message)
+                userId?.let { it1 ->
+                    viewModel.getDetailPost(it, it1).observe(this@DetailPostActivity) { post ->
+                        when (post) {
+                            is Resource.Success -> post.data?.let { it1 -> onSuccess(it1) }
+                            is Resource.Loading -> onLoading()
+                            is Resource.Error -> onFailed(post.message)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun likePost() {
+        CoroutineScope(Dispatchers.Main).launch {
+            postId?.let {
+                token?.let { it1 ->
+                    viewModel.likePost(it1, it).observe(this@DetailPostActivity) { post ->
+                        when (post) {
+                            is Resource.Success -> {
+                                binding.apply {
+                                    progressBar.visibility = invisible
+
+                                    if (post.data?.liked == true) {
+                                        likeButton.setImageResource(R.drawable.ic_unlike)
+                                    } else {
+                                        likeButton.setImageResource(R.drawable.ic_like)
+                                    }
+
+                                    likeCounter.text = post.data?.likeCount.toString()
+                                }
+                            }
+
+                            is Resource.Loading -> {
+
+                            }
+
+                            is Resource.Error -> {
+                                MaterialAlertDialogBuilder(this@DetailPostActivity)
+                                    .setTitle("Error")
+                                    .setMessage(post.message)
+                                    .setPositiveButton("OK") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+                                    .show()
+                            }
+                        }
                     }
                 }
             }
@@ -60,6 +110,8 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
     }
 
     override fun onSuccess(data: DetailPostResponse) {
+        postId = data.post.id.toString()
+
         val timeAgo = getTimeAgo(data.post.created_at)
         val stringBuilder = data.post.User.avatar?.let { StringBuilder(it) }
         val fixString = stringBuilder?.replace(11, 12, "/").toString()
@@ -89,17 +141,31 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
                 postContent.text = Html.fromHtml(data.post.content)
             }
 
-            if (data.post.like != null) {
-                likeCounter.text = data.post.like.count.toString()
+            if (data.post.like.isNotEmpty()) {
+                likeCounter.text = data.post.like.size.toString()
             } else {
                 likeCounter.text = "0"
             }
 
-//            if (data.post.Comments.isEmpty()) {
-//                commentCounter.text = "0"
-//            } else {
-//                commentCounter.text = data.post.Comments.size.toString()
-//            }
+            Log.d("DetailPostActivity", "onSuccess: ${data.liked}")
+
+            if (data.liked) {
+                likeButton.setImageResource(R.drawable.ic_unlike)
+            } else {
+                likeButton.setImageResource(R.drawable.ic_like)
+            }
+
+            if (data.bookmarked) {
+                bookmark.setImageResource(R.drawable.ic_unbookmark)
+            } else {
+                bookmark.setImageResource(R.drawable.ic_bookmark)
+            }
+
+            if (data.post.Comments.isEmpty()) {
+                commentCounter.text = "0"
+            } else {
+                commentCounter.text = data.post.Comments.size.toString()
+            }
 
             shareButton.setOnClickListener {
                 startActivity(
@@ -112,13 +178,51 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
             }
 
             bookmark.setOnClickListener {
-                // TODO: 1. Buatlah sebuah fungsi untuk melakukan bookmark post
+                bookmarkPost()
             }
 
             likeButton.setOnClickListener {
-                // TODO: 2. Buatlah sebuah fungsi untuk melakukan like post
+                likePost()
             }
 
+        }
+    }
+
+    private fun bookmarkPost() {
+        CoroutineScope(Dispatchers.Main).launch {
+            postId?.let {
+                token?.let { it1 ->
+                    viewModel.bookmarkPost(it1, it).observe(this@DetailPostActivity) { post ->
+                        when (post) {
+                            is Resource.Success -> {
+                                binding.apply {
+                                    progressBar.visibility = invisible
+
+                                    if (post.data?.bookmarked == true) {
+                                        bookmark.setImageResource(R.drawable.ic_unbookmark)
+                                    } else {
+                                        bookmark.setImageResource(R.drawable.ic_bookmark)
+                                    }
+                                }
+                            }
+
+                            is Resource.Loading -> {
+
+                            }
+
+                            is Resource.Error -> {
+                                MaterialAlertDialogBuilder(this@DetailPostActivity)
+                                    .setTitle("Error")
+                                    .setMessage(post.message)
+                                    .setPositiveButton("OK") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+                                    .show()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -3,13 +3,17 @@ package com.panji.animalie.ui.homepage
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.SearchView
 import androidx.activity.OnBackPressedCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.R
 import com.panji.animalie.databinding.HomePageBinding
-import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.ui.fragments.adapter.SectionTabAdapter
 import com.panji.animalie.ui.createpost.CreatePostActivity
+import com.panji.animalie.ui.fragments.latest.LatestFragment
+import com.panji.animalie.ui.fragments.popular.PopularFragment
+import com.panji.animalie.ui.fragments.unanswerd.UnansweredFragment
 import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES
 
@@ -18,11 +22,12 @@ class HomePage : AppCompatActivity() {
 
     private lateinit var binding: HomePageBinding
 
-    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            showAppClosingDialog()
+    private val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showAppClosingDialog()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,39 +49,72 @@ class HomePage : AppCompatActivity() {
         // setup tab
         setTabLayout()
         setFab()
+        searchPost()
     }
 
-    private fun setFab() {
-        binding.createFab.createFab.setOnClickListener {
-            startActivity(
-                Intent(this, CreatePostActivity::class.java)
-            )
+    private fun searchPost() {
+        binding.searchBar.searchBarLayout.apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    performSearch(newText)
+                    return false
+                }
+            })
         }
     }
 
-    private fun showAppClosingDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Keluar dari aplikasi?")
-            .setMessage("Apakah kamu yakin ingin keluar dari aplikasi?")
-            .setNegativeButton("Tidak") { dialog, _ ->
-                dialog.dismiss()
+    private fun performSearch(query: String?) {
+        when (val currentFragment = supportFragmentManager.findFragmentByTag("f${binding.viewPager.currentItem}")) {
+            is LatestFragment -> {
+                currentFragment.getPostLatest(query)
             }
-            .setPositiveButton("Ya") { _, _ ->
-                finish()
+
+            is PopularFragment -> {
+                currentFragment.getPopularPost(query)
             }
-            .show()
-    }
 
-
-    private fun setTabLayout() {
-        val pageAdapter = SectionTabAdapter(this, "homepage", "dashboard")
-
-        binding.apply {
-            viewPager.adapter = pageAdapter
-
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.text = resources.getString(TAB_TITLES[position])
-            }.attach()
+            is UnansweredFragment -> {
+                currentFragment.getUnansweredPost(query)
+            }
         }
     }
-}
+
+        private fun setFab() {
+            binding.createFab.createFab.setOnClickListener {
+                startActivity(
+                    Intent(this, CreatePostActivity::class.java)
+                )
+            }
+        }
+
+        private fun showAppClosingDialog() {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Keluar dari aplikasi?")
+                .setMessage("Apakah kamu yakin ingin keluar dari aplikasi?")
+                .setNegativeButton("Tidak") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Ya") { _, _ ->
+                    finish()
+                }
+                .show()
+        }
+
+
+        private fun setTabLayout() {
+            val pageAdapter = SectionTabAdapter(this, "homepage", "dashboard")
+
+            binding.apply {
+                viewPager.adapter = pageAdapter
+
+                TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                    tab.text = resources.getString(TAB_TITLES[position])
+                }.attach()
+            }
+        }
+    }

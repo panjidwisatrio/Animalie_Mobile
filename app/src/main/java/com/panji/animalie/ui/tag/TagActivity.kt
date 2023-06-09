@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.panji.animalie.R
-import com.panji.animalie.data.Resource
+import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.ActivityTagBinding
 import com.panji.animalie.model.response.TagResponse
-import com.panji.animalie.ui.adapter.TagAdapter
+import com.panji.animalie.ui.fragments.adapter.TagAdapter
 import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
@@ -20,10 +20,10 @@ import kotlinx.coroutines.launch
 class TagActivity : AppCompatActivity(), ViewStateCallback<TagResponse> {
 
     private lateinit var binding: ActivityTagBinding
-
     private lateinit var adapterTag: TagAdapter
-
     private val viewModel: ViewModelTag by viewModels()
+
+    private var query: String? = null
 
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
@@ -50,9 +50,25 @@ class TagActivity : AppCompatActivity(), ViewStateCallback<TagResponse> {
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 
-        getAllTag()
         //show recyclerView
+        getAllTag()
         showRecyclerView()
+        searchTag()
+    }
+
+    private fun searchTag() {
+        binding.searchBar.searchBarLayout.apply {
+            setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    getAllTag(newText)
+                    return false
+                }
+            })
+        }
     }
 
     private fun showAppClosingDialog() {
@@ -75,9 +91,15 @@ class TagActivity : AppCompatActivity(), ViewStateCallback<TagResponse> {
         }
     }
 
-    private fun getAllTag() {
+    private fun getAllTag(querys: String? = null) {
+        query = if (querys == "") {
+            null
+        } else {
+            querys
+        }
+
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getTag()
+            viewModel.getTag(query)
                 .observe(this@TagActivity) {
                     when (it) {
                         is Resource.Error -> onFailed(it.message)
@@ -94,7 +116,6 @@ class TagActivity : AppCompatActivity(), ViewStateCallback<TagResponse> {
         binding.apply {
             progressBar.visibility = invisible
             tagRecyclerView.visibility = visible
-            searchBar.searchBarLayout.visibility = visible
             createFab.createFab.visibility = visible
         }
     }
@@ -103,7 +124,6 @@ class TagActivity : AppCompatActivity(), ViewStateCallback<TagResponse> {
         binding.apply {
             progressBar.visibility = visible
             tagRecyclerView.visibility = invisible
-            searchBar.searchBarLayout.visibility = invisible
             createFab.createFab.visibility = invisible
         }
     }
@@ -112,7 +132,6 @@ class TagActivity : AppCompatActivity(), ViewStateCallback<TagResponse> {
         binding.apply {
             progressBar.visibility = invisible
             tagRecyclerView.visibility = invisible
-            searchBar.searchBarLayout.visibility = invisible
             createFab.createFab.visibility = invisible
 
             errorText.visibility = visible

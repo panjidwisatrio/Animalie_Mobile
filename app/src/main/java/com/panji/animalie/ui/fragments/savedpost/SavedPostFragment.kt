@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.panji.animalie.R
-import com.panji.animalie.data.Resource
+import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.FragmentSavedPostBinding
 import com.panji.animalie.model.response.PostResponse
-import com.panji.animalie.ui.adapter.PostAdapter
+import com.panji.animalie.ui.detail.ViewModelDetailPost
+import com.panji.animalie.ui.fragments.adapter.PostAdapter
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +45,12 @@ class SavedPostFragment : Fragment(), ViewStateCallback<PostResponse> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapterSavedPost = PostAdapter(context)
+        adapterSavedPost = PostAdapter(
+            context,
+            type = "my_post",
+            viewModel = ViewModelDetailPost(application = requireActivity().application),
+            lifecycleOwner = viewLifecycleOwner
+        )
 
         getBookmark()
         showRecycleView()

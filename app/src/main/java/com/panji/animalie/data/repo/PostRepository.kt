@@ -1,100 +1,31 @@
-package com.panji.animalie.data
+package com.panji.animalie.data.repo
 
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.data.remote.api.ApiService
 import com.panji.animalie.data.remote.api.RetrofitService
-import com.panji.animalie.model.Tag
-import com.panji.animalie.model.response.Auth
+import com.panji.animalie.model.response.BookmarkPostResponse
 import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.DetailPostResponse
-import com.panji.animalie.model.response.DetailTagResponse
-import com.panji.animalie.model.response.MyProfileResponse
+import com.panji.animalie.model.response.LikePostResponse
 import com.panji.animalie.model.response.PostResponse
-import com.panji.animalie.model.response.TagResponse
+import com.panji.animalie.model.response.UploadImageResponse
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Response
+import okhttp3.MultipartBody
 
-class Repository(application: Application) {
+class PostRepository(application: Application) {
     private val retrofit: ApiService = RetrofitService.create()
-
-    suspend fun login(
-        email: String,
-        password: String
-    ): LiveData<Resource<Auth>> {
-        val auth = MutableLiveData<Resource<Auth>>()
-
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            auth.postValue(Resource.Error(throwable.message))
-        }
-
-        auth.postValue(Resource.Loading())
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.login(email, password)
-
-            if (response.isSuccessful) {
-                auth.postValue(Resource.Success(response.body()))
-            } else {
-                if (response.code() == 401) {
-                    auth.postValue(Resource.Error("Unauthorized"))
-                } else if (response.code() == 403) {
-                    auth.postValue(Resource.Error("API limit exceeded"))
-                } else if (response.code() == 422) {
-                    auth.postValue(Resource.Error("Query parameter is missing"))
-                } else if (response.code() == 500) {
-                    auth.postValue(Resource.Error("Internal server error"))
-                } else {
-                    auth.postValue(Resource.Error("Something went wrong"))
-                }
-            }
-        }
-        return auth
-    }
-
-    suspend fun register(
-        name: String,
-        username: String,
-        email: String,
-        password: String,
-        confirm_password: String
-    ): LiveData<Resource<Auth>> {
-        val auth = MutableLiveData<Resource<Auth>>()
-
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            auth.postValue(Resource.Error(throwable.message))
-        }
-
-        auth.postValue(Resource.Loading())
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.register(name, username, email, password, confirm_password)
-
-            if (response.isSuccessful) {
-                auth.postValue(Resource.Success(response.body()))
-            } else {
-                if (response.code() == 401) {
-                    auth.postValue(Resource.Error("Unauthorized"))
-                } else if (response.code() == 403) {
-                    auth.postValue(Resource.Error("API limit exceeded"))
-                } else if (response.code() == 422) {
-                    auth.postValue(Resource.Error("Query parameter is missing"))
-                } else if (response.code() == 500) {
-                    auth.postValue(Resource.Error("Internal server error"))
-                } else {
-                    auth.postValue(Resource.Error("Something went wrong"))
-                }
-            }
-        }
-        return auth
-    }
 
     suspend fun getLatestPost(
         type: String,
         selectedCategory: String? = null,
         selectedTag: String? = null,
+        query: String? = null,
         page: Int?
     ): LiveData<Resource<PostResponse>> {
         val post = MutableLiveData<Resource<PostResponse>>()
@@ -106,11 +37,23 @@ class Repository(application: Application) {
         post.postValue(Resource.Loading())
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
-                retrofit.latestCategory(type, selectedCategory, page)
+                if (query != null) {
+                    retrofit.searchLatestCategory(type, selectedCategory, query, page)
+                } else {
+                    retrofit.latestCategory(type, selectedCategory, page)
+                }
             } else if (selectedTag != null && type != "dashboard" && type != "interestGroup") {
-                retrofit.latestTag(type, selectedTag, page)
+                if (query != null) {
+                    retrofit.searchLatestTag(type, selectedTag, query, page)
+                } else {
+                    retrofit.latestTag(type, selectedTag, page)
+                }
             } else {
-                retrofit.latest(type, page)
+                if (query != null) {
+                    retrofit.searchLatest(type, query, page)
+                } else {
+                    retrofit.latest(type, page)
+                }
             }
 
             if (response.isSuccessful) {
@@ -136,6 +79,7 @@ class Repository(application: Application) {
         type: String,
         selectedCategory: String? = null,
         selectedTag: String? = null,
+        query: String? = null,
         page: Int?
     ): LiveData<Resource<PostResponse>> {
         val post = MutableLiveData<Resource<PostResponse>>()
@@ -147,11 +91,23 @@ class Repository(application: Application) {
         post.postValue(Resource.Loading())
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
-                retrofit.popularCategory(type, selectedCategory, page)
+                if (query != null) {
+                    retrofit.searchPopularCategory(type, selectedCategory, query, page)
+                } else {
+                    retrofit.popularCategory(type, selectedCategory, page)
+                }
             } else if (selectedTag != null && type != "dashboard" && type != "interestGroup") {
-                retrofit.popularTag(type, selectedTag, page)
+                if (query != null) {
+                    retrofit.searchPopularTag(type, selectedTag, query, page)
+                } else {
+                    retrofit.popularTag(type, selectedTag, page)
+                }
             } else {
-                retrofit.popular(type, page)
+                if (query != null) {
+                    retrofit.searchPopular(type, query, page)
+                } else {
+                    retrofit.popular(type, page)
+                }
             }
 
             if (response.isSuccessful) {
@@ -177,6 +133,7 @@ class Repository(application: Application) {
         type: String,
         selectedCategory: String? = null,
         selectedTag: String? = null,
+        query: String? = null,
         page: Int?
     ): LiveData<Resource<PostResponse>> {
         val post = MutableLiveData<Resource<PostResponse>>()
@@ -188,11 +145,23 @@ class Repository(application: Application) {
         post.postValue(Resource.Loading())
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = if (selectedCategory != null && type != "dashboard" && type != "tag") {
-                retrofit.unanswerdCategory(type, selectedCategory, page)
+                if (query != null) {
+                    retrofit.searchUnanswerdCategory(type, selectedCategory, query, page)
+                } else {
+                    retrofit.unanswerdCategory(type, selectedCategory, page)
+                }
             } else if (selectedTag != null && type != "dashboard" && type != "interestGroup") {
-                retrofit.unanswerdTag(type, selectedTag, page)
+                if (query != null) {
+                    retrofit.searchUnanswerdTag(type, selectedTag, query, page)
+                } else {
+                    retrofit.unanswerdTag(type, selectedTag, page)
+                }
             } else {
-                retrofit.unanswerd(type, page)
+                if (query != null) {
+                    retrofit.searchUnanswerd(type, query, page)
+                } else {
+                    retrofit.unanswerd(type, page)
+                }
             }
 
             if (response.isSuccessful) {
@@ -212,43 +181,6 @@ class Repository(application: Application) {
             }
         }
         return post
-    }
-
-    suspend fun getMyProfile(
-        token: String? = null,
-        username: String? = null,
-    ): LiveData<Resource<MyProfileResponse>> {
-        val user = MutableLiveData<Resource<MyProfileResponse>>()
-
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            user.postValue(Resource.Error(throwable.message))
-        }
-
-        user.postValue(Resource.Loading())
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = if (token != null) {
-                retrofit.myProfile("Bearer $token")
-            } else {
-                retrofit.otherProfile(username!!)
-            }
-
-            if (response.isSuccessful) {
-                user.postValue(Resource.Success(response.body()))
-            } else {
-                if (response.code() == 401) {
-                    user.postValue(Resource.Error("Unauthorized"))
-                } else if (response.code() == 403) {
-                    user.postValue(Resource.Error("API limit exceeded"))
-                } else if (response.code() == 422) {
-                    user.postValue(Resource.Error("Query parameter is missing"))
-                } else if (response.code() == 500) {
-                    user.postValue(Resource.Error("Internal server error"))
-                } else {
-                    user.postValue(Resource.Error("Something went wrong"))
-                }
-            }
-        }
-        return user
     }
 
     suspend fun getSavedPost(token: String, page: Int?): LiveData<Resource<PostResponse>> {
@@ -341,7 +273,7 @@ class Repository(application: Application) {
         return post
     }
 
-    suspend fun getDetailPost(slug: String): LiveData<Resource<DetailPostResponse>> {
+    suspend fun getDetailPost(slug: String, userId: String): LiveData<Resource<DetailPostResponse>> {
         val post = MutableLiveData<Resource<DetailPostResponse>>()
 
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -350,7 +282,7 @@ class Repository(application: Application) {
 
         post.postValue(Resource.Loading())
         CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.detailPost(slug)
+            val response = retrofit.detailPost(slug, userId)
 
             if (response.isSuccessful) {
                 post.postValue(Resource.Success(response.body()))
@@ -369,70 +301,6 @@ class Repository(application: Application) {
             }
         }
         return post
-    }
-
-    suspend fun getAllTag(): LiveData<Resource<TagResponse>> {
-        val tag = MutableLiveData<Resource<TagResponse>>()
-
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            tag.postValue(Resource.Error(throwable.message))
-        }
-
-        tag.postValue(Resource.Loading())
-
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.allTag()
-
-            if (response.isSuccessful) {
-                tag.postValue(Resource.Success(response.body()))
-            } else {
-                if (response.code() == 401) {
-                    tag.postValue(Resource.Error("Unauthorized"))
-                } else if (response.code() == 403) {
-                    tag.postValue(Resource.Error("API limit exceeded"))
-                } else if (response.code() == 422) {
-                    tag.postValue(Resource.Error("Query parameter is missing"))
-                } else if (response.code() == 500) {
-                    tag.postValue(Resource.Error("Internal server error"))
-                } else {
-                    tag.postValue(Resource.Error("Something went wrong"))
-                }
-            }
-        }
-        return tag
-    }
-
-    suspend fun getDetailTag(slug: String): LiveData<Resource<DetailTagResponse>>{
-        val detailTag = MutableLiveData<Resource<DetailTagResponse>>()
-
-        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            detailTag.postValue(Resource.Error(throwable.message))
-        }
-
-        detailTag.postValue(Resource.Loading())
-
-        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = retrofit.detailTag(slug)
-
-            if (response.isSuccessful) {
-                detailTag.postValue(Resource.Success(response.body()))
-            } else {
-                if (response.code() == 401) {
-                    detailTag.postValue(Resource.Error("Unauthorized"))
-                } else if (response.code() == 403) {
-                    detailTag.postValue(Resource.Error("API limit exceeded"))
-                } else if (response.code() == 422) {
-                    detailTag.postValue(Resource.Error("Query parameter is missing"))
-                } else if (response.code() == 500) {
-                    detailTag.postValue(Resource.Error("Internal server error"))
-                } else {
-                    detailTag.postValue(Resource.Error("Something went wrong"))
-                }
-            }
-        }
-        return detailTag
-
-
     }
 
     suspend fun getDataPreparedCreatePost(token: String): LiveData<Resource<CreatePostResponse>> {
@@ -463,5 +331,132 @@ class Repository(application: Application) {
             }
         }
         return catetag
+    }
+
+    suspend fun uploadImage(token: String, image: MultipartBody.Part): LiveData<Resource<UploadImageResponse>> {
+        val uploadImage = MutableLiveData<Resource<UploadImageResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            uploadImage.postValue(Resource.Error(throwable.message))
+        }
+
+        uploadImage.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.uploadImage("Bearer $token", image)
+
+            if (response.isSuccessful) {
+                uploadImage.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    uploadImage.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    uploadImage.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    uploadImage.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    uploadImage.postValue(Resource.Error("Internal server error"))
+                } else {
+                    uploadImage.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return uploadImage
+    }
+
+    suspend fun createPost(
+        token: String,
+        title: String,
+        slug: String,
+        categoryId: String,
+        content: String,
+        tag: List<String>? = null
+    ): LiveData<Resource<CreatePostResponse>> {
+        val createPost = MutableLiveData<Resource<CreatePostResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            createPost.postValue(Resource.Error(throwable.message))
+        }
+
+        createPost.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.storePost("Bearer $token", title, slug, categoryId, content, tag)
+
+            if (response.isSuccessful) {
+                createPost.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    createPost.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    createPost.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    createPost.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    createPost.postValue(Resource.Error("Internal server error"))
+                } else {
+                    createPost.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return createPost
+    }
+
+    suspend fun likePost(token: String, postId: String): LiveData<Resource<LikePostResponse>> {
+        val likePost = MutableLiveData<Resource<LikePostResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            likePost.postValue(Resource.Error(throwable.message))
+        }
+
+        likePost.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.likePost("Bearer $token", postId)
+
+            if (response.isSuccessful) {
+                likePost.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    likePost.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    likePost.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    likePost.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    likePost.postValue(Resource.Error("Internal server error"))
+                } else {
+                    likePost.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return likePost
+    }
+
+    suspend fun bookmarkPost(token: String, postId: String): LiveData<Resource<BookmarkPostResponse>> {
+        val bookmarkPost = MutableLiveData<Resource<BookmarkPostResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            bookmarkPost.postValue(Resource.Error(throwable.message))
+        }
+
+        bookmarkPost.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.bookmarkPost("Bearer $token", postId)
+
+            if (response.isSuccessful) {
+                bookmarkPost.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    bookmarkPost.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    bookmarkPost.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    bookmarkPost.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    bookmarkPost.postValue(Resource.Error("Internal server error"))
+                } else {
+                    bookmarkPost.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return bookmarkPost
     }
 }

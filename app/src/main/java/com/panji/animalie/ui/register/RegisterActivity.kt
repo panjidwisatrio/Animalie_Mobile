@@ -5,12 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.panji.animalie.data.Resource
+import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.ActivityRegisterBinding
 import com.panji.animalie.model.response.Auth
 import com.panji.animalie.ui.homepage.HomePage
 import com.panji.animalie.ui.login.LoginActivity
+import com.panji.animalie.util.DialogHelper
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,13 +24,20 @@ class RegisterActivity : AppCompatActivity(), ViewStateCallback<Auth> {
         SessionManager(this)
     }
 
+    private val dialogLoading by lazy {
+        DialogHelper.showLoadingDialog("Please wait...")
+    }
+
+    private val dialogError by lazy {
+        DialogHelper.showErrorDialog("Login failed")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setVisibility()
         register()
         toLogin()
     }
@@ -60,18 +68,6 @@ class RegisterActivity : AppCompatActivity(), ViewStateCallback<Auth> {
         }
     }
 
-    private fun setVisibility() {
-        binding.DaftarButton.visibility = visible
-        binding.ConfirmPasswordForm.visibility = visible
-        binding.NewPasswordForm.visibility = visible
-        binding.EmailForm.visibility = visible
-        binding.UsernameForm.visibility = visible
-        binding.NamaForm.visibility = visible
-        binding.LoginLinkPage.visibility = visible
-        binding.progressBarRegister.visibility = invisible
-        binding.errorText.visibility = invisible
-    }
-
     private fun toLogin() {
         binding.LoginLinkPage.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -83,33 +79,17 @@ class RegisterActivity : AppCompatActivity(), ViewStateCallback<Auth> {
         sessionManager.saveId(data.user.id.toString())
         sessionManager.saveToken(data.access_token)
 
-        binding.progressBarRegister.visibility = invisible
+        dialogLoading.dismiss()
         Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, HomePage::class.java))
     }
 
     override fun onLoading() {
-        binding.DaftarButton.visibility = invisible
-        binding.ConfirmPasswordForm.visibility = invisible
-        binding.NewPasswordForm.visibility = invisible
-        binding.EmailForm.visibility = invisible
-        binding.UsernameForm.visibility = invisible
-        binding.NamaForm.visibility = invisible
-        binding.LoginLinkPage.visibility = invisible
-        binding.progressBarRegister.visibility = visible
-        binding.errorText.visibility = invisible
+        dialogLoading.show()
     }
 
     override fun onFailed(message: String?) {
-        binding.DaftarButton.visibility = invisible
-        binding.ConfirmPasswordForm.visibility = invisible
-        binding.NewPasswordForm.visibility = invisible
-        binding.EmailForm.visibility = invisible
-        binding.UsernameForm.visibility = invisible
-        binding.NamaForm.visibility = invisible
-        binding.LoginLinkPage.visibility = invisible
-        binding.progressBarRegister.visibility = invisible
-        binding.errorText.visibility = visible
-        binding.errorText.text = message
+        dialogLoading.dismiss()
+        dialogError.show()
     }
 }

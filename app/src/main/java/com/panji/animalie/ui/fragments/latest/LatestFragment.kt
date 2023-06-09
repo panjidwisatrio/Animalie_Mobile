@@ -1,7 +1,6 @@
 package com.panji.animalie.ui.fragments.latest
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,16 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.panji.animalie.R
-import com.panji.animalie.data.Resource
+import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.FragmentLatestBinding
-import com.panji.animalie.model.DetailTag
-import com.panji.animalie.model.Post
-import com.panji.animalie.model.response.CreatePostResponse
 import com.panji.animalie.model.response.PostResponse
-import com.panji.animalie.ui.adapter.PostAdapter
-import com.panji.animalie.util.PaginationScrollListener
+import com.panji.animalie.ui.detail.ViewModelDetailPost
+import com.panji.animalie.ui.fragments.adapter.PostAdapter
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +25,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     private val viewModel: ViewModelLatest by viewModels()
     private lateinit var adapterLatest: PostAdapter
     private var typePost: String = ""
+    private var query: String? = null
     private var chipInterest: String? = null
     private var selectedTag: String? = null
     private var isLoading = false
@@ -55,25 +51,36 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapterLatest = PostAdapter(context)
+        adapterLatest = PostAdapter(
+            context,
+            viewModel = ViewModelDetailPost(application = requireActivity().application),
+            lifecycleOwner = viewLifecycleOwner
+        )
 
         getPostLatest()
+        setSwipeRefresh()
         showRecycleView()
     }
 
-    private fun getPostLatest() {
+    private fun setSwipeRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+            getPostLatest()
+        }
+    }
+
+    fun getPostLatest(querys: String? = null) {
+        query = if (querys == "") {
+            null
+        } else {
+            querys
+        }
         // get data from viewmodel
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getLatestPost(typePost, chipInterest, selectedTag, currentPage)
+            viewModel.getLatestPost(typePost, chipInterest, selectedTag, query, currentPage)
                 .observe(viewLifecycleOwner) {
                     when (it) {
-                        is Resource.Error -> {
-                            Log.d("LatestFragment", "typePost: $typePost")
-                            Log.d("LatestFragment", "chipInterest: $chipInterest")
-                            Log.d("LatestFragment", "currentPage: $currentPage")
-                            onFailed(it.message)
-                        }
-
+                        is Resource.Error -> onFailed(it.message)
                         is Resource.Loading -> onLoading()
                         is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
                     }
@@ -86,6 +93,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
         binding.recyclerView.apply {
             adapter = adapterLatest
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            (layoutManager as LinearLayoutManager).scrollToPosition(0)
             // TODO 2: set scroll listener for pagination
 //            addOnScrollListener(object : PaginationScrollListener(layoutManager as LinearLayoutManager) {
 //                override fun loadMoreItems() {
@@ -112,7 +120,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
 
         // get data from viewmodel
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getLatestPost(typePost, chipInterest, null, page)
+            viewModel.getLatestPost(typePost, chipInterest, selectedTag, query, page)
                 .observe(viewLifecycleOwner) {
                     when (it) {
                         is Resource.Error -> onFailed(it.message)
@@ -129,9 +137,7 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
     }
 
     override fun onSuccess(data: PostResponse) {
-
-        Log.d("TagTest", data.posts.data.isEmpty().toString())
-
+        adapterLatest.submitList(emptyList())
         // set data ke adapter
         binding.apply {
             if (data.posts.data.isEmpty()) {
@@ -139,8 +145,8 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
                 progressBar.visibility = invisible
                 errorText.text = getString(R.string.empty_data)
             } else {
-                totalPage = data.posts.lastPage
                 adapterLatest.submitList(data.posts.data)
+                totalPage = data.posts.lastPage
                 recyclerView.visibility = visible
                 progressBar.visibility = invisible
                 errorText.visibility = invisible
@@ -175,7 +181,11 @@ class LatestFragment : Fragment(), ViewStateCallback<PostResponse> {
         private const val KEY_BUNDLE = "type_post"
         private const val CHIP_INTEREST = "chip_interest"
         private const val SELECTED_TAG = "selected_tag"
-        fun getInstance(typePost: String, chipInterest: String? = null, selectedTag: String? = null): Fragment {
+        fun getInstance(
+            typePost: String,
+            chipInterest: String? = null,
+            selectedTag: String? = null,
+        ): Fragment {
             return LatestFragment().apply {
                 arguments = Bundle().apply {
                     putString(KEY_BUNDLE, typePost)

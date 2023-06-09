@@ -1,4 +1,4 @@
-package com.panji.animalie.ui.adapter
+package com.panji.animalie.ui.fragments.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,9 @@ import com.bumptech.glide.Glide
 import com.panji.animalie.R
 import com.panji.animalie.model.Notification
 
-class NotificationAdapter : ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(NotificationDiffCallback()) {
+class NotificationAdapter : ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(
+    NotificationDiffCallback()
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         val itemView = LayoutInflater.from(parent.context)
