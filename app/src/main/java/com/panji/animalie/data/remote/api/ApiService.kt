@@ -168,12 +168,6 @@ interface ApiService {
     @GET("tag")
     suspend fun allTag(): Response<TagResponse>
 
-    @GET("tag/{tag:slug")
-    suspend fun detailTag(
-        @Path("slug")
-        slug: String
-    ): Response<DetailTagResponse>
-
     @GET("post/create")
     suspend fun createPost(
         @Header("Authorization")
