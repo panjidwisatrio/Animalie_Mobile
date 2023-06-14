@@ -20,12 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@id/search_bar"
-        app:tabIndicator="?attr/colorPrimary"
-        app:tabMode="fixed"
-        app:tabRippleColor="@null"
-        app:tabSelectedTextColor="?attr/colorPrimary"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabTextColor="?attr/colorOnSurfaceVariant" />
+        app:tabMode="fixed" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

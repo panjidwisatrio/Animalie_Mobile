@@ -2,19 +2,25 @@ package com.panji.animalie.data.remote.api
 
 import com.panji.animalie.model.response.Auth
 import com.panji.animalie.model.response.BookmarkPostResponse
+import com.panji.animalie.model.response.CommentPostResponse
 import com.panji.animalie.model.response.CreatePostResponse
+import com.panji.animalie.model.response.DeletePostResponse
 import com.panji.animalie.model.response.DetailPostResponse
+import com.panji.animalie.model.response.EditProfileResponse
 import com.panji.animalie.model.response.LikePostResponse
 import com.panji.animalie.model.response.MyProfileResponse
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.model.response.TagResponse
 import com.panji.animalie.model.response.TagStoreResponse
+import com.panji.animalie.model.response.UpdatePostResponse
 import com.panji.animalie.model.response.UploadImageResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -342,4 +348,74 @@ interface ApiService {
         @Path("id")
         id: String,
     ): Response<BookmarkPostResponse>
+
+    @PATCH("profile")
+    suspend fun editProfile(
+        @Header("Authorization")
+        token: String,
+        @Query("name")
+        name: String,
+        @Query("username")
+        username: String,
+        @Query("work_place")
+        work_place: String? = null,
+        @Query("job_position")
+        job_position: String? = null,
+        @Query("email")
+        email: String,
+        @Query("avatar")
+        avatar: String? = null,
+    ): Response<EditProfileResponse>
+
+    @DELETE("post/{slug}/delete")
+    suspend fun deletePost(
+        @Header("Authorization")
+        token: String,
+        @Path("slug")
+        slug: String,
+    ): Response<DeletePostResponse>
+
+    @PATCH("post/{slug}/update")
+    suspend fun updatePost(
+        @Header("Authorization")
+        token: String,
+        @Path("slug")
+        slug: String,
+        @Query("title")
+        title: String,
+        @Query("slug")
+        slugPost: String,
+        @Query("category_id")
+        category: String,
+        @Query("content")
+        content: String,
+        @Query("tags[]")
+        tag: List<String>? = null,
+    ): Response<UpdatePostResponse>
+
+    @POST("comment")
+    suspend fun commentPost(
+        @Header("Authorization")
+        token: String,
+        @Query("post_id")
+        postId: String,
+        @Query("body")
+        content: String,
+    ): Response<CommentPostResponse>
+
+    @DELETE("comment/delete")
+    suspend fun deleteComment(
+        @Header("Authorization")
+        token: String,
+        @Query("comment_id")
+        commentId: String,
+    ): Response<CommentPostResponse>
+
+    @POST("like-comment/{id}")
+    suspend fun likeComment(
+        @Header("Authorization")
+        token: String,
+        @Path("id")
+        id: String,
+    ): Response<LikePostResponse>
 }

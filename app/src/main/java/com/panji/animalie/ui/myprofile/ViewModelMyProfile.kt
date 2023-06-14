@@ -10,4 +10,5 @@ class ViewModelMyProfile(application: Application): AndroidViewModel(application
 
     // register dan mengembalikan data ke view
     suspend fun getProfile(token: String? = null, username: String? = null) = repository.getMyProfile(token, username)
+    suspend fun logout(token: String) = repository.logout(token)
 }

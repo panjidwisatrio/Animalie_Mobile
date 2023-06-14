@@ -8,9 +8,11 @@ import com.panji.animalie.data.remote.api.ApiService
 import com.panji.animalie.data.remote.api.RetrofitService
 import com.panji.animalie.model.response.BookmarkPostResponse
 import com.panji.animalie.model.response.CreatePostResponse
+import com.panji.animalie.model.response.DeletePostResponse
 import com.panji.animalie.model.response.DetailPostResponse
 import com.panji.animalie.model.response.LikePostResponse
 import com.panji.animalie.model.response.PostResponse
+import com.panji.animalie.model.response.UpdatePostResponse
 import com.panji.animalie.model.response.UploadImageResponse
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -458,5 +460,73 @@ class PostRepository(application: Application) {
             }
         }
         return bookmarkPost
+    }
+
+    suspend fun editPost(
+        token: String,
+        postId: String,
+        title: String,
+        slug: String,
+        categoryId: String,
+        content: String,
+        tag: List<String>? = null
+    ): LiveData<Resource<UpdatePostResponse>> {
+        val updatePost = MutableLiveData<Resource<UpdatePostResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            updatePost.postValue(Resource.Error(throwable.message))
+        }
+
+        updatePost.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.updatePost("Bearer $token", postId, title, slug, categoryId, content, tag)
+
+            if (response.isSuccessful) {
+                updatePost.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    updatePost.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    updatePost.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    updatePost.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    updatePost.postValue(Resource.Error("Internal server error"))
+                } else {
+                    updatePost.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return updatePost
+    }
+
+    suspend fun deletePost(token: String, slug: String): LiveData<Resource<DeletePostResponse>> {
+        val deletePost = MutableLiveData<Resource<DeletePostResponse>>()
+
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            deletePost.postValue(Resource.Error(throwable.message))
+        }
+
+        deletePost.postValue(Resource.Loading())
+        CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = retrofit.deletePost("Bearer $token", slug)
+
+            if (response.isSuccessful) {
+                deletePost.postValue(Resource.Success(response.body()))
+            } else {
+                if (response.code() == 401) {
+                    deletePost.postValue(Resource.Error("Unauthorized"))
+                } else if (response.code() == 403) {
+                    deletePost.postValue(Resource.Error("API limit exceeded"))
+                } else if (response.code() == 422) {
+                    deletePost.postValue(Resource.Error("Query parameter is missing"))
+                } else if (response.code() == 500) {
+                    deletePost.postValue(Resource.Error("Internal server error"))
+                } else {
+                    deletePost.postValue(Resource.Error("Something went wrong"))
+                }
+            }
+        }
+        return deletePost
     }
 }

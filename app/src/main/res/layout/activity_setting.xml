@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp">
+
+    <!-- TOOLBAR -->
+    <include
+        android:id="@+id/setting_toolbar"
+        layout="@layout/app_bar" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/theme_toggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="24dp"
+        android:text="@string/dark_theme" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/notification_toggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:paddingVertical="24dp"
+        android:text="@string/notification" />
+
+    <TextView
+        android:id="@+id/about_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="24dp"
+        android:text="@string/about_app" />
+
+</LinearLayout>

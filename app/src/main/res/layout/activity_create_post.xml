@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             app:helperTextEnabled="true"
             app:helperText="maksimal karakter"
+            app:helperTextTextColor="?attr/colorPrimary"
             app:errorEnabled="true"
             app:counterEnabled="true"
             app:counterMaxLength="60"
@@ -34,6 +35,8 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorPrimary"
+                android:textColorHint="?attr/colorPrimary"
                 android:hint="@string/title" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -50,6 +53,8 @@
                 android:id="@+id/category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorPrimary"
+                android:textColorHint="?attr/colorPrimary"
                 android:hint="@string/category"
                 android:inputType="none" />
 
@@ -70,6 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:textColor="?attr/colorPrimary"
+                android:textColorHint="?attr/colorPrimary"
                 android:hint="@string/tag" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -96,12 +103,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="?attr/colorSurface"
         android:layout_weight="1" />
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorOnPrimary">
+        android:background="?attr/colorPrimaryContainer">
 
         <LinearLayout
             android:orientation="horizontal"

@@ -11,7 +11,7 @@ import com.panji.animalie.R
 import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.ActivityOtherProfileBinding
 import com.panji.animalie.model.response.MyProfileResponse
-import com.panji.animalie.ui.fragments.adapter.SectionTabAdapter
+import com.panji.animalie.ui.adapter.SectionTabAdapter
 import com.panji.animalie.util.Constanta
 import com.panji.animalie.util.Constanta.EXTRA_USER
 import com.panji.animalie.util.Constanta.TAB_TITLES_OTHER_PROFILE

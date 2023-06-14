@@ -1,4 +1,4 @@
-package com.panji.animalie.ui.fragments.adapter
+package com.panji.animalie.ui.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

@@ -26,6 +26,11 @@ import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.ActivityCreatePostBinding
 import com.panji.animalie.model.response.CreatePostResponse
+import com.panji.animalie.util.Constanta.EXTRA_CATEGORY
+import com.panji.animalie.util.Constanta.EXTRA_CONTENT
+import com.panji.animalie.util.Constanta.EXTRA_SLUG
+import com.panji.animalie.util.Constanta.EXTRA_TAG
+import com.panji.animalie.util.Constanta.EXTRA_TITLE
 import com.panji.animalie.util.Constanta.READ_STORAGE_PERMISSION_REQUEST_CODE
 import com.panji.animalie.util.DialogHelper
 import com.panji.animalie.util.EditorTextHelper
@@ -57,6 +62,18 @@ class CreatePostActivity : AppCompatActivity(), ViewStateCallback<CreatePostResp
     private var categoryIds = ""
     private var contents = ""
 
+    private val dialogLoading by lazy {
+        DialogHelper.showLoadingDialog("Please wait...")
+    }
+
+    private val dialogSuccess by lazy {
+        DialogHelper.showSuccessDialog("Your post has been created")
+    }
+
+    private val dialogError by lazy {
+        DialogHelper.showErrorDialog("Failed to create post")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreatePostBinding.inflate(layoutInflater)
@@ -66,10 +83,57 @@ class CreatePostActivity : AppCompatActivity(), ViewStateCallback<CreatePostResp
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Create Post"
 
+        DialogHelper.setUpDialog(this)
+
         getCategoryAndTag()
         getImage()
         setWYSIWYG()
         setAllTextField()
+    }
+
+    private fun setPlaceholderData() {
+        val titlePlaceHolder = intent.getStringExtra(EXTRA_TITLE)
+        val categoryPlaceHolder = intent.getStringExtra(EXTRA_CATEGORY)
+        val contentPlaceHolder = intent.getStringExtra(EXTRA_CONTENT)
+        val tagsPlaceHolder = intent.getStringArrayListExtra(EXTRA_TAG)
+
+        if (tagsPlaceHolder != null) {
+            for (nameTag in tagsPlaceHolder) {
+                val selectedTag = tagMap[nameTag]
+                tags.add(selectedTag.toString())
+                selectedTag?.let { addChipToGroup(nameTag) }
+
+                if (selectedTag != null) {
+                    removedChip[nameTag] = selectedTag
+                }
+                tagMap.remove(nameTag)
+
+                binding.tag.setText("")
+                setTagDropdown()
+            }
+        }
+
+        if (titlePlaceHolder != null && categoryPlaceHolder != null && contentPlaceHolder != null) {
+            binding.apply {
+                title.setText(titlePlaceHolder)
+
+                // set selection category
+//                val adapter = category.adapter
+//
+//                if (adapter != null) {
+//                    for (i in 0 until adapter.count) {
+//                        val item = adapter.getItem(i)
+//                        if (item == categoryPlaceHolder) {
+//                            category.setSelection(i)
+//                            break
+//                        }
+//                    }
+//                }
+
+                editor.html = contentPlaceHolder
+                contents = editor.html
+            }
+        }
     }
 
     private fun getImage() {
@@ -104,10 +168,7 @@ class CreatePostActivity : AppCompatActivity(), ViewStateCallback<CreatePostResp
                             arrayOf(readExternalStoragePermission),
                             READ_STORAGE_PERMISSION_REQUEST_CODE
                         )
-                    }
-
-                    // Jika izin telah diberikan, lanjutkan dengan mengunggah file
-                    else {
+                    } else {
                         resultLauncher.launch(
                             Intent(Intent.ACTION_PICK).also {
                                 it.type = "image/*"
@@ -141,23 +202,24 @@ class CreatePostActivity : AppCompatActivity(), ViewStateCallback<CreatePostResp
 
         // Lakukan pemanggilan asinkron ke server melalui view model
         CoroutineScope(Dispatchers.Main).launch {
-            DialogHelper.setUpDialog(this@CreatePostActivity)
-
             viewModel.uploadImage(sessionManager.fetchToken()!!, filePart)
                 .observe(this@CreatePostActivity) { data ->
                     when (data) {
                         is Resource.Error -> {
-                            DialogHelper.showLoadingDialog("Uploading image...").dismiss()
-                            DialogHelper.showErrorDialog("Failed to upload image").show()
+                            dialogLoading.dismiss()
+                            dialogError.setMessage(data.message.toString())
+                            dialogError.show()
                         }
 
                         is Resource.Loading -> {
-                            DialogHelper.showLoadingDialog("Uploading image...").show()
+                            dialogLoading.setMessage("Uploading image...")
+                            dialogLoading.show()
                         }
 
                         is Resource.Success -> {
-                            DialogHelper.showLoadingDialog("Uploading image...").dismiss()
-                            DialogHelper.showSuccessDialog("Image uploaded successfully").show()
+                            dialogLoading.dismiss()
+                            dialogSuccess.setMessage("Image uploaded successfully")
+                            dialogSuccess.show()
 
                             binding.editor.insertImage(data.data?.url.toString(), "Image")
                         }
@@ -323,6 +385,7 @@ class CreatePostActivity : AppCompatActivity(), ViewStateCallback<CreatePostResp
     private fun setCategoryDropdown() {
         val categoryAdapter =
             ArrayAdapter(this, android.R.layout.simple_list_item_1, categoryMap.keys.toList())
+
         binding.category.setAdapter(categoryAdapter)
         binding.category.setOnItemClickListener { _, _, position, _ ->
             categoryIds = categoryMap[categoryMap.keys.toList()[position]].toString()
@@ -342,6 +405,7 @@ class CreatePostActivity : AppCompatActivity(), ViewStateCallback<CreatePostResp
 
         setCategoryDropdown()
         setTagDropdown()
+        setPlaceholderData()
     }
 
     override fun onLoading() {
@@ -402,27 +466,64 @@ class CreatePostActivity : AppCompatActivity(), ViewStateCallback<CreatePostResp
                         .show()
                 } else {
                     val token = sessionManager.fetchToken()
-                    CoroutineScope(Dispatchers.Main).launch {
-                        token?.let {
-                            viewModel.createPost(
-                                it,
-                                titles,
-                                slugs,
-                                categoryIds,
-                                contents,
-                                tags.toList(),
-                            ).observe(this@CreatePostActivity) { data ->
-                                when (data) {
-                                    is Resource.Error -> onFailed(data.message)
-                                    is Resource.Loading -> onLoading()
-                                    is Resource.Success -> {
-                                        data.data?.let {
-                                            Toast.makeText(
-                                                this@CreatePostActivity,
-                                                "Post has been created",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                    val typeInput = intent.getStringExtra("TYPE")
 
+                    if (typeInput == "edit") {
+                        val slugPlaceholder = intent.getStringExtra(EXTRA_SLUG)
+
+                        CoroutineScope(Dispatchers.Main).launch {
+                            token?.let {
+                                slugPlaceholder?.let { slug ->
+                                    viewModel.editPost(
+                                        it,
+                                        slug,
+                                        titles,
+                                        slugs,
+                                        categoryIds,
+                                        contents,
+                                        tags.toList(),
+                                    ).observe(this@CreatePostActivity) { data ->
+                                        when (data) {
+                                            is Resource.Error -> onFailed(data.message)
+                                            is Resource.Loading -> onLoading()
+                                            is Resource.Success -> {
+                                                data.data?.let {
+                                                    Toast.makeText(
+                                                        this@CreatePostActivity,
+                                                        "Post has been updated",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+
+                                                    finish()
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else if (typeInput == "create") {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            token?.let {
+                                viewModel.createPost(
+                                    it,
+                                    titles,
+                                    slugs,
+                                    categoryIds,
+                                    contents,
+                                    tags.toList(),
+                                ).observe(this@CreatePostActivity) { data ->
+                                    when (data) {
+                                        is Resource.Error -> onFailed(data.message)
+                                        is Resource.Loading -> onLoading()
+                                        is Resource.Success -> {
+                                            data.data?.let {
+                                                Toast.makeText(
+                                                    this@CreatePostActivity,
+                                                    "Post has been created",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
                                             finish()
                                         }
                                     }

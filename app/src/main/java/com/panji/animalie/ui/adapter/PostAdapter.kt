@@ -1,4 +1,4 @@
-package com.panji.animalie.ui.fragments.adapter
+package com.panji.animalie.ui.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -6,8 +6,10 @@ import android.os.Build
 import android.os.Build.VERSION.SDK_INT
 import android.text.Html
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
@@ -16,40 +18,48 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.panji.animalie.R
 import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.PostBinding
 import com.panji.animalie.model.Post
+import com.panji.animalie.ui.createpost.CreatePostActivity
+import com.panji.animalie.ui.createpost.ViewModelCreatePost
 import com.panji.animalie.ui.detail.DetailPostActivity
 import com.panji.animalie.ui.detail.ViewModelDetailPost
 import com.panji.animalie.ui.myprofile.MyProfileActivity
 import com.panji.animalie.ui.myprofile.OtherProfileActivity
+import com.panji.animalie.util.Constanta.BASE_URL
+import com.panji.animalie.util.Constanta.EXTRA_CATEGORY
+import com.panji.animalie.util.Constanta.EXTRA_CONTENT
 import com.panji.animalie.util.Constanta.EXTRA_POST
+import com.panji.animalie.util.Constanta.EXTRA_SLUG
+import com.panji.animalie.util.Constanta.EXTRA_TAG
+import com.panji.animalie.util.Constanta.EXTRA_TITLE
 import com.panji.animalie.util.Constanta.EXTRA_USER
 import com.panji.animalie.util.Constanta.URL_IMAGE
+import com.panji.animalie.util.Constanta.URL_WEB
+import com.panji.animalie.util.TimeStampHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
-import java.util.concurrent.TimeUnit
 
 class PostAdapter(
     val context: Context?,
     val type: String? = null,
-    val viewModel: ViewModelDetailPost? = null,
-    private val lifecycleOwner: LifecycleOwner? = null
-) :
-    ListAdapter<Post, PostAdapter.ViewHolder>(DIFF_UTIL) {
+    private val viewModel: ViewModelDetailPost? = null,
+    private val viewModelCreatePost: ViewModelCreatePost? = null,
+    private val lifecycleOwner: LifecycleOwner? = null,
+    private val refreshData: Function0<Unit>? = null
+): ListAdapter<Post, PostAdapter.ViewHolder>(DIFF_UTIL) {
 
     private val sessionManager: SessionManager by lazy {
         SessionManager(context!!)
     }
 
     private val token = sessionManager.fetchToken()
+    private val userId = sessionManager.fetchId()
 
     companion object {
         private val DIFF_UTIL = object : DiffUtil.ItemCallback<Post>() {
@@ -67,7 +77,7 @@ class PostAdapter(
     inner class ViewHolder(private val binding: PostBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
-            val timeAgo = getTimeAgo(post.created_at)
+            val timeAgo = TimeStampHelper.getTimeAgo(post.created_at)
             val stringBuilder = post.User.avatar?.let { StringBuilder(it) }
             val fixString = stringBuilder?.replace(11, 12, "/").toString()
 
@@ -90,11 +100,16 @@ class PostAdapter(
                     postContent.text = Html.fromHtml(post.content)
                 }
 
-                // show more button only when activity is my profile
                 date.text = timeAgo
+
+                // show more button only when activity is my profile
                 if (type == "my_post" && post.User.id.toString() == sessionManager.fetchId()) {
                     moreButton.visibility = ViewGroup.VISIBLE
                     date.visibility = ViewGroup.GONE
+
+                    moreButton.setOnClickListener {
+                        showOptionMenu(moreButton, post)
+                    }
                 } else {
                     moreButton.visibility = ViewGroup.GONE
                     date.visibility = ViewGroup.VISIBLE
@@ -106,23 +121,32 @@ class PostAdapter(
                     likeCounter.text = "0"
                 }
 
-                // show like filled icon if user already like the post
+                var isLiked = false
                 for (like in post.like) {
-                    if (like.user_id == sessionManager.fetchId()) {
-                        likeButton.setImageResource(R.drawable.ic_unlike)
+                    if (like.user_id == userId) {
+                        isLiked = true
                         break
-                    } else {
-                        likeButton.setImageResource(R.drawable.ic_like)
                     }
                 }
 
-                for (bookmarked in post.bookmarked_by) {
-                    if (bookmarked.id.toString() == sessionManager.fetchId()) {
-                        bookmark.setImageResource(R.drawable.ic_unbookmark)
+                if (isLiked) {
+                    likeButton.setImageResource(R.drawable.ic_unlike)
+                } else {
+                    likeButton.setImageResource(R.drawable.ic_like)
+                }
+
+                var isBookmarked = false
+                for (bookmark in post.bookmarked_by) {
+                    if (bookmark.id.toString() == userId) {
+                        isBookmarked = true
                         break
-                    } else {
-                        bookmark.setImageResource(R.drawable.ic_bookmark)
                     }
+                }
+
+                if (isBookmarked) {
+                    bookmark.setImageResource(R.drawable.ic_unbookmark)
+                } else {
+                    bookmark.setImageResource(R.drawable.ic_bookmark)
                 }
 
                 if (post.Comments.isNotEmpty()) {
@@ -131,35 +155,41 @@ class PostAdapter(
                     commentCounter.text = "0"
                 }
 
-                if (post.User.id.toString() == sessionManager.fetchId()) {
+                if (post.User.id.toString() == userId) {
+                    bookmark.visibility = ViewGroup.GONE
+
                     biodata.setOnClickListener {
                         biodata.context?.startActivity(
                             Intent(biodata.context, MyProfileActivity::class.java)
                         )
                     }
                 } else {
+                    bookmark.visibility = ViewGroup.VISIBLE
+
                     biodata.setOnClickListener {
                         biodata.context?.startActivity(
                             Intent(biodata.context, OtherProfileActivity::class.java)
                                 .putExtra(EXTRA_USER, post.User.username)
                         )
                     }
+
+                    bookmark.setOnClickListener {
+                        bookmarkPost(
+                            postId = post.id.toString(),
+                            bookmarkButton = bookmark
+                        )
+                    }
                 }
 
                 shareButton.setOnClickListener {
+                    val message = "${URL_WEB}post-detail/${post.slug}"
+
                     context?.startActivity(
                         Intent(Intent.ACTION_SEND).apply {
                             type = "text/plain"
                             putExtra(Intent.EXTRA_SUBJECT, post.title)
-                            putExtra(Intent.EXTRA_TEXT, "${post.title}\n\n${post.content}")
+                            putExtra(Intent.EXTRA_TEXT, message)
                         }
-                    )
-                }
-
-                bookmark.setOnClickListener {
-                    bookmarkPost(
-                        postId = post.id.toString(),
-                        bookmarkButton = bookmark
                     )
                 }
 
@@ -179,6 +209,10 @@ class PostAdapter(
                 }
             }
         }
+    }
+
+    fun updateData(newData: List<Post>) {
+        submitList(newData)
     }
 
     private fun bookmarkPost(
@@ -272,48 +306,78 @@ class PostAdapter(
         bind(getItem(position))
     }
 
-    private fun getTimeAgo(timestamp: String): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        sdf.timeZone = TimeZone.getTimeZone("GMT")
-        val date = sdf.parse(timestamp)
-        val now = Date()
-        val diff = now.time - date!!.time
+    private fun deletePost(view: View, post: Post) {
+        CoroutineScope(Dispatchers.Main).launch {
+            post.slug.let { slug ->
+                token?.let { token ->
+                    lifecycleOwner?.let { lifecycleOwner ->
+                        viewModelCreatePost?.deletePost(token, slug)
+                            ?.observe(lifecycleOwner) { post ->
+                                when (post) {
+                                    is Resource.Success -> {
+                                        Toast.makeText(
+                                            view.context,
+                                            "Post Deleted",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        refreshData?.invoke()
+                                    }
 
-        return when {
-            diff < TimeUnit.MINUTES.toMillis(1) -> {
-                val seconds = TimeUnit.MILLISECONDS.toSeconds(diff)
-                "$seconds detik yang lalu"
-            }
+                                    is Resource.Loading -> {}
 
-            diff < TimeUnit.HOURS.toMillis(1) -> {
-                val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
-                "$minutes menit yang lalu"
-            }
-
-            diff < TimeUnit.DAYS.toMillis(1) -> {
-                val hours = TimeUnit.MILLISECONDS.toHours(diff)
-                "$hours jam yang lalu"
-            }
-
-            diff < TimeUnit.DAYS.toMillis(7) -> {
-                val days = TimeUnit.MILLISECONDS.toDays(diff)
-                "$days hari yang lalu"
-            }
-
-            diff < TimeUnit.DAYS.toMillis(30) -> {
-                val weeks = TimeUnit.MILLISECONDS.toDays(diff) / 7
-                "$weeks minggu yang lalu"
-            }
-
-            diff < TimeUnit.DAYS.toMillis(365) -> {
-                val months = TimeUnit.MILLISECONDS.toDays(diff) / 30
-                "$months bulan yang lalu"
-            }
-
-            else -> {
-                val years = TimeUnit.MILLISECONDS.toDays(diff) / 365
-                "$years tahun yang lalu"
+                                    is Resource.Error -> {
+                                        Toast.makeText(
+                                            view.context,
+                                            post.message,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                            }
+                    }
+                }
             }
         }
+    }
+
+    private fun showOptionMenu(
+        view: View,
+        post: Post
+    ) {
+        val popupMenu = PopupMenu(view.context, view)
+        popupMenu.inflate(R.menu.post_menu)
+
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.edit_post -> {
+                    view.context.startActivity(
+                        Intent(view.context, CreatePostActivity::class.java)
+                            .putExtra(EXTRA_TITLE, post.title)
+                            .putExtra(EXTRA_SLUG, post.slug)
+                            .putExtra(EXTRA_CONTENT, post.content)
+                            .putExtra(EXTRA_CATEGORY, post.Category.category)
+                            .putExtra("TYPE", "edit")
+                            .putStringArrayListExtra(EXTRA_TAG, post.Tag.map { it.name_tag } as ArrayList<String>)
+                    )
+                }
+
+                R.id.delete_post -> {
+                    MaterialAlertDialogBuilder(view.context)
+                        .setTitle("Delete Post")
+                        .setMessage("Are you sure want to delete this post?")
+                        .setNegativeButton("Cancel") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .setPositiveButton("Delete") { _, _ ->
+                            deletePost(view, post)
+                        }
+                        .show()
+                }
+            }
+
+            true
+        }
+
+        popupMenu.show()
     }
 }

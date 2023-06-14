@@ -6,6 +6,7 @@
         android:id="@+id/create_post"
         android:title="@string/create_post"
         android:icon="@drawable/send_post"
+        android:iconTint="?attr/colorPrimary"
         app:showAsAction="ifRoom"/>
 
 </menu>

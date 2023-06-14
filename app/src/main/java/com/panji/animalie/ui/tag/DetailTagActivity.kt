@@ -5,7 +5,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.databinding.ActivityDetailTagBinding
-import com.panji.animalie.ui.fragments.adapter.SectionTabAdapter
+import com.panji.animalie.ui.adapter.SectionTabAdapter
 import com.panji.animalie.util.Constanta.EXTRA_SLUG
 import com.panji.animalie.util.Constanta.EXTRA_TAG
 import com.panji.animalie.util.Constanta.TAB_TITLES

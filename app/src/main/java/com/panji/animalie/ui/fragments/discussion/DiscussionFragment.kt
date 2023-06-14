@@ -12,7 +12,7 @@ import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.FragmentDiscussionBinding
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.ui.detail.ViewModelDetailPost
-import com.panji.animalie.ui.fragments.adapter.PostAdapter
+import com.panji.animalie.ui.adapter.PostAdapter
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

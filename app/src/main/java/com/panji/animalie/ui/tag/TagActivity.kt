@@ -1,5 +1,6 @@
 package com.panji.animalie.ui.tag
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -10,7 +11,8 @@ import com.panji.animalie.R
 import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.ActivityTagBinding
 import com.panji.animalie.model.response.TagResponse
-import com.panji.animalie.ui.fragments.adapter.TagAdapter
+import com.panji.animalie.ui.adapter.TagAdapter
+import com.panji.animalie.ui.createpost.CreatePostActivity
 import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +55,20 @@ class TagActivity : AppCompatActivity(), ViewStateCallback<TagResponse> {
         //show recyclerView
         getAllTag()
         showRecyclerView()
+        setFab()
         searchTag()
+
+        binding.searchBar.bellIcon.setOnClickListener {
+            toNotificationPage()
+        }
+    }
+
+    private fun toNotificationPage() {
+        MaterialAlertDialogBuilder(this).setTitle("Notifikasi")
+            .setMessage("Fitur ini masih dalam tahap pengembangan")
+            .setPositiveButton("Oke") { dialog, _ ->
+                dialog.dismiss()
+            }.show()
     }
 
     private fun searchTag() {
@@ -82,6 +97,15 @@ class TagActivity : AppCompatActivity(), ViewStateCallback<TagResponse> {
                 finish()
             }
             .show()
+    }
+
+    private fun setFab() {
+        binding.createFab.createFab.setOnClickListener {
+            startActivity(
+                Intent(this, CreatePostActivity::class.java)
+                    .putExtra("TYPE", "create")
+            )
+        }
     }
 
     private fun showRecyclerView() {

@@ -6,37 +6,39 @@ import android.os.Build.VERSION.SDK_INT
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.text.HtmlCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.panji.animalie.R
 import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.ActivityDetailPostBinding
+import com.panji.animalie.model.Comment
 import com.panji.animalie.model.response.DetailPostResponse
+import com.panji.animalie.ui.adapter.CommentAdapter
 import com.panji.animalie.util.Constanta
 import com.panji.animalie.util.Constanta.EXTRA_POST
+import com.panji.animalie.util.TimeStampHelper
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
-import java.util.concurrent.TimeUnit
 
 class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResponse> {
 
     private lateinit var binding: ActivityDetailPostBinding
     private val viewModel by viewModels<ViewModelDetailPost>()
+    private lateinit var adapterComment: CommentAdapter
     private val sessionManager by lazy { SessionManager(this) }
 
     private var postId: String? = null
+    private var comment: List<Comment>? = null
     private val token by lazy { sessionManager.fetchToken() }
+    private val userId by lazy { sessionManager.fetchId() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +49,91 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Detail Post"
 
+        adapterComment = CommentAdapter(
+            this,
+            viewModel = viewModel,
+            lifecycleOwner = this,
+            refreshData = {
+                updateComment()
+            }
+        )
+
         getPost()
+        sendComment()
+        setSwipeRefresh()
+        showRecyclerView()
+    }
+
+    private fun sendComment() {
+        binding.sendCommentButton.setOnClickListener {
+            val comment = binding.comment.text.toString()
+
+            if (comment.isEmpty()) {
+                Snackbar.make(binding.root, "Comment can't be empty", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            CoroutineScope(Dispatchers.Main).launch {
+                postId?.let { postId ->
+                    token?.let { token ->
+                        viewModel.sendComment(token, postId, comment)
+                            .observe(this@DetailPostActivity) { comment ->
+                                when (comment) {
+                                    is Resource.Success -> {
+                                        Snackbar.make(
+                                            binding.root,
+                                            "Comment sent",
+                                            Snackbar.LENGTH_SHORT
+                                        ).show()
+                                        binding.comment.text.clear()
+                                        updateComment()
+                                    }
+
+                                    is Resource.Loading -> {
+                                        //
+                                    }
+
+                                    is Resource.Error -> {
+                                        Snackbar.make(
+                                            binding.root,
+                                            comment.message.toString(),
+                                            Snackbar.LENGTH_SHORT
+                                        ).setAction(
+                                            "Retry"
+                                        ) {
+                                            sendComment()
+                                        }.show()
+                                    }
+                                }
+                            }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setSwipeRefresh() {
+        binding.apply {
+            swipeRefreshLayout.setOnRefreshListener {
+                swipeRefreshLayout.isRefreshing = false
+                getPost()
+            }
+        }
+    }
+
+    private fun showRecyclerView() {
+        binding.recyclerView.apply {
+            adapter = adapterComment
+            isNestedScrollingEnabled = false
+
+            layoutManager =
+                LinearLayoutManager(this@DetailPostActivity, LinearLayoutManager.VERTICAL, false)
+            (layoutManager as LinearLayoutManager).scrollToPosition(0)
+        }
     }
 
     private fun getPost() {
         val slug = intent.getStringExtra(EXTRA_POST)
-        val userId = sessionManager.fetchId()
 
         CoroutineScope(Dispatchers.Main).launch {
             slug?.let {
@@ -105,14 +186,39 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
         }
     }
 
+    private fun updateComment() {
+        val slug = intent.getStringExtra(EXTRA_POST)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            slug?.let {
+                userId?.let { it1 ->
+                    viewModel.getDetailPost(it, it1).observe(this@DetailPostActivity) { post ->
+                        when (post) {
+                            is Resource.Success -> {
+                                comment = post.data?.post?.Comments
+                                comment?.let { adapterComment.updateData(it) }
+                            }
+                            is Resource.Loading -> {}
+                            is Resource.Error -> {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onSuccess(data: DetailPostResponse) {
+        comment = data.post.Comments
+        comment?.let { adapterComment.submitList(it) }
+
         postId = data.post.id.toString()
 
-        val timeAgo = getTimeAgo(data.post.created_at)
+        val timeAgo = TimeStampHelper.getTimeAgo(data.post.created_at)
         val stringBuilder = data.post.User.avatar?.let { StringBuilder(it) }
         val fixString = stringBuilder?.replace(11, 12, "/").toString()
 
         binding.apply {
+            recyclerView.visibility = visible
             post.visibility = visible
             errorText.visibility = invisible
             progressBar.visibility = invisible
@@ -121,6 +227,16 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
             username.text = data.post.User.username
             date.text = timeAgo
             postTitle.text = data.post.title
+
+            if (data.post.User.id.toString() == userId) {
+                bookmark.visibility = gone
+            } else {
+                bookmark.visibility = visible
+
+                bookmark.setOnClickListener {
+                    bookmarkPost()
+                }
+            }
 
             if (data.post.User.avatar == null) {
                 profilePhoto.setImageResource(R.mipmap.profile_photo_round)
@@ -142,8 +258,6 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
             } else {
                 likeCounter.text = "0"
             }
-
-            Log.d("DetailPostActivity", "onSuccess: ${data.liked}")
 
             if (data.liked) {
                 likeButton.setImageResource(R.drawable.ic_unlike)
@@ -173,10 +287,6 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
                 )
             }
 
-            bookmark.setOnClickListener {
-                bookmarkPost()
-            }
-
             likeButton.setOnClickListener {
                 likePost()
             }
@@ -202,9 +312,7 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
                                 }
                             }
 
-                            is Resource.Loading -> {
-
-                            }
+                            is Resource.Loading -> {}
 
                             is Resource.Error -> {
                                 Toast.makeText(
@@ -224,6 +332,7 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
         binding.apply {
             progressBar.visibility = visible
 
+            recyclerView.visibility = invisible
             errorText.visibility = invisible
             post.visibility = invisible
         }
@@ -234,53 +343,9 @@ class DetailPostActivity : AppCompatActivity(), ViewStateCallback<DetailPostResp
             errorText.text = message
             errorText.visibility = visible
 
+            recyclerView.visibility = invisible
             progressBar.visibility = invisible
             post.visibility = invisible
-        }
-    }
-
-    private fun getTimeAgo(timestamp: String): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        sdf.timeZone = TimeZone.getTimeZone("GMT")
-        val date = sdf.parse(timestamp)
-        val now = Date()
-        val diff = now.time - date!!.time
-
-        return when {
-            diff < TimeUnit.MINUTES.toMillis(1) -> {
-                val seconds = TimeUnit.MILLISECONDS.toSeconds(diff)
-                "$seconds detik yang lalu"
-            }
-
-            diff < TimeUnit.HOURS.toMillis(1) -> {
-                val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
-                "$minutes menit yang lalu"
-            }
-
-            diff < TimeUnit.DAYS.toMillis(1) -> {
-                val hours = TimeUnit.MILLISECONDS.toHours(diff)
-                "$hours jam yang lalu"
-            }
-
-            diff < TimeUnit.DAYS.toMillis(7) -> {
-                val days = TimeUnit.MILLISECONDS.toDays(diff)
-                "$days hari yang lalu"
-            }
-
-            diff < TimeUnit.DAYS.toMillis(30) -> {
-                val weeks = TimeUnit.MILLISECONDS.toDays(diff) / 7
-                "$weeks minggu yang lalu"
-            }
-
-            diff < TimeUnit.DAYS.toMillis(365) -> {
-                val months = TimeUnit.MILLISECONDS.toDays(diff) / 30
-                "$months bulan yang lalu"
-            }
-
-            else -> {
-                val years = TimeUnit.MILLISECONDS.toDays(diff) / 365
-                "$years tahun yang lalu"
-            }
         }
     }
 

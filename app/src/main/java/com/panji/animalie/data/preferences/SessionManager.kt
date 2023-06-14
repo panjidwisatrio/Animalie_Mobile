@@ -30,4 +30,9 @@ class SessionManager(context: Context) {
     fun fetchToken(): String? {
         return prefs.getString(USER_TOKEN, null)
     }
+
+    fun clearSession() {
+        editor.clear()
+        editor.apply()
+    }
 }

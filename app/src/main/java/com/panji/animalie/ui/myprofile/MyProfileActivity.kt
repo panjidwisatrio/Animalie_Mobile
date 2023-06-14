@@ -1,7 +1,12 @@
 package com.panji.animalie.ui.myprofile
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
@@ -12,10 +17,14 @@ import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.data.preferences.SessionManager
 import com.panji.animalie.databinding.ActivityMyProfileBinding
 import com.panji.animalie.model.response.MyProfileResponse
-import com.panji.animalie.ui.fragments.adapter.SectionTabAdapter
+import com.panji.animalie.ui.editprofile.EditProfileActivity
+import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.ui.login.LoginActivity
+import com.panji.animalie.ui.setting.SettingActivity
 import com.panji.animalie.util.BottomNavigationHelper
 import com.panji.animalie.util.Constanta.TAB_TITLES_PROFILE
 import com.panji.animalie.util.Constanta.URL_IMAGE
+import com.panji.animalie.util.DialogHelper
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +37,20 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
     private val sessionManager: SessionManager by lazy {
         SessionManager(this)
     }
+
+    private val token by lazy {
+        sessionManager.fetchToken()
+    }
+
     private var userId: String = ""
+
+    private val dialogLoading by lazy {
+        DialogHelper.showLoadingDialog("Please wait...")
+    }
+
+    private val dialogError by lazy {
+        DialogHelper.showErrorDialog("Failed to logout")
+    }
 
     private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -45,6 +67,8 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
         setSupportActionBar(binding.profileToolbar.appBar)
         supportActionBar?.title = "My Profile"
 
+        DialogHelper.setUpDialog(this@MyProfileActivity)
+
         userId = sessionManager.fetchId() as String
 
         // setup bottomNavigation
@@ -58,11 +82,42 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
 
         setTabLayout()
         getProfileData()
+        certificateManager()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        updateProfileData()
+    }
+
+    private fun certificateManager() {
+        binding.apply {
+            addCertificate.setOnClickListener {
+                MaterialAlertDialogBuilder(this@MyProfileActivity).setTitle("Add Certificate")
+                    .setMessage("Fitur ini masih dalam tahap pengembangan")
+                    .setPositiveButton("Oke") { dialog, _ ->
+                        dialog.dismiss()
+                    }.show()
+            }
+            addEditCertificate.setOnClickListener {
+                MaterialAlertDialogBuilder(this@MyProfileActivity).setTitle("Edit Certificate")
+                    .setMessage("Fitur ini masih dalam tahap pengembangan")
+                    .setPositiveButton("Oke") { dialog, _ ->
+                        dialog.dismiss()
+                    }.show()
+            }
+            seeAllCertificate.setOnClickListener {
+                MaterialAlertDialogBuilder(this@MyProfileActivity).setTitle("See All Certificate")
+                    .setMessage("Fitur ini masih dalam tahap pengembangan")
+                    .setPositiveButton("Oke") { dialog, _ ->
+                        dialog.dismiss()
+                    }.show()
+            }
+        }
     }
 
     private fun getProfileData() {
-        val token = sessionManager.fetchToken()
-
         CoroutineScope(Dispatchers.Main).launch {
             token?.let {
                 viewModel.getProfile(token = it).observe(this@MyProfileActivity) { it1 ->
@@ -70,6 +125,55 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
                         is Resource.Error -> onFailed(it1.message)
                         is Resource.Loading -> onLoading()
                         is Resource.Success -> it1.data?.let { it2 -> onSuccess(it2) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateProfileData() {
+        CoroutineScope(Dispatchers.Main).launch {
+            token?.let {
+                viewModel.getProfile(token = it).observe(this@MyProfileActivity) { it1 ->
+                    when (it1) {
+                        is Resource.Error -> {}
+                        is Resource.Loading -> {}
+                        is Resource.Success -> it1.data?.let { it2 -> onSuccess(it2) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun logout() {
+        CoroutineScope(Dispatchers.Main).launch {
+            token?.let {
+                viewModel.logout(token = it).observe(this@MyProfileActivity) { it1 ->
+                    when (it1) {
+                        is Resource.Error -> {
+                            dialogLoading.dismiss()
+                            dialogError.show()
+                            Log.e("Logout", it1.message.toString())
+                        }
+                        is Resource.Loading -> {
+                            dialogLoading.show()
+                        }
+                        is Resource.Success -> {
+                            dialogLoading.dismiss()
+                            sessionManager.clearSession()
+                            startActivity(
+                                Intent(
+                                    this@MyProfileActivity,
+                                    LoginActivity::class.java
+                                )
+                            )
+                            Toast.makeText(
+                                this@MyProfileActivity,
+                                "Logout berhasil",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
                     }
                 }
             }
@@ -90,7 +194,13 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
     }
 
     private fun setTabLayout() {
-        val pageAdapter = SectionTabAdapter(this, "profile", "myProfile", userId = userId, token = sessionManager.fetchToken())
+        val pageAdapter = SectionTabAdapter(
+            this,
+            "profile",
+            "myProfile",
+            userId = userId,
+            token = sessionManager.fetchToken()
+        )
 
         binding.apply {
             viewPager.adapter = pageAdapter
@@ -130,7 +240,22 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
                     .into(profilePhoto)
             }
 
+            editProfileButton.setOnClickListener {
+                openEditProfileActivity(data)
+            }
         }
+    }
+
+    private fun openEditProfileActivity(data: MyProfileResponse) {
+        startActivity(
+            Intent(this, EditProfileActivity::class.java)
+                .putExtra("EXTRA_FULLNAME", data.user.name)
+                .putExtra("EXTRA_USERNAME", data.user.username)
+                .putExtra("EXTRA_EMAIL", data.user.email)
+                .putExtra("EXTRA_JOB", data.user.job_position)
+                .putExtra("EXTRA_WORKPLACE", data.user.work_place)
+                .putExtra("EXTRA_AVATAR", data.user.avatar)
+        )
     }
 
     override fun onLoading() {
@@ -156,6 +281,29 @@ class MyProfileActivity : AppCompatActivity(), ViewStateCallback<MyProfileRespon
                     dialog.dismiss()
                 }
                 .show()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.profile_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.setting -> {
+                startActivity(
+                    Intent(this@MyProfileActivity, SettingActivity::class.java)
+                )
+                true
+            }
+
+            R.id.logout -> {
+                logout()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

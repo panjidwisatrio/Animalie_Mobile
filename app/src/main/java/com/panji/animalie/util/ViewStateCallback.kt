@@ -9,6 +9,9 @@ interface ViewStateCallback<T> {
     val invisible: Int
         get() = View.INVISIBLE
 
+    val gone: Int
+        get() = View.GONE
+
     val visible: Int
         get() = View.VISIBLE
 }

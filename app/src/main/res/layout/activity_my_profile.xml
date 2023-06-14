@@ -12,111 +12,107 @@
         android:id="@+id/profile_toolbar"
         layout="@layout/app_bar" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
-
-    <!-- PROFILE BIO -->
-    <LinearLayout
-        android:id="@+id/biodata_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_toolbar"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        android:padding="16dp">
-
-        <LinearLayout
-            android:id="@+id/biodata"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_photo"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_marginEnd="8dp"
-                android:layout_gravity="start"
-                android:contentDescription="@string/profile_description"
-                android:src="@mipmap/profile_photo_round" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/fullname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/fullname"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/username"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal">
-
-            <TextView
-                android:id="@+id/tv_job"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/job"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:id="@+id/tv_di"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/di"
-                android:textSize="16sp"
-                android:layout_marginHorizontal="5dp"/>
-
-            <TextView
-                android:id="@+id/tv_workplace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_workplace"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/edit_profile" />
-
-    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigation"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:layout_below="@id/biodata_layout">
+        android:layout_below="@+id/profile_toolbar"
+        android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <!-- PROFILE BIO -->
+            <LinearLayout
+                android:id="@+id/biodata_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="invisible">
+
+                <LinearLayout
+                    android:id="@+id/biodata"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_photo"
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/profile_description"
+                        android:src="@mipmap/profile_photo_round" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/fullname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fullname"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/username"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill_horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_job"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/job"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_di"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:text="@string/di"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_workplace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/edit_workplace"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/edit_profile_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/edit_profile" />
+
+            </LinearLayout>
+
 
             <!--    CERTIFICATE-->
             <LinearLayout
@@ -172,6 +168,7 @@
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
+                    android:id="@+id/see_all_certificate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -186,8 +183,7 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorOnPrimary"
+                android:layout_height="match_parent"
                 android:elevation="4dp"
                 app:tabGravity="fill"
                 app:tabMode="fixed" />
@@ -195,18 +191,10 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:paddingBottom="8dp" />
         </LinearLayout>
     </ScrollView>
-
-
-    <!--    BOTTOM NAVIGATION-->
-<!--    <include-->
-<!--        android:id="@+id/bottom_navigation"-->
-<!--        layout="@layout/bottom_navigation"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true" />-->
 
     <!--        BOTTOM NAVIGATION-->
     <include
@@ -215,5 +203,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
+
+    <!--    FRAGMENT CONTAINER-->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

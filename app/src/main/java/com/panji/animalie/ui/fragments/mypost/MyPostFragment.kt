@@ -12,7 +12,8 @@ import com.panji.animalie.data.resource.Resource
 import com.panji.animalie.databinding.FragmentMyPostBinding
 import com.panji.animalie.model.response.PostResponse
 import com.panji.animalie.ui.detail.ViewModelDetailPost
-import com.panji.animalie.ui.fragments.adapter.PostAdapter
+import com.panji.animalie.ui.adapter.PostAdapter
+import com.panji.animalie.ui.createpost.ViewModelCreatePost
 import com.panji.animalie.util.ViewStateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,11 +50,21 @@ class MyPostFragment : Fragment(), ViewStateCallback<PostResponse> {
             context,
             type = "my_post",
             viewModel = ViewModelDetailPost(application = requireActivity().application),
-            lifecycleOwner = viewLifecycleOwner
+            viewModelCreatePost = ViewModelCreatePost(application = requireActivity().application),
+            lifecycleOwner = viewLifecycleOwner,
+            refreshData = {
+                updatePost()
+            }
         )
 
         getMyPost()
         showRecycleView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        updatePost()
     }
 
     private fun getMyPost() {
@@ -64,6 +75,21 @@ class MyPostFragment : Fragment(), ViewStateCallback<PostResponse> {
                         is Resource.Error -> onFailed(it.message)
                         is Resource.Loading -> onLoading()
                         is Resource.Success -> it.data?.let { it1 -> onSuccess(it1) }
+                    }
+                }
+        }
+    }
+
+    private fun updatePost() {
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.getMyPost(userId, currentPage)
+                .observe(viewLifecycleOwner) {
+                    when (it) {
+                        is Resource.Error -> {}
+                        is Resource.Loading -> {}
+                        is Resource.Success -> {
+                            it.data?.posts?.data?.let { it1 -> adapterMyPost.updateData(it1) }
+                        }
                     }
                 }
         }

@@ -1,4 +1,4 @@
-package com.panji.animalie.ui.fragments.adapter
+package com.panji.animalie.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +47,6 @@ class NotificationAdapter : ListAdapter<Notification, NotificationAdapter.Notifi
                 Notification.NotificationType.CHAT -> itemView.context.getString(R.string.set_notifications_Chat)
                 Notification.NotificationType.LIKE -> itemView.context.getString(R.string.set_notification_like)
                 Notification.NotificationType.COMMENT -> itemView.context.getString(R.string.set_notification_comment)
-                else -> ""
             }
         }
     }

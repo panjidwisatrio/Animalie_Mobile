@@ -1,5 +1,6 @@
 package com.panji.animalie.ui.interestgroup
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.SearchView
@@ -8,7 +9,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.R
 import com.panji.animalie.databinding.ActivityInterestGroupBinding
-import com.panji.animalie.ui.fragments.adapter.SectionTabAdapter
+import com.panji.animalie.ui.adapter.SectionTabAdapter
+import com.panji.animalie.ui.createpost.CreatePostActivity
 import com.panji.animalie.ui.fragments.latest.LatestFragment
 import com.panji.animalie.ui.fragments.popular.PopularFragment
 import com.panji.animalie.ui.fragments.unanswerd.UnansweredFragment
@@ -45,7 +47,26 @@ class InterestGroupActivity : AppCompatActivity() {
 
         setCheckedChipId()
         setTabLayout(chip)
+        setFab()
         searchPost()
+
+        binding.searchBar.bellIcon.setOnClickListener {
+            toNotificationPage()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        setTabLayout(chip)
+    }
+
+    private fun toNotificationPage() {
+        MaterialAlertDialogBuilder(this).setTitle("Notifikasi")
+            .setMessage("Fitur ini masih dalam tahap pengembangan")
+            .setPositiveButton("Oke") { dialog, _ ->
+                dialog.dismiss()
+            }.show()
     }
 
     private fun searchPost() {
@@ -77,6 +98,15 @@ class InterestGroupActivity : AppCompatActivity() {
             is UnansweredFragment -> {
                 currentFragment.getUnansweredPost(query)
             }
+        }
+    }
+
+    private fun setFab() {
+        binding.createFab.createFab.setOnClickListener {
+            startActivity(
+                Intent(this, CreatePostActivity::class.java)
+                    .putExtra("TYPE", "create")
+            )
         }
     }
 

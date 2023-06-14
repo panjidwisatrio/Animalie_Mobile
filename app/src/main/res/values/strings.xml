@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Animalie</string>
     <string name="title_activity_chat">ChatActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -67,7 +67,8 @@
     <string name="contact_doctor_work_experience">10</string>
 
     <!-- Strings related to notification-->
-    <string name="notification">Tandai sudah dibaca</string>
+    <string name="notification_readed">Tandai sudah dibaca</string>
+    <string name="notification">Notifikasi</string>
     <string name="notification_username">nama</string>
     <string name="notification_description">notification</string>
 
@@ -136,6 +137,7 @@
     <string name="tab_interest">Popular</string>
     <string name="tab_unanswerd">Unanswered</string>
     <string name="tab_mypost">My Post</string>
+    <string name="tab_other_post">Post</string>
     <string name="tab_discussion">Discussion</string>
     <string name="tab_savedpost">Saved Post</string>
 
@@ -161,4 +163,17 @@
     <string name="appBar_name">Appbar Name</string>
     <string name="chip">chip</string>
     <string name="content_description_end_icon">Add new Tag</string>
+    <string name="edit_profile_picture">Ubah foto profile</string>
+    <string name="setting">Setting</string>
+    <string name="logout">Logout</string>
+    <string name="dark_theme">Mode Gelap</string>
+    <string name="about_app">Tentang Aplikasi</string>
+    <string name="edit_post">Edit Post</string>
+    <string name="delete_post">Delete Post</string>
+    <string name="comment_dummy" tools:ignore="ExtraTranslation">This is Comment, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="info_app">Animalie dirancang sebagai solusi untuk mengatasi tantangan dalam pengelolaan peternakan, kami telah mengembangkan sebuah aplikasi inovatif yang berfungsi sebagai platform kolaborasi antara peternak, ahli ternak, dan tenaga kesehatan hewan. Aplikasi ini menyediakan berbagai fitur yang berguna, seperti akses ke artikel dan informasi terkini seputar perawatan hewan ternak, fasilitas konsultasi langsung dengan para ahli, serta pasar online untuk penjualan produk peternakan. Dengan adanya aplikasi ini, diharapkan peternak dapat memperoleh pengetahuan yang lebih baik, mendapatkan bantuan cepat dari para ahli ketika dibutuhkan, dan juga memperluas jangkauan pasarnya dengan menjual produk melalui platform yang terintegrasi.</string>
+    <string name="call_us">Contact Us</string>
+    <string name="version_app">Version 1.0-alpha01</string>
+
+
 </resources>

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.panji.animalie.databinding.ActivityRoomChatBinding
-import com.panji.animalie.ui.fragments.adapter.RoomChatAdapter
+import com.panji.animalie.ui.adapter.RoomChatAdapter
 
 class RoomChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomChatBinding

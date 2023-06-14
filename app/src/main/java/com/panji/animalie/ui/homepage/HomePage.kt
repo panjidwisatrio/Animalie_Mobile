@@ -9,7 +9,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import com.panji.animalie.R
 import com.panji.animalie.databinding.HomePageBinding
-import com.panji.animalie.ui.fragments.adapter.SectionTabAdapter
+import com.panji.animalie.ui.adapter.SectionTabAdapter
 import com.panji.animalie.ui.createpost.CreatePostActivity
 import com.panji.animalie.ui.fragments.latest.LatestFragment
 import com.panji.animalie.ui.fragments.popular.PopularFragment
@@ -38,9 +38,7 @@ class HomePage : AppCompatActivity() {
 
         // setup bottomNavigation
         BottomNavigationHelper.setupBottomNavigationBar(
-            binding.bottomNavigation.bottomNavigation,
-            this,
-            this
+            binding.bottomNavigation.bottomNavigation, this, this
         )
 
         // setup exit confirmation
@@ -50,6 +48,24 @@ class HomePage : AppCompatActivity() {
         setTabLayout()
         setFab()
         searchPost()
+
+        binding.searchBar.bellIcon.setOnClickListener {
+            toNotificationPage()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        setTabLayout()
+    }
+
+    private fun toNotificationPage() {
+        MaterialAlertDialogBuilder(this).setTitle("Notifikasi")
+            .setMessage("Fitur ini masih dalam tahap pengembangan")
+            .setPositiveButton("Oke") { dialog, _ ->
+                dialog.dismiss()
+            }.show()
     }
 
     private fun searchPost() {
@@ -69,7 +85,8 @@ class HomePage : AppCompatActivity() {
     }
 
     private fun performSearch(query: String?) {
-        when (val currentFragment = supportFragmentManager.findFragmentByTag("f${binding.viewPager.currentItem}")) {
+        when (val currentFragment =
+            supportFragmentManager.findFragmentByTag("f${binding.viewPager.currentItem}")) {
             is LatestFragment -> {
                 currentFragment.getPostLatest(query)
             }
@@ -84,37 +101,35 @@ class HomePage : AppCompatActivity() {
         }
     }
 
-        private fun setFab() {
-            binding.createFab.createFab.setOnClickListener {
-                startActivity(
-                    Intent(this, CreatePostActivity::class.java)
-                )
-            }
-        }
-
-        private fun showAppClosingDialog() {
-            MaterialAlertDialogBuilder(this)
-                .setTitle("Keluar dari aplikasi?")
-                .setMessage("Apakah kamu yakin ingin keluar dari aplikasi?")
-                .setNegativeButton("Tidak") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setPositiveButton("Ya") { _, _ ->
-                    finish()
-                }
-                .show()
-        }
-
-
-        private fun setTabLayout() {
-            val pageAdapter = SectionTabAdapter(this, "homepage", "dashboard")
-
-            binding.apply {
-                viewPager.adapter = pageAdapter
-
-                TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                    tab.text = resources.getString(TAB_TITLES[position])
-                }.attach()
-            }
+    private fun setFab() {
+        binding.createFab.createFab.setOnClickListener {
+            startActivity(
+                Intent(this, CreatePostActivity::class.java)
+                    .putExtra("TYPE", "create")
+            )
         }
     }
+
+    private fun showAppClosingDialog() {
+        MaterialAlertDialogBuilder(this).setTitle("Keluar dari aplikasi?")
+            .setMessage("Apakah kamu yakin ingin keluar dari aplikasi?")
+            .setNegativeButton("Tidak") { dialog, _ ->
+                dialog.dismiss()
+            }.setPositiveButton("Ya") { _, _ ->
+                finish()
+            }.show()
+    }
+
+
+    private fun setTabLayout() {
+        val pageAdapter = SectionTabAdapter(this, "homepage", "dashboard")
+
+        binding.apply {
+            viewPager.adapter = pageAdapter
+
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES[position])
+            }.attach()
+        }
+    }
+}
